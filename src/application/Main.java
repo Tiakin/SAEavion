@@ -10,90 +10,14 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 public class Main {
+	
     public static void main(String[] args) {
-            JFrame frame = new JFrame("Gestionnaire des Vols");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(450, 500);
+    	MenuPrincipal app = new MenuPrincipal();
+	    app.setVisible(true);
             
-            try {
-    			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    			UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
-    		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-    				| UnsupportedLookAndFeelException e) {
-    			e.printStackTrace();
-    		}
-
-            JMenuBar menuBar = new JMenuBar();
-
-            // Menu Fichier
-            JMenu fichierMenu = new JMenu("Fichier");
-            
-            JMenuItem aeroport = new JMenuItem("Charger les aéroports");
-            aeroport.addActionListener(e -> openAeroport());
-            fichierMenu.add(aeroport);
-            
-            fichierMenu.add(new JMenuItem("Charger les vols"));
-            
-            fichierMenu.add(new JMenuItem("Charger un graphe"));
-            
-            
-            fichierMenu.addSeparator();
-            
-            
-            fichierMenu.add(new JMenuItem("Exporter le graphe"));
-            
-            
-            fichierMenu.addSeparator();
-            
-            
-            JMenuItem listegraphe = new JMenuItem("Calcul d'une liste de graphe");
-            listegraphe.addActionListener(e -> openListe());
-            fichierMenu.add(listegraphe);
-            
-            menuBar.add(fichierMenu);
-
-            // Menu Affichage
-            JMenu afficherMenu = new JMenu("Affichage");
-            
-            JMenuItem horaire = new JMenuItem("Horaire");
-            horaire.addActionListener(e -> openHoraire());
-            afficherMenu.add(horaire);
-            
-            JMenuItem niveau = new JMenuItem("Niveau");
-            niveau.addActionListener(e -> openNiveau());
-            afficherMenu.add(niveau);
-            
-            afficherMenu.addSeparator();
-            
-            JMenuItem statistique = new JMenuItem("Statistique");
-            statistique.addActionListener(e -> openStatistique());
-            afficherMenu.add(statistique);
-            
-            menuBar.add(afficherMenu);
-
-            // Menu Édition
-            JMenu editionMenu = new JMenu("Édition");
-            
-            JMenuItem kmax = new JMenuItem("Kmax");
-            kmax.addActionListener(e -> openKmax());
-            editionMenu.add(kmax);
-            
-            JMenuItem marge = new JMenuItem("Marge de sécurité");
-            marge.addActionListener(e -> openMarge());
-            editionMenu.add(marge);
-            
-            menuBar.add(editionMenu);
-            
-            JLabel lbl=new JLabel();
-            lbl.setIcon(new ImageIcon(Main.class.getClassLoader().getResource("resources/img.png")));
-            frame.add(lbl);
-            
-            
-            frame.setJMenuBar(menuBar);
-            frame.setVisible(true);
     }
-    
-    private static void openListe() {
+
+	 static void openListe() {
     	JFrame frame = new JFrame("Calcul d'une liste de graphe");
     	frame.setSize(350, 300);
     	frame.setResizable(false);
@@ -103,7 +27,7 @@ public class Main {
 
         JPanel panelSource = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelSource.add(new JLabel("Source :"));
-        JTextField repetroireSource = new JTextField("Répertoire source", 20);
+        JTextField repetroireSource = new JTextField("RÃ©pertoire source", 20);
         panelSource.add(repetroireSource);
         JButton sourceButton = new JButton("Choisir");
         panelSource.add(sourceButton);
@@ -124,7 +48,7 @@ public class Main {
 
         JPanel panelSortie = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelSortie.add(new JLabel("Sortie :"));
-        JTextField sortiePatternField = new JTextField("Répertoire sortie", 20);
+        JTextField sortiePatternField = new JTextField("RÃ©pertoire sortie", 20);
         panelSortie.add(sortiePatternField);
         JButton sortieButton = new JButton("Choisir");
         panelSortie.add(sortieButton);
@@ -155,7 +79,7 @@ public class Main {
         frame.setVisible(true);
     }
     
-	private static void openAeroport() {
+	static void openAeroport() {
 		JFrame frame = new JFrame("Charger");
         frame.setSize(700, 400);
         
@@ -186,7 +110,7 @@ public class Main {
         frame.setVisible(true);
 	}
 
-	private static void openHoraire() {
+	 static void openHoraire() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Horaire");
         dialog.setSize(250, 100);
@@ -210,7 +134,7 @@ public class Main {
         dialog.setVisible(true);
 	}
 	
-	private static void openNiveau() {
+	 static void openNiveau() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Niveau");
         dialog.setSize(200, 100);
@@ -230,22 +154,22 @@ public class Main {
         dialog.setVisible(true);
 	}
 	
-	private static void openStatistique() {
+	 static void openStatistique() {
 		JFrame frame = new JFrame("Statistique");
         frame.setSize(300, 200);
         frame.setResizable(false);
         JPanel panel = new JPanel();
         
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(new JLabel("Degré moyen :"));
+        panel.add(new JLabel("DegrÃ© moyen :"));
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
         panel.add(new JLabel("Nombre de composantes connexes :"));
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
         panel.add(new JLabel("Nombre de noeuds :"));
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
-        panel.add(new JLabel("Nombre d'arrêtes :"));
+        panel.add(new JLabel("Nombre d'arrÃ¨tes :"));
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
-        panel.add(new JLabel("Diamètre :"));
+        panel.add(new JLabel("DiamÃ¨tre :"));
         panel.add(Box.createRigidArea(new Dimension(0, 5)));
         panel.add(new JLabel("Nombre de conflits :"));
 
@@ -253,7 +177,7 @@ public class Main {
         frame.setVisible(true);
 	}
 	
-	private static void openKmax() {
+	 static void openKmax() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Kmax");
 	    dialog.setSize(200, 100);
@@ -272,9 +196,9 @@ public class Main {
 	    dialog.setVisible(true);
 	}
 	
-	private static void openMarge() {
+	 static void openMarge() {
 		JDialog dialog = new JDialog();
-		dialog.setTitle("Marge de sécurité");
+		dialog.setTitle("Marge de sÃ©curitÃ©");
 	    dialog.setSize(250, 100);
 	    dialog.setResizable(false);
 	    JPanel panel = new JPanel();
