@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Choisir extends JDialog implements ActionListener{
+public class CalculListeGraphe extends JDialog implements ActionListener{
 
 	// Attibuts graphiques
 	private JLabel labelNom = new JLabel("Nom");
@@ -28,7 +28,7 @@ public class Choisir extends JDialog implements ActionListener{
     private JButton btValider = new JButton("VALIDER");
 	
 
-	public Choisir(MaFenetre owner) {
+	public CalculListeGraphe(MenuPrincipal owner) {
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
 	    

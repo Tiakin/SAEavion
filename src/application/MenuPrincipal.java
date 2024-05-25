@@ -26,6 +26,30 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 
 public class MenuPrincipal extends JFrame implements ActionListener{
 
+	
+	JMenuBar menuBar;
+	
+	
+	JMenu fichierMenu;
+	
+	JMenuItem aeroport;
+	JMenuItem listegraphe;
+	
+	
+	JMenu afficherMenu;
+	
+	JMenuItem horaire;
+	JMenuItem niveau;
+	
+	
+	JMenuItem statistique;
+	
+	
+	JMenu editionMenu;
+	
+	JMenuItem kmax;
+	JMenuItem marge;
+	
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,15 +64,26 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		}
         
         initialisation();
+        
+        aeroport.addActionListener(this);
+        listegraphe.addActionListener(this);
+        
+        horaire.addActionListener(this);
+        niveau.addActionListener(this);
+        
+        statistique.addActionListener(this);
+        
+        kmax.addActionListener(this);
+        marge.addActionListener(this);
 	}
 	
 	private void initialisation() {
-    	JMenuBar menuBar = new JMenuBar();
+    	menuBar = new JMenuBar();
 
         // Menu Fichier
-        JMenu fichierMenu = new JMenu("Fichier");
+        fichierMenu = new JMenu("Fichier");
         
-        JMenuItem aeroport = new JMenuItem("Charger les aéroports");
+        aeroport = new JMenuItem("Charger les aéroports");
         aeroport.addActionListener(e -> Main.openAeroport());
         fichierMenu.add(aeroport);
         
@@ -66,39 +101,35 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         fichierMenu.addSeparator();
         
         
-        JMenuItem listegraphe = new JMenuItem("Calcul d'une liste de graphe");
-        listegraphe.addActionListener(e -> Main.openListe());
+        listegraphe = new JMenuItem("Calcul d'une liste de graphe");
         fichierMenu.add(listegraphe);
         
         menuBar.add(fichierMenu);
 
         // Menu Affichage
-        JMenu afficherMenu = new JMenu("Affichage");
+        afficherMenu = new JMenu("Affichage");
         
-        JMenuItem horaire = new JMenuItem("Horaire");
-        horaire.addActionListener(e -> Main.openHoraire());
+        horaire = new JMenuItem("Horaire");
         afficherMenu.add(horaire);
         
-        JMenuItem niveau = new JMenuItem("Niveau");
-        niveau.addActionListener(e -> Main.openNiveau());
+        niveau = new JMenuItem("Niveau");
         afficherMenu.add(niveau);
         
         afficherMenu.addSeparator();
         
-        JMenuItem statistique = new JMenuItem("Statistique");
+        statistique = new JMenuItem("Statistique");
         statistique.addActionListener(e -> Main.openStatistique());
         afficherMenu.add(statistique);
         
         menuBar.add(afficherMenu);
 
         // Menu Édition
-        JMenu editionMenu = new JMenu("Édition");
+        editionMenu = new JMenu("Édition");
         
-        JMenuItem kmax = new JMenuItem("Kmax");
-        kmax.addActionListener(e -> Main.openKmax());
+        kmax = new JMenuItem("Kmax");
         editionMenu.add(kmax);
         
-        JMenuItem marge = new JMenuItem("Marge de sécurité");
+        marge = new JMenuItem("Marge de sécurité");
         marge.addActionListener(e -> Main.openMarge());
         editionMenu.add(marge);
         
@@ -131,7 +162,31 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getSource() == aeroport){
+	        
+	    }
+		if (e.getSource() == listegraphe){
+	        
+	    }
+		if (e.getSource() == horaire){
+			Horaire horaire = new Horaire(this);
+	        horaire.showDialog();
+	    }
+		if (e.getSource() == niveau){
+			Niveau niveau = new Niveau(this);
+	        niveau.showDialog();
+	    }
+		if (e.getSource() == statistique){
+	        
+	    }
+		if (e.getSource() == kmax){
+	        Kmax kmax = new Kmax(this);
+	        kmax.showDialog();
+	    }
+		if (e.getSource() == marge){
+	        
+	    }
+		 
 		
 	}
 

@@ -110,50 +110,6 @@ public class Main {
         frame.setVisible(true);
 	}
 
-	 static void openHoraire() {
-		JDialog dialog = new JDialog();
-		dialog.setTitle("Horaire");
-        dialog.setSize(250, 100);
-        dialog.setResizable(false);
-        
-        JPanel panel = new JPanel();
-        JTextField textFieldHeure = new JTextField(2);
-        JTextField textFieldMinute = new JTextField(2);
-        JButton retourButton = new JButton("Retour");
-        JButton validerButton = new JButton("Valider");
-        
-
-        panel.add(new JLabel("Entrez l'heure (HH:MM) :"));
-        panel.add(textFieldHeure);
-        panel.add(new JLabel(":"));
-        panel.add(textFieldMinute);
-        panel.add(retourButton);
-        panel.add(validerButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-	}
-	
-	 static void openNiveau() {
-		JDialog dialog = new JDialog();
-		dialog.setTitle("Niveau");
-        dialog.setSize(200, 100);
-        dialog.setResizable(false);
-        JPanel panel = new JPanel();
-        JTextField textField = new JTextField(2);
-        JButton retourButton = new JButton("Retour");
-        JButton validerButton = new JButton("Valider");
-        
-
-        panel.add(new JLabel("Entrez un niveau :"));
-        panel.add(textField);
-        panel.add(retourButton);
-        panel.add(validerButton);
-
-        dialog.getContentPane().add(panel);
-        dialog.setVisible(true);
-	}
-	
 	 static void openStatistique() {
 		JFrame frame = new JFrame("Statistique");
         frame.setSize(300, 200);
@@ -175,25 +131,6 @@ public class Main {
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
-	}
-	
-	 static void openKmax() {
-		JDialog dialog = new JDialog();
-		dialog.setTitle("Kmax");
-	    dialog.setSize(200, 100);
-	    dialog.setResizable(false);
-	    JPanel panel = new JPanel();
-	    JTextField textField = new JTextField(2);
-	    JButton retourButton = new JButton("Retour");
-	    JButton validerButton = new JButton("Valider");
-	
-	    panel.add(new JLabel("Entrez un nombre :"));
-	    panel.add(textField);
-	    panel.add(retourButton);
-	    panel.add(validerButton);
-	
-	    dialog.getContentPane().add(panel);
-	    dialog.setVisible(true);
 	}
 	
 	 static void openMarge() {
