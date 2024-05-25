@@ -3,13 +3,9 @@ package application;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -21,34 +17,39 @@ import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
 public class MenuPrincipal extends JFrame implements ActionListener{
 
 	
-	JMenuBar menuBar;
+	private JMenuBar menuBar;
 	
 	
-	JMenu fichierMenu;
+	private JMenu fichierMenu;
 	
-	JMenuItem aeroport;
-	JMenuItem listegraphe;
+	private JMenuItem aeroport;
+	private JMenuItem vols;
+	private JMenuItem grapheCharge;
 	
+	private JMenuItem grapheExport;
 	
-	JMenu afficherMenu;
-	
-	JMenuItem horaire;
-	JMenuItem niveau;
-	
-	
-	JMenuItem statistique;
+	private JMenuItem listegraphe;
 	
 	
-	JMenu editionMenu;
+	private JMenu afficherMenu;
 	
-	JMenuItem kmax;
-	JMenuItem marge;
+	private JMenuItem horaire;
+	private JMenuItem niveau;
+	
+	
+	private JMenuItem statistique;
+	
+	
+	private JMenu editionMenu;
+	
+	private JMenuItem kmax;
+	private JMenuItem marge;
+
 	
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
@@ -66,6 +67,11 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         initialisation();
         
         aeroport.addActionListener(this);
+        vols.addActionListener(this);
+        grapheCharge.addActionListener(this);
+        
+        grapheExport.addActionListener(this);
+        
         listegraphe.addActionListener(this);
         
         horaire.addActionListener(this);
@@ -84,18 +90,19 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         fichierMenu = new JMenu("Fichier");
         
         aeroport = new JMenuItem("Charger les aéroports");
-        aeroport.addActionListener(e -> Main.openAeroport());
         fichierMenu.add(aeroport);
         
-        fichierMenu.add(new JMenuItem("Charger les vols"));
+        vols = new JMenuItem("Charger les vols");
+        fichierMenu.add(vols);
         
-        fichierMenu.add(new JMenuItem("Charger un graphe"));
+        grapheCharge = new JMenuItem("Charger un graphe");
+        fichierMenu.add(grapheCharge);
         
         
         fichierMenu.addSeparator();
         
-        
-        fichierMenu.add(new JMenuItem("Exporter le graphe"));
+        grapheExport = new JMenuItem("Exporter le graphe");
+        fichierMenu.add(grapheExport);
         
         
         fichierMenu.addSeparator();
@@ -118,7 +125,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         afficherMenu.addSeparator();
         
         statistique = new JMenuItem("Statistique");
-        statistique.addActionListener(e -> Main.openStatistique());
         afficherMenu.add(statistique);
         
         menuBar.add(afficherMenu);
@@ -130,7 +136,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         editionMenu.add(kmax);
         
         marge = new JMenuItem("Marge de sécurité");
-        marge.addActionListener(e -> Main.openMarge());
         editionMenu.add(marge);
         
         menuBar.add(editionMenu);
@@ -163,10 +168,40 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == aeroport){
-	        
+			Choix charger = new Choix(this, false);
+			int option =charger.showOpenDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = charger.getSelectedFile();
+                
+            }  
 	    }
+		if (e.getSource() == vols){
+			Choix charger = new Choix(this, false);
+			int option =charger.showOpenDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = charger.getSelectedFile();
+                
+            }       
+		}
+		if (e.getSource() == grapheCharge){
+			Choix charger = new Choix(this, false);
+			int option =charger.showOpenDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = charger.getSelectedFile();
+                
+            }  
+		}
+		if (e.getSource() == grapheExport){
+			Choix sauver = new Choix(this, false);
+			int option = sauver.showSaveDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = sauver.getSelectedFile();
+                
+            } 
+		}
 		if (e.getSource() == listegraphe){
-	        
+	        CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
+	        calculListeGraphe.showDialog();
 	    }
 		if (e.getSource() == horaire){
 			Horaire horaire = new Horaire(this);
@@ -177,14 +212,16 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	        niveau.showDialog();
 	    }
 		if (e.getSource() == statistique){
-	        
+	        Statistique statistique = new Statistique(this);
+	        statistique.showDialog();
 	    }
 		if (e.getSource() == kmax){
 	        Kmax kmax = new Kmax(this);
 	        kmax.showDialog();
 	    }
 		if (e.getSource() == marge){
-	        
+			Marge marge = new Marge(this);
+			marge.showDialog();
 	    }
 		 
 		

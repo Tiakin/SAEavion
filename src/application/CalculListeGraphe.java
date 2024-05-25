@@ -1,104 +1,132 @@
 package application;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class CalculListeGraphe extends JDialog implements ActionListener{
 
+	private MenuPrincipal owner;
+	
 	// Attibuts graphiques
-	private JLabel labelNom = new JLabel("Nom");
-	private JTextField nomField = new JTextField("Nouvelle Pizza", 20);
+	private JPanel panel;
 	
-	private JLabel labelPrix = new JLabel("Prix");
-	private JTextField prixField = new JTextField("8", 5);
+	private JPanel panelSource;
+	private JLabel labelSource;
+	private JTextField repertoireSource;
+	private JButton sourceButton;
+	private JTextField patternSource;
+	private JLabel labelPatternSource;
 	
-	private JLabel labelIngredients = new JLabel("Ingredients");
-	private JTextArea ingredientsArea = new JTextArea("Tomate, ...", 5, 30);
+	private JPanel panelSortie;
+	private JLabel labelSortie;
+	private JTextField repertoireSortie;
+	private JButton sortieButton;
+	private JTextField patternSortie;
+	private JLabel labelPatternSortie;
 	
-	private JButton btAnnuler = new JButton("ANNULER");
-    private JButton btValider = new JButton("VALIDER");
+	private JPanel buttonPanel;
+	private JButton retourButton;
+	private JButton validerButton;
 	
-
 	public CalculListeGraphe(MenuPrincipal owner) {
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
 	    
+	    this.owner = owner;
 	    
-	    
-        setLayout(new GridBagLayout());
+	    setTitle("Calcul d'une liste de graphe");
+    	setSize(350, 300);
+    	setResizable(false);
+    	
+    	panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        
+        panelSource = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelSource = new JLabel("Source :");
+        panelSource.add(labelSource);
+        repertoireSource = new JTextField("Répertoire source", 20);
+        panelSource.add(repertoireSource);
+        sourceButton = new JButton("Choisir");
+        panelSource.add(sourceButton);
+        
+        labelPatternSource = new JLabel("nom des fichiers (inserez 0 pour le nombre) :");
+        panelSource.add(labelPatternSource);
+        patternSource = new JTextField("graph-eval0.txt", 20);
+        panelSource.add(patternSource);
+        panel.add(panelSource);
 
-        gbc.gridx=0;
-        gbc.gridy=0;
-        this.add(labelNom, gbc);
-        gbc.gridx=1;
-        gbc.gridwidth=2;
-        this.add(nomField, gbc);
         
-        gbc.gridx=0;
-        gbc.gridy=1;
-        gbc.gridwidth=1;
-        this.add(labelPrix, gbc);
-        gbc.gridx=1;
-        gbc.anchor = GridBagConstraints.WEST;
-        this.add(prixField, gbc);
-        
-        gbc.gridx=0;
-        gbc.gridy=2;
-        gbc.gridwidth =4;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.NONE;
-        this.add(labelIngredients, gbc);
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridy=3;
-        this.add(ingredientsArea, gbc);
+        panelSortie = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelSortie = new JLabel("Sortie :");
+        panelSortie.add(labelSortie);
+        repertoireSortie = new JTextField("Répertoire sortie", 20);
+        panelSortie.add(repertoireSortie);
+        sortieButton = new JButton("Choisir");
+        panelSortie.add(sortieButton);
+        labelPatternSortie = new JLabel("nom des fichiers (inserez 0 pour le nombre) :");
+        panelSortie.add(labelPatternSortie);
+        patternSortie = new JTextField("colo-eval0.txt", 20);
+        panelSortie.add(patternSortie);
+        panel.add(panelSortie);
 
-        gbc.gridx=1;
-        gbc.gridy=4;
-        gbc.gridwidth=1;
-        btAnnuler.setBackground(Color.RED);
-        this.add(btAnnuler, gbc);
-        gbc.gridx=2;
-        gbc.gridwidth=3;
-        gbc.fill = GridBagConstraints.BOTH;
-        btValider.setBackground(Color.GREEN);
-        this.add(btValider, gbc);
+        buttonPanel = new JPanel();
+        retourButton = new JButton("Retour");
+        validerButton = new JButton("Valider");
+        buttonPanel.add(retourButton);
+        buttonPanel.add(validerButton);
+
+        panel.add(buttonPanel);
+
+        getContentPane().add(panel);
         
-        if(p != null) {
-        	nomField.setText(p.getNom());
-        	ingredientsArea.setText(p.getIngredients());
-        	prixField.setText(p.getTarif()+"");
-        	setTitle("Modification");
-        } else {
-        	
-        	setTitle("Ajout");
-        }
+        sourceButton.addActionListener(this);
+        sortieButton.addActionListener(this);
         
-        this.pack();
-        
-        btAnnuler.addActionListener(this);
-        btValider.addActionListener(this);
+        retourButton.addActionListener(this);
+        validerButton.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    if (e.getSource() == btAnnuler){
-	        pizza=null; //aucune pizza
+		if (e.getSource() == sourceButton){
+			Choix charger = new Choix(owner, true);
+			int option = charger.showOpenDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = charger.getSelectedFile();
+                repertoireSource.setText(file.getAbsolutePath());
+            }
+		}
+		if (e.getSource() == sortieButton){
+			Choix sauver = new Choix(owner, true);
+			int option = sauver.showSaveDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = sauver.getSelectedFile();
+                repertoireSortie.setText(file.getAbsolutePath());
+            }
+		}
+		
+	    if (e.getSource() == retourButton){
+	        
 	        this.setVisible(false); //on ferme la fenêtre
+	        dispose();
 	    }
-	    if (e.getSource() == btValider){
-	        pizza= new Pizza(nomField.getText(), ingredientsArea.getText(), Double.parseDouble(prixField.getText())); // on envoie la pizza
+	    if (e.getSource() == validerButton){
+	        
 	        this.setVisible(false); //on ferme la fenêtre
+	        dispose();
 	    }
-	    dispose();
+	}
+	public void showDialog() {
+		setVisible(true);
 	}
 }
