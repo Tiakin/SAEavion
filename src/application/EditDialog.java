@@ -9,25 +9,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Marge extends JDialog implements ActionListener{
+public class EditDialog extends JDialog implements ActionListener{
 
 	// Attibuts graphiques
-	private JLabel labelNombre = new JLabel("Entrez un temps (en minutes) :");
+	private JLabel labelNombre;
 	private JPanel panel = new JPanel();
-	private JTextField textField = new JTextField(3);
+	private JTextField textField = new JTextField(2);
 	private JButton retourButton = new JButton("Retour");
 	private JButton validerButton = new JButton("Valider");
 	private int marge;
 	
 
-	public Marge(MenuPrincipal owner) {
+	public EditDialog(MenuPrincipal owner, String title, String label) {
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
 	    
-		setTitle("Marge de sécurité");
+		setTitle(title);
 		setSize(200, 100);
 	    setResizable(false);
-	
+	    
+	    labelNombre = new JLabel(label);
+	    
 	    panel.add(labelNombre);
 	    panel.add(textField);
 	    panel.add(retourButton);

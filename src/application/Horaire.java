@@ -26,7 +26,7 @@ public class Horaire extends JDialog implements ActionListener{
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
 	    
-		setTitle("Kmax");
+		setTitle("Horaire");
 		setSize(250, 100);
 	    setResizable(false);
 	

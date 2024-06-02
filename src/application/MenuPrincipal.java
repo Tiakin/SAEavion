@@ -58,7 +58,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         
         try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
+			UIManager.put("FileChooser.noPlacesBar", true);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -208,19 +208,19 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	        horaire.showDialog();
 	    }
 		if (e.getSource() == niveau){
-			Niveau niveau = new Niveau(this);
-	        niveau.showDialog();
+			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
+			niveau.showDialog();
 	    }
 		if (e.getSource() == statistique){
 	        Statistique statistique = new Statistique(this);
 	        statistique.showDialog();
 	    }
 		if (e.getSource() == kmax){
-	        Kmax kmax = new Kmax(this);
-	        kmax.showDialog();
+			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+			kmax.showDialog();
 	    }
 		if (e.getSource() == marge){
-			Marge marge = new Marge(this);
+			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			marge.showDialog();
 	    }
 		 
