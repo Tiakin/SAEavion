@@ -15,6 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
@@ -157,6 +159,15 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         mapViewer.setZoom(14); // mettre à 13 en plein écran ça serait top je pense
         GeoPosition france = new GeoPosition(46,  13, 55, 2, 12, 34);
         mapViewer.setAddressLocation(france);
+        
+        
+        //event mouvement de souris
+        PanMouseInputListener mm = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mm);
+        mapViewer.addMouseMotionListener(mm);
+        
+        //event zoom de la souris
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
         
         
         this.add(mapViewer);
