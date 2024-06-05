@@ -183,7 +183,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
-                
+                ChargerAeroport ch = new ChargerAeroport(file);
             }  
 	    }
 		if (e.getSource() == vols){
