@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import application.GraphMap.SommetAdj;
+import application.GraphMap.SommetPrinc;
+
 class GraphMap<T,E> {
     class SommetPrinc {
         private int id;
@@ -139,6 +142,14 @@ class GraphMap<T,E> {
         if (i<lsa.size()) b = true;
         
         return b;
+    }
+    
+    public Set<SommetPrinc> getNodes() {
+		return map.keySet();
+    }
+    
+    public List<SommetAdj> getAdj(SommetPrinc sp) {
+		return map.get(sp);
     }
     
     public boolean hasEdge (T val1, T val2) {

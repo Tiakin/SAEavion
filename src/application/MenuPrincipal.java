@@ -59,7 +59,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private ChargerAeroport ch;
 
 
-	private ProcessFileCollision pfc;
+	private ProcessCollision pfc;
 
 	
 	public MenuPrincipal() {
@@ -202,11 +202,20 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
-                pfc = new ProcessFileCollision(file);
+                pfc = new ProcessCollision(file);
                 
                 pfc.processLineCollision(ch);
                 pfc.getGraphMap().greedyColoring();
                 System.out.println(pfc.getGraphMap());
+                Graph graph = GraphImporter.importGraph(pfc.getGraphMap());
+
+                if (graph != null) {
+                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
+                    graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
+                } else {
+                    System.out.println("Failed to import graph.");
+                }
+                
             }       
 		}
 		if (e.getSource() == grapheCharge){

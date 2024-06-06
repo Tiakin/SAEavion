@@ -10,6 +10,7 @@ public class Choix extends JFileChooser {
 	public Choix(MenuPrincipal owner, boolean repertoire) {
 		
 		setDialogTitle("Choix...");
+		setCurrentDirectory(new File(System.getProperty("user.home")+"/Downloads/"));
 		
 		if(repertoire) {
 			setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

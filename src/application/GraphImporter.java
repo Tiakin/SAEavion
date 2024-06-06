@@ -67,5 +67,35 @@ public class GraphImporter {
 
         return graph;
     }
+    
+    public static <T, E> Graph importGraph(GraphMap<T, E> gm) {
+        Graph graph = new MultiGraph("importedGraph");
+
+        for(GraphMap<T, E>.SommetPrinc p : gm.getNodes()) {
+        	String node1 = p.getId()+"";
+
+            // Ajouter les sommets au graphe s'ils n'existent pas déjà
+            if (graph.getNode(node1) == null) {
+                graph.addNode(node1);
+            }
+            for(GraphMap<T, E>.SommetAdj a : gm.getAdj(p)) {
+	            String node2 = a.getId()+"";
+	            if (graph.getNode(node2) == null) {
+	                graph.addNode(node2);
+	            }
+	
+	            // Ajouter l'arête au graphe
+	            if(p.getId() <= a.getId()) {
+		            String edgeId = node1 + "-" + node2;
+		            if (graph.getEdge(edgeId) == null) {
+		                graph.addEdge(edgeId, node1, node2);
+		            }
+		            System.out.println(edgeId);
+	            }
+            }
+        }
+
+        return graph;
+    }
 
 }

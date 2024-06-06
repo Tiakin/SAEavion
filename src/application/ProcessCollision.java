@@ -12,12 +12,12 @@ import java.util.Scanner;
  *
  * @author bendeddouche
  */
-public class ProcessFileCollision {
+public class ProcessCollision {
     private ArrayList<String> lines = new ArrayList<>();
     private GraphMap<String, Integer> gm;
     private File selectedFile;
    
-    public ProcessFileCollision(File file) {
+    public ProcessCollision(File file) {
     	this.selectedFile = file;
         this.gm = new GraphMap<String,Integer>(10);
         readFile();
@@ -68,8 +68,8 @@ public class ProcessFileCollision {
                 Integer.valueOf(res2[4]));
                 boolean res = ToolBox.processACollision(ch, res1[1],
                 res1[2], res2[1], res2[2], lt1, lt2,
-                Integer.valueOf(res1[4]),
-                Integer.valueOf(res2[4]));
+                Integer.valueOf(res1[5]),
+                Integer.valueOf(res2[5]));
                 
                 if (res) {
                     this.gm.addEdge(res1[0], res2[0], 0);
