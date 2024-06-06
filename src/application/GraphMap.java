@@ -1,4 +1,4 @@
-package belkhatirBeta;
+package application;
 
 import java.util.HashMap;
 import java.util.Iterator;

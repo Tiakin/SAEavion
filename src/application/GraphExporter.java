@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package application;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.graphstream.graph.*;
+
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 
 
 public class GraphExporter {
@@ -32,27 +29,6 @@ public class GraphExporter {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        // Spécifiez le chemin du fichier à importer
-        File importFile = new File("src/application/graph-test10.txt");
-
-        // Importer le graphe à partir du fichier
-        Graph graph = GraphImporter.importGraph(importFile);
-
-        // Vérifiez si l'importation a réussi
-        if (graph != null) {
-            // Spécifiez le chemin du fichier à exporter
-            File exportFile = new File("src/application/exported-graph.txt");
-
-            // Exporter le graphe vers le fichier
-            exportGraph(exportFile, graph);
-
-            System.out.println("Graph exported to " + exportFile.getAbsolutePath());
-        } else {
-            System.out.println("Failed to import graph.");
         }
     }
 }

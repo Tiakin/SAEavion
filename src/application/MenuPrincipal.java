@@ -12,6 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
@@ -20,6 +22,7 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
+
 
 public class MenuPrincipal extends JFrame implements ActionListener{
 
@@ -52,6 +55,12 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private JMenuItem kmax;
 	private JMenuItem marge;
 
+
+	private ChargerAeroport ch;
+
+
+	private ProcessFileCollision pfc;
+
 	
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
@@ -65,6 +74,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+        
+        System.setProperty("org.graphstream.ui", "swing");
         
         initialisation();
         
@@ -183,7 +194,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
-                ChargerAeroport ch = new ChargerAeroport(file);
+                ch = new ChargerAeroport(file);
             }  
 	    }
 		if (e.getSource() == vols){
@@ -191,14 +202,26 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
+                pfc = new ProcessFileCollision(file);
                 
+                pfc.processLineCollision(ch);
+                pfc.getGraphMap().greedyColoring();
+                System.out.println(pfc.getGraphMap());
             }       
 		}
 		if (e.getSource() == grapheCharge){
 			Choix charger = new Choix(this, false);
-			int option =charger.showOpenDialog(this);
+			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
+                Graph graph = GraphImporter.importGraph(file);
+
+                if (graph != null) {
+                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
+                    graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
+                } else {
+                    System.out.println("Failed to import graph.");
+                }
                 
             }  
 		}
@@ -207,7 +230,20 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = sauver.getSelectedFile();
-                
+                Graph graph = GraphImporter.importGraph(file);
+
+                // Vérifiez si l'importation a réussi
+                if (graph != null) {
+                    // Spécifiez le chemin du fichier à exporter
+                    File exportFile = new File("src/application/exported-graph.txt");
+
+                    // Exporter le graphe vers le fichier
+                    GraphExporter.exportGraph(exportFile, graph);
+
+                    System.out.println("Graph exported to " + exportFile.getAbsolutePath());
+                } else {
+                    System.out.println("Failed to import graph.");
+                }
             } 
 		}
 		if (e.getSource() == listegraphe){

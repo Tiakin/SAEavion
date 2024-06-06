@@ -1,4 +1,4 @@
-package belkhatirBeta;
+package application;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -54,13 +54,13 @@ public class ToolBox {
         
         return res;
     }
-    public static boolean processACollision (ProcessFileAeroports pfa, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2) {
+    public static boolean processACollision (ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2) {
         boolean colliding = false;
         
-        String[] coord1 = (String[])pfa.getMapAero().get(dep1);
-        String[] coord2 = (String[])pfa.getMapAero().get(arr1);
-        String[] coord3 = (String[])pfa.getMapAero().get(dep2);
-        String[] coord4 = (String[])pfa.getMapAero().get(arr2);
+        String[] coord1 = (String[])ch.getMapAero().get(dep1);
+        String[] coord2 = (String[])ch.getMapAero().get(arr1);
+        String[] coord3 = (String[])ch.getMapAero().get(dep2);
+        String[] coord4 = (String[])ch.getMapAero().get(arr2);
         
         double x11= (double)CompXY(Integer.valueOf(coord1[2]),
         Integer.valueOf(coord1[3]),Integer.valueOf(coord1[4]),

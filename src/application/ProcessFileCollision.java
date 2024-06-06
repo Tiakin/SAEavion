@@ -1,6 +1,7 @@
-package belkhatirBeta;
+package application;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -13,9 +14,11 @@ import java.util.Scanner;
  */
 public class ProcessFileCollision {
     private ArrayList<String> lines = new ArrayList<>();
-    private GraphMap gm;
+    private GraphMap<String, Integer> gm;
+    private File selectedFile;
    
-    public ProcessFileCollision() {
+    public ProcessFileCollision(File file) {
+    	this.selectedFile = file;
         this.gm = new GraphMap<String,Integer>(10);
         readFile();
     }
@@ -23,7 +26,6 @@ public class ProcessFileCollision {
     public void readFile() {
         //String st = null;
         BufferedReader reader;
-        FileReader fr;
         Scanner ent;
         try {
             //récupération du nom du fichier
@@ -34,7 +36,7 @@ public class ProcessFileCollision {
             }
             while ( st == null || st.length() == 0 );*/
             //instanciation d'un objet FileReader puis du BufferedReader
-            fr = new FileReader ( "C:\\Users\\..." ) ;
+        	FileReader fr = new FileReader(selectedFile);
             reader = new BufferedReader (fr) ;
             ent = new Scanner(fr);
             
@@ -50,7 +52,7 @@ public class ProcessFileCollision {
         return result;
     }
     
-    public void processLineCollision(ProcessFileAeroports pfa) {
+    public void processLineCollision(ChargerAeroport ch) {
         for (int i=0;i<lines.size();i++) {
             String sl = lines.get(i);
             String[] res1 = processLine(sl);
@@ -64,7 +66,7 @@ public class ProcessFileCollision {
                 String[] res2 = processLine(lines.get(j));
                 LocalTime lt2 = LocalTime.of(Integer.valueOf(res2[3]),
                 Integer.valueOf(res2[4]));
-                boolean res = ToolBox.processACollision(pfa, res1[1],
+                boolean res = ToolBox.processACollision(ch, res1[1],
                 res1[2], res2[1], res2[2], lt1, lt2,
                 Integer.valueOf(res1[4]),
                 Integer.valueOf(res2[4]));
@@ -76,7 +78,7 @@ public class ProcessFileCollision {
             }
         }
     }
-    public GraphMap getGraphMap () {
+    public GraphMap<String, Integer> getGraphMap () {
         return gm;
     }
 }

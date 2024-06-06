@@ -23,7 +23,7 @@ public class Choix extends JFileChooser {
 	
 				   public boolean accept(File f) {
 				       if (f.isDirectory()) {
-				           return false;
+				           return true;
 				       } else {
 				           String filename = f.getName().toLowerCase();
 				           return filename.endsWith(".csv") || filename.endsWith(".txt") ;

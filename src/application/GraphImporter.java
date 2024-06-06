@@ -1,20 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package application;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.Graph;
 
 public class GraphImporter {
 
     public static Graph importGraph(File file) {
-        Graph graph = new SingleGraph("importedGraph");
+        Graph graph = new MultiGraph("importedGraph");
 
         if (!file.exists()) {
             System.out.println("File does not exist: " + file.getAbsolutePath());
@@ -72,24 +68,4 @@ public class GraphImporter {
         return graph;
     }
 
-    public static void main(String[] args) {
-        // Spécifiez le chemin absolu du fichier à importer
-        File file = new File("src/application/graph-test10.txt");
-
-        // Vérifiez si le fichier existe
-        if (!file.exists()) {
-            System.out.println("File not found: " + file.getAbsolutePath());
-            return;
-        }
-
-        // Importer le graphe à partir du fichier
-        Graph graph = importGraph(file);
-
-        // Afficher les informations du graphe importé
-        if (graph != null) {
-            System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
-        } else {
-            System.out.println("Failed to import graph.");
-        }
-    }
 }

@@ -42,7 +42,7 @@ public class ChargerAeroport {
         m.put(res[0], res);
     }
     
-    public Map getMapAero() {
+    public Map<String, String[]> getMapAero() {
         return m;
     }
 }
