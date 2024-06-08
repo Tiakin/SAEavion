@@ -118,38 +118,39 @@ public class ToolBox {
             LocalTime t2Inter = t2.plusMinutes(dureeVolInter2);
 
             long elapsedMinutes = Duration.between(t1Inter, t2Inter).toMinutes();
-            if (Math.abs(elapsedMinutes) <= 15) {
+            if (Math.abs(elapsedMinutes) < 15) {
             	colliding = true;
             }
         }
 
         // Vérifier si les deux avions décollent du même point avec un écart de moins de 15 minutes
-        if (x11 == x21 && y11 == y21 && Math.abs(Duration.between(t1, t2).toMinutes()) <= 15) {
+        if (x11 == x21 && y11 == y21 && Math.abs(Duration.between(t1, t2).toMinutes()) < 15) {
         	colliding = true;
         }
 
         // Vérifier si les deux avions atterrissent au même point avec un écart de moins de 15 minutes
-        if (x12 == x22 && y12 == y22 && Math.abs(Duration.between(t1.plusMinutes(dur1), t2.plusMinutes(dur2)).toMinutes()) <= 15) {
+        if (x12 == x22 && y12 == y22 && Math.abs(Duration.between(t1.plusMinutes(dur1), t2.plusMinutes(dur2)).toMinutes()) < 15) {
         	colliding = true;
         }
 
         // Calculer les temps d'arrivée des deux avions
         LocalTime t1Arr = t1.plusMinutes(dur1);
         LocalTime t2Arr = t2.plusMinutes(dur2);
-
-        // Vérifier si les deux avions décollent face à face sur la même ligne
-        if (x11 == x22 && y11 == y22 && x12 == x21 && y12 == y21) {
-            if ((t1.isAfter(t2) && t1.isBefore(t2Arr)) || (t2.isAfter(t1) && t2.isBefore(t1Arr))) {
-            	colliding = true; // Collision si l'un décolle pendant que l'autre vole
-            }
-            if ((t1Arr.isAfter(t2) && Duration.between(t2, t1Arr).toMinutes() <= 15) || (t2Arr.isAfter(t1) && Duration.between(t1, t2Arr).toMinutes() <= 15)) {
-            	colliding = true; // Collision si l'un atterrit peu après le décollage de l'autre
-            }
-        }
+		
+		//Vérifier si les deux avions décollent face à face sur la même ligne
+		if (x11 == x22 && y11 == y22 && x12 == x21 && y12 == y21) {
+		    // Vérifier si un avion décolle pendant que l'autre vole ou si un avion décolle avant 15 minutes après l'atterrissage de l'autre
+		    if ((t1.isAfter(t2) && t1.isBefore(t2Arr)) || 
+		        (t2.isAfter(t1) && t2.isBefore(t1Arr)) ||
+		        (Math.abs(Duration.between(t1, t2Arr).toMinutes()) < 15) ||
+		        (Math.abs(Duration.between(t2, t1Arr).toMinutes()) < 15)) {
+		    	colliding = true; // Collision si l'un décolle pendant que l'autre vole ou si l'un décolle avant 15 minutes après l'atterrissage de l'autre
+		    }
+		}
 
         // Vérifier si deux avions décollent du même endroit et vont au même endroit
         if (x11 == x21 && y11 == y21 && x12 == x22 && y12 == y22) {
-            if (Math.abs(Duration.between(t1Arr, t2Arr).toMinutes()) <= 15) {
+            if (Math.abs(Duration.between(t1Arr, t2Arr).toMinutes()) < 15) {
             	colliding = true; // Collision si les temps d'arrivée sont proches
             }
             // Vérifier si l'avion part plus tard mais arrive plus tôt

@@ -85,12 +85,19 @@ public class GraphImporter {
 	            }
 	
 	            // Ajouter l'arête au graphe
-	            if(p.getId() <= a.getId()) {
+	            if(p.getId() < a.getId()) {
 		            String edgeId = node1 + "-" + node2;
 		            if (graph.getEdge(edgeId) == null) {
 		                graph.addEdge(edgeId, node1, node2);
 		            }
-		            System.out.println(edgeId);
+		            
+		            GraphMap<T, E>.SommetPrinc p2 = null;
+		            for(GraphMap<T, E>.SommetPrinc p3 : gm.getNodes()) {
+		            	if(p3.getId() == a.getId()) {
+		            		p2 = p3;
+		            	}
+		            }
+		            System.out.println(edgeId+"  :  "+p.getVal()+"  "+p2.getVal());
 	            }
             }
         }

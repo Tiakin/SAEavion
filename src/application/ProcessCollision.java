@@ -24,17 +24,9 @@ public class ProcessCollision {
     }
     
     public void readFile() {
-        //String st = null;
         BufferedReader reader;
         Scanner ent;
         try {
-            //récupération du nom du fichier
-            /*do {
-            System.out.print ( " Entrez votre fichier : " );
-            //fileName = reader.readLine();
-            st = ent.nextLine();
-            }
-            while ( st == null || st.length() == 0 );*/
             //instanciation d'un objet FileReader puis du BufferedReader
         	FileReader fr = new FileReader(selectedFile);
             reader = new BufferedReader (fr) ;
@@ -56,13 +48,12 @@ public class ProcessCollision {
         for (int i=0;i<lines.size();i++) {
             String sl = lines.get(i);
             String[] res1 = processLine(sl);
-            this.gm.addNode(res1[0]);
+            this.gm.addNode(res1[0]+"("+res1[1]+"-"+res1[2]+")");
             
             LocalTime lt1 = LocalTime.of(Integer.valueOf(res1[3]),
             Integer.valueOf(res1[4]));
             
-            for (int j=0;j<lines.size();j++) {
-                if (j!=i) {
+            for (int j=i+1;j<lines.size();j++) {
                 String[] res2 = processLine(lines.get(j));
                 LocalTime lt2 = LocalTime.of(Integer.valueOf(res2[3]),
                 Integer.valueOf(res2[4]));
@@ -72,8 +63,7 @@ public class ProcessCollision {
                 Integer.valueOf(res2[5]));
                 
                 if (res) {
-                    this.gm.addEdge(res1[0], res2[0], 0);
-                }
+                    this.gm.addEdge(res1[0]+"("+res1[1]+"-"+res1[2]+")", res2[0]+"("+res2[1]+"-"+res2[2]+")", 0);
                 }
             }
         }

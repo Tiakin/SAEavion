@@ -206,9 +206,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 
                 pfc.processLineCollision(ch);
                 pfc.getGraphMap().greedyColoring();
-                System.out.println(pfc.getGraphMap());
                 Graph graph = GraphImporter.importGraph(pfc.getGraphMap());
-
+                System.out.println(pfc.getGraphMap());
                 if (graph != null) {
                     System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
                     graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;

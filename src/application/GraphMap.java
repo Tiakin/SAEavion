@@ -127,7 +127,9 @@ class GraphMap<T,E> {
             map.get(spr1).add(new SommetAdj(spr2.getId(),valArête));
             map.get(spr2).add(new SommetAdj(spr1.getId(),valArête));
         }
-        else System.out.println("There's an edge between "+val1.toString()+ " and "+val2.toString()+" ");
+        else { 
+        	System.out.println("ces deux vols : "+val1.toString()+ " et "+val2.toString()+" ont déjà été liés");
+        }
     }
     
     public boolean hasEdge (int id1, int id2) {
