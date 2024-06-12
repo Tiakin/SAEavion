@@ -5,8 +5,17 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * La classe Choix.
+ */
 public class Choix extends JFileChooser {
 
+	/**
+	 * Instancie un nouveau choix.
+	 *
+	 * @param owner La fenêtre principale
+	 * @param repertoire choisir un répertoire
+	 */
 	public Choix(MenuPrincipal owner, boolean repertoire) {
 		
 		setDialogTitle("Choix...");

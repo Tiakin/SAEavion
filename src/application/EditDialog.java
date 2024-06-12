@@ -9,17 +9,50 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * La classe EditDialog.
+ */
 public class EditDialog extends JDialog implements ActionListener{
 
 	// Attibuts graphiques
+	/**
+	 * Le label nombre.
+	 */
 	private JLabel labelNombre;
+	
+	/**
+	 * Le panel.
+	 */
 	private JPanel panel = new JPanel();
+	
+	/**
+	 * Le text field.
+	 */
 	private JTextField textField = new JTextField(2);
+	
+	/**
+	 * Le boutton retour.
+	 */
 	private JButton retourButton = new JButton("Retour");
+	
+	/**
+	 * Le boutton valider.
+	 */
 	private JButton validerButton = new JButton("Valider");
+	
+	/**
+	 * La marge.
+	 */
 	private int marge;
 	
 
+	/**
+	 * Instancie un nouveau EditDialog.
+	 *
+	 * @param owner La fenêtre principale
+	 * @param title le titre
+	 * @param label le message pour la modification
+	 */
 	public EditDialog(MenuPrincipal owner, String title, String label) {
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
@@ -41,17 +74,28 @@ public class EditDialog extends JDialog implements ActionListener{
         validerButton.addActionListener(this);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-	    if (e.getSource() == retourButton){
+	/**
+	 * Action perfomé.
+	 *
+	 * @param action L'action de clique
+	 */
+	public void actionPerformed(ActionEvent action) {
+	    if (action.getSource() == retourButton){
 	        this.setVisible(false); //on ferme la fenêtre
 	        marge = -1;
 	    }
-	    if (e.getSource() == validerButton){
+	    if (action.getSource() == validerButton){
 	    	marge = Integer.parseInt(textField.getText());
 	        this.setVisible(false); //on ferme la fenêtre
 	    }
 	    dispose();
 	}
+	
+	/**
+	 * Affiche le dialogue.
+	 *
+	 * @return la marge
+	 */
 	public int showDialog() {
 		setVisible(true);
 		return marge;

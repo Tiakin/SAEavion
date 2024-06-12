@@ -8,8 +8,17 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 
 
+/**
+ * La classe GraphExporter.
+ */
 public class GraphExporter {
 
+    /**
+     * exporter le graph.
+     *
+     * @param file le fichier
+     * @param graph le graph
+     */
     public static void exportGraph(File file, Graph graph) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             // Écrire la valeur de kmax (ici toujours 0)

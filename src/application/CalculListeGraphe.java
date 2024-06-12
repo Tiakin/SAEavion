@@ -13,31 +13,104 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * la Classe CalculListeGraphe.
+ */
 public class CalculListeGraphe extends JDialog implements ActionListener{
 
+	/**
+	 * La fenêtre principale.
+	 */
 	private MenuPrincipal owner;
 	
+	
 	// Attibuts graphiques
+	
+	/**
+	 * Le panel.
+	 */
 	private JPanel panel;
 	
+	/**
+	 * Le panel source.
+	 */
 	private JPanel panelSource;
+	
+	/**
+	 * Le label source.
+	 */
 	private JLabel labelSource;
+	
+	/**
+	 * Le repertoire source.
+	 */
 	private JTextField repertoireSource;
+	
+	/**
+	 * Le boutton source.
+	 */
 	private JButton sourceButton;
+	
+	/**
+	 * Le pattern source.
+	 */
 	private JTextField patternSource;
+	
+	/**
+	 * Le label pour pattern source.
+	 */
 	private JLabel labelPatternSource;
 	
+	/**
+	 * Le panel sortie.
+	 */
 	private JPanel panelSortie;
+	
+	/**
+	 * Le label sortie.
+	 */
 	private JLabel labelSortie;
+	
+	/**
+	 * Le repertoire sortie.
+	 */
 	private JTextField repertoireSortie;
+	
+	/**
+	 * Le boutton sortie.
+	 */
 	private JButton sortieButton;
+	
+	/**
+	 * Le pattern sortie.
+	 */
 	private JTextField patternSortie;
+	
+	/**
+	 * Le label pour pattern sortie.
+	 */
 	private JLabel labelPatternSortie;
 	
+	/**
+	 * Le button panel.
+	 */
 	private JPanel buttonPanel;
+	
+	/**
+	 * Le boutton retour.
+	 */
 	private JButton retourButton;
+	
+	/**
+	 * Le boutton valider.
+	 */
 	private JButton validerButton;
 	
+	/**
+	 * Instancie un JDialog de calcul de listes de graphes.
+	 *
+	 * @param owner the owner
+	 */
 	public CalculListeGraphe(MenuPrincipal owner) {
 
 	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
@@ -97,8 +170,13 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
         validerButton.addActionListener(this);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == sourceButton){
+	/**
+	 * Action perfomé.
+	 *
+	 * @param action L'action de clique
+	 */
+	public void actionPerformed(ActionEvent action) {
+		if (action.getSource() == sourceButton){
 			Choix charger = new Choix(owner, true);
 			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -106,7 +184,7 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
                 repertoireSource.setText(file.getAbsolutePath());
             }
 		}
-		if (e.getSource() == sortieButton){
+		if (action.getSource() == sortieButton){
 			Choix sauver = new Choix(owner, true);
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -115,17 +193,21 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
             }
 		}
 		
-	    if (e.getSource() == retourButton){
+	    if (action.getSource() == retourButton){
 	        
 	        this.setVisible(false); //on ferme la fenêtre
 	        dispose();
 	    }
-	    if (e.getSource() == validerButton){
+	    if (action.getSource() == validerButton){
 	        
 	        this.setVisible(false); //on ferme la fenêtre
 	        dispose();
 	    }
 	}
+	
+	/**
+	 * montre le JDialog.
+	 */
 	public void showDialog() {
 		setVisible(true);
 	}

@@ -10,78 +10,196 @@ import java.util.Set;
 import application.GraphMap.SommetAdj;
 import application.GraphMap.SommetPrinc;
 
+/**
+ * La classe GraphMap.
+ *
+ * @param <T> le type générique
+ * @param <E> le type d'élément
+ */
 class GraphMap<T,E> {
+    
+    /**
+     * La sous-classe SommetPrinc.
+     */
     class SommetPrinc {
+        
+        /**
+         * L'id.
+         */
         private int id;
+        
+        /**
+         * La valeur.
+         */
         private T valeur;
+        
+        /**
+         * La couleur.
+         */
         private int couleur=-1;
 
+        /**
+         * Instancie un nouveau sommet principal.
+         *
+         * @param id l'id
+         * @param valeur la valeur
+         */
         public SommetPrinc(int id, T valeur) {
             this.id = id;
             this.valeur = valeur;
         }
 
+        /**
+         * Récupère l'id.
+         *
+         * @return l'id
+         */
         public int getId() {
             return id;
         }
+        
+        /**
+         * change l'id.
+         *
+         * @param id le nouveau id
+         */
         public void setId(int id) {
             this.id=id;
         }
 
+        /**
+         * Récupère la valeur.
+         *
+         * @return la valeur
+         */
         public T getVal() {
             return this.valeur;
         }
 
+        /**
+         * change la valeur.
+         *
+         * @param val la nouvelle valeur
+         */
         public void setVal(T val) {
             this.valeur= val;
         }
 
+        /**
+         * Récupère la couleur.
+         *
+         * @return la couleur
+         */
         public int getCoul() {
             return this.couleur;
         }
 
+        /**
+         * change la couleur.
+         *
+         * @param c la nouvelle couleur
+         */
         public void setCoul(int c) {
             this.couleur=c;
         }
 
         
+        /**
+         * en String.
+         *
+         * @return le String
+         */
         public String toString() {
             return "Id : "+id+", Valeur : "+valeur.toString()+", " + "Couleur : "+this.couleur ;
         }
     }
     
+    /**
+     * La sous-classe SommetAdj.
+     */
     class SommetAdj {
+        
+        /**
+         * L'id.
+         */
         private int id;
+        
+        /**
+         * La valeur.
+         */
         private E valeur;
         
+        /**
+         * Instancie un nouveau sommet adj.
+         *
+         * @param id l'id
+         * @param valeur la valeur
+         */
         public SommetAdj(int id, E valeur) {
             this.id = id;
             this.valeur = valeur;
         }
         
+        /**
+         * Récupère l'id.
+         *
+         * @return l'id
+         */
         public int getId() {
             return this.id;
         }
         
+        /**
+         * Récupère la valeur.
+         *
+         * @return la valeur
+         */
         public E getValeur() {
             return this.valeur;
         }
         
+        /**
+         * en string.
+         *
+         * @return le String
+         */
         public String toString() {
             return " IdAdj : "+this.id+", ValeurArête : "+ valeur.toString();
         }
     }
     
+    /**
+     * La map.
+     */
     private Map<SommetPrinc, List<SommetAdj>> map;
+    
+    /**
+     * L'id.
+     */
     private int id;
+    
+    /**
+     * Le nombre de couleurs max.
+     */
     private int nbCouleurs;
     
+    /**
+     * Instancie un nouveau graphmap.
+     *
+     * @param k le kmax (le nombre de couleur)
+     */
     public GraphMap(int k) {
         this.id=0;
         this.nbCouleurs=k;
         map = new HashMap<>();
     }
     
+    /**
+     * Trouve le SommetPrinc à partir de sa valeur.
+     *
+     * @param val la valeur
+     * @return le SommetPrinc
+     */
     public SommetPrinc findKeyVal(T val) {
         SommetPrinc sp = null;
         Set<SommetPrinc> s = map.keySet();
@@ -93,6 +211,12 @@ class GraphMap<T,E> {
         return sp;
     }
     
+    /**
+     * Trouve le SommetPrinc à partir de son id.
+     *
+     * @param id l'id
+     * @return le SommetPrinc
+     */
     private SommetPrinc findKeyId(int id) {
         SommetPrinc sp = null;
         Set<SommetPrinc> s = map.keySet();
@@ -106,6 +230,12 @@ class GraphMap<T,E> {
         return sp;
     }
     
+    /**
+     * Ajoute une noeud.
+     *
+     * @param val la valeur
+     * @return le SommetPrinc
+     */
     public SommetPrinc addNode(T val) { 
         SommetPrinc spr = null;
         if (this.findKeyVal(val)==null) {
@@ -115,6 +245,13 @@ class GraphMap<T,E> {
         return spr;
     }
     
+    /**
+     * Ajoute un edge.
+     *
+     * @param val1 la valeur 1
+     * @param val2 la valeur 2
+     * @param valArête la valeur d'arête
+     */
     public void addEdge(T val1, T val2, E valArête) {
         SommetPrinc spr1=this.findKeyVal(val1);
         SommetPrinc spr2=this.findKeyVal(val2);
@@ -132,6 +269,13 @@ class GraphMap<T,E> {
         }
     }
     
+    /**
+     * Vérifie l'existance de edge.
+     *
+     * @param id1 l'id 1
+     * @param id2 l'id 2
+     * @return true, si c'est vrai
+     */
     public boolean hasEdge (int id1, int id2) {
         boolean b = false;
         List<SommetAdj> lsa = map.get(this.findKeyId(id1));
@@ -146,14 +290,32 @@ class GraphMap<T,E> {
         return b;
     }
     
+    /**
+     * Récupère le noeud.
+     *
+     * @return le noeud
+     */
     public Set<SommetPrinc> getNodes() {
 		return map.keySet();
     }
     
+    /**
+     * Récupère le adj.
+     *
+     * @param sp the sp
+     * @return le adj
+     */
     public List<SommetAdj> getAdj(SommetPrinc sp) {
 		return map.get(sp);
     }
     
+    /**
+     * Vérifie l'existance de edge.
+     *
+     * @param val1 the val 1
+     * @param val2 the val 2
+     * @return true, si c'est vrai
+     */
     public boolean hasEdge (T val1, T val2) {
         boolean b = false;
         List<SommetAdj> lsa = map.get(this.findKeyVal(val1));
@@ -170,6 +332,11 @@ class GraphMap<T,E> {
         return b;
     }
     
+    /**
+     * To string.
+     *
+     * @return le String
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         
@@ -184,7 +351,11 @@ class GraphMap<T,E> {
         return (buffer.toString());
     }
     
-    //Colore les noeuds (en débutant par la coul. 0) et retourne le rés.
+    /**
+     * Greedy coloring.
+     *
+     * @return true, si c'est bien résolu
+     */
     public boolean greedyColoring() {
         boolean b = true;
         boolean[] coul_attrib = new boolean[this.nbCouleurs];

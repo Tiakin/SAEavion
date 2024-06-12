@@ -9,9 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 import org.jxmapviewer.JXMapViewer;
@@ -24,58 +21,75 @@ import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
 
+/**
+ * La Classe MenuPrincipal.
+ */
 public class MenuPrincipal extends JFrame implements ActionListener{
 
-	
+	//Composant
+	/** Le menu bar. */
 	private JMenuBar menuBar;
 	
 	
+	/** Le menu fichier. */
 	private JMenu fichierMenu;
 	
+	/** L'item aeroport. */
 	private JMenuItem aeroport;
+	
+	/** L'item vols. */
 	private JMenuItem vols;
+	
+	/** L'item graphe charge. */
 	private JMenuItem grapheCharge;
 	
+	/** L'item graphe export. */
 	private JMenuItem grapheExport;
 	
+	/** L'item listegraphe. */
 	private JMenuItem listegraphe;
 	
 	
+	/** Le menu afficher. */
 	private JMenu afficherMenu;
 	
+	/** L'item horaire. */
 	private JMenuItem horaire;
+	
+	/** L'item niveau. */
 	private JMenuItem niveau;
 	
 	
+	/** L'item (unique) statistique. */
 	private JMenuItem statistique;
 	
 	
+	/** Le menu edition. */
 	private JMenu editionMenu;
 	
+	/** L'item kmax. */
 	private JMenuItem kmax;
+	
+	/** L'item marge. */
 	private JMenuItem marge;
 
-
+	// variable de classe
+	
+	/** Le ChargerAeroport. */
 	private ChargerAeroport ch;
 
 
+	/** Le ProcessCollision. */
 	private ProcessCollision pfc;
 
 	
+	/**
+	 * Instancie un nouveau menu principal.
+	 */
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(450, 500);
-        
-        try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			UIManager.put("FileChooser.noPlacesBar", true);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-        
-        System.setProperty("org.graphstream.ui", "swing");
         
         initialisation();
         
@@ -96,6 +110,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         marge.addActionListener(this);
 	}
 	
+	/**
+	 * Initialisation du panel.
+	 */
 	private void initialisation() {
     	menuBar = new JMenuBar();
 
@@ -187,9 +204,14 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         this.setJMenuBar(menuBar);
 	}
 
+	/**
+	 * Action performé.
+	 *
+	 * @param action l'action de clique
+	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == aeroport){
+	public void actionPerformed(ActionEvent action) {
+		if (action.getSource() == aeroport){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -197,7 +219,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 ch = new ChargerAeroport(file);
             }  
 	    }
-		if (e.getSource() == vols){
+		if (action.getSource() == vols){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -212,12 +234,13 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                     System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
                     graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
                 } else {
+                	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
                     System.out.println("Failed to import graph.");
                 }
                 
             }       
 		}
-		if (e.getSource() == grapheCharge){
+		if (action.getSource() == grapheCharge){
 			Choix charger = new Choix(this, false);
 			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -228,12 +251,13 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                     System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
                     graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
                 } else {
+                	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
                     System.out.println("Failed to import graph.");
                 }
                 
             }  
 		}
-		if (e.getSource() == grapheExport){
+		if (action.getSource() == grapheExport){
 			Choix sauver = new Choix(this, false);
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -250,31 +274,32 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
                     System.out.println("Graph exported to " + exportFile.getAbsolutePath());
                 } else {
-                    System.out.println("Failed to import graph.");
+                	ToolBox.sendErrorMessage("Erreur lors de l'exportation du graphe");
+                    System.out.println("Failed to export graph.");
                 }
             } 
 		}
-		if (e.getSource() == listegraphe){
+		if (action.getSource() == listegraphe){
 	        CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
 	        calculListeGraphe.showDialog();
 	    }
-		if (e.getSource() == horaire){
+		if (action.getSource() == horaire){
 			Horaire horaire = new Horaire(this);
 	        horaire.showDialog();
 	    }
-		if (e.getSource() == niveau){
+		if (action.getSource() == niveau){
 			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			niveau.showDialog();
 	    }
-		if (e.getSource() == statistique){
+		if (action.getSource() == statistique){
 	        Statistique statistique = new Statistique(this);
 	        statistique.showDialog();
 	    }
-		if (e.getSource() == kmax){
+		if (action.getSource() == kmax){
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
 			kmax.showDialog();
 	    }
-		if (e.getSource() == marge){
+		if (action.getSource() == marge){
 			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			marge.showDialog();
 	    }

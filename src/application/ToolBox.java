@@ -1,16 +1,46 @@
+/*
+ * La boite à outils
+ */
 package application;
 
 import java.time.Duration;
 import java.time.LocalTime;
 
+import javax.swing.JOptionPane;
 
+
+/**
+ * La classe ToolBox.
+ */
 public class ToolBox {
 
     
+    /**
+     * Comp distance between points.
+     *
+     * @param x1 le x du point 1
+     * @param y1 le y du point 1
+     * @param x2 le x du point 2
+     * @param y2 le y du point 2
+     * @return la distance
+     */
     public static double compDistanceBetweenPoints(double x1, double y1, double x2, double y2) {
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
     
+    /**
+     * Comp XY.
+     *
+     * @param latD le degrée de la latitude
+     * @param latM la minute de la latitude 
+     * @param latS la seconde de la latitude
+     * @param latDir la direction pour la latitude
+     * @param longD le degrée de la longitude
+     * @param longM la minute de la longitude
+     * @param longS la seconde de la longitude
+     * @param longDir la direction pour la longitude
+     * @return le double[] x et y
+     */
     public static double[] CompXY(int latD, int latM, int latS, char latDir, int longD, int longM,int longS, char longDir) {
         double[] res = new double[2];
         int coefLat = (latDir=='N') ? 1 : -1;
@@ -29,6 +59,19 @@ public class ToolBox {
         return res;
     }
     
+    /**
+     * Seg inter.
+     *
+     * @param x11 le x du point 1 de la ligne 1
+     * @param y11 le y du point 1 de la ligne 1
+     * @param x12 le x du point 2 de la ligne 1
+     * @param y12 le y du point 2 de la ligne 1
+     * @param x21 le x du point 1 de la ligne 2
+     * @param y21 le y du point 1 de la ligne 2
+     * @param x22 le x du point 2 de la ligne 2
+     * @param y22 le y du point 2 de la ligne 2
+     * @return le double[] point d'intersection, null sinon
+     */
     public static double[] SegInter(double x11, double y11, double x12, double y12, double x21, double y21, double x22, double y22) {
         double dx1 = x12 - x11;
         double dy1 = y12 - y11;
@@ -63,7 +106,20 @@ public class ToolBox {
         return new double[]{x11 + t1 * dx1, y11 + t1 * dy1};
     }
 
-
+    /**
+     * Process A collision.
+     *
+     * @param ch the ch
+     * @param dep1 the dep 1
+     * @param arr1 the arr 1
+     * @param dep2 the dep 2
+     * @param arr2 the arr 2
+     * @param t1 the t 1
+     * @param t2 the t 2
+     * @param dur1 the dur 1
+     * @param dur2 the dur 2
+     * @return true, si c'est vrai
+     */
     public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2) {
         boolean colliding = false;
 
@@ -163,6 +219,14 @@ public class ToolBox {
 
         return colliding;
     }
-
-
+    
+    /**
+     * envoie un message d'erreur.
+     *
+     * @param text le texte
+     */
+    public static void sendErrorMessage(String text) {
+    	JOptionPane.showMessageDialog(null, text, "Erreur", JOptionPane.ERROR_MESSAGE);
+    }
+    
 }

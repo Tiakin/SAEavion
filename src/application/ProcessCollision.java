@@ -8,21 +8,42 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 /**
- *
- * @author bendeddouche
+ * La classe ProcessCollision.
  */
 public class ProcessCollision {
+    
+    /**
+     * Les lignes.
+     */
     private ArrayList<String> lines = new ArrayList<>();
+    
+    /**
+     * Le graphmap.
+     */
     private GraphMap<String, Integer> gm;
+    
+    /**
+     * Le fichier sélectionner.
+     */
     private File selectedFile;
    
+    /**
+     * Instancie un nouveau process collision.
+     *
+     * @param file le fichier
+     */
     public ProcessCollision(File file) {
     	this.selectedFile = file;
         this.gm = new GraphMap<String,Integer>(10);
         readFile();
     }
     
+    /**
+     * Read file.
+     */
     public void readFile() {
         BufferedReader reader;
         Scanner ent;
@@ -39,15 +60,31 @@ public class ProcessCollision {
             reader.close(); fr.close(); ent.close();
         } catch(IOException ex) { System.err.println(ex); }
     }
+    
+    /**
+     * Process line.
+     *
+     * @param sl the sl
+     * @return le String[]
+     */
     private String[] processLine (String sl) {
         String[] result = sl.split(";");
         return result;
     }
     
+    /**
+     * Process line collision.
+     *
+     * @param ch the ch
+     */
     public void processLineCollision(ChargerAeroport ch) {
         for (int i=0;i<lines.size();i++) {
             String sl = lines.get(i);
             String[] res1 = processLine(sl);
+            if(res1.length != 6) {
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture des vols :\r\n Il n'y a pas le bon nombre d'informations par ligne.");
+            	return;
+            }
             this.gm.addNode(res1[0]+"("+res1[1]+"-"+res1[2]+")");
             
             LocalTime lt1 = LocalTime.of(Integer.valueOf(res1[3]),
@@ -68,6 +105,12 @@ public class ProcessCollision {
             }
         }
     }
+    
+    /**
+     * Récupère le graph map.
+     *
+     * @return le graph map
+     */
     public GraphMap<String, Integer> getGraphMap () {
         return gm;
     }

@@ -4,15 +4,26 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.Graph;
 
+/**
+ * La classe GraphImporter.
+ */
 public class GraphImporter {
 
+    /**
+     * Importer le graph.
+     *
+     * @param file le fichier
+     * @return le graph
+     */
     public static Graph importGraph(File file) {
         Graph graph = new MultiGraph("importedGraph");
 
         if (!file.exists()) {
+        	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier n'existe pas.");
             System.out.println("File does not exist: " + file.getAbsolutePath());
             return null;
         }
@@ -21,6 +32,7 @@ public class GraphImporter {
             // Lire la valeur de kmax
             String line = reader.readLine();
             if (line == null) {
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier est vide ou n'est pas bien formatter.");
                 System.out.println("File is empty or invalid format for kmax");
                 return null;
             }
@@ -30,6 +42,7 @@ public class GraphImporter {
             // Lire le nombre de sommets
             line = reader.readLine();
             if (line == null) {
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier ne contient pas de noeud.");
                 System.out.println("Invalid format for number of nodes");
                 return null;
             }
@@ -68,6 +81,14 @@ public class GraphImporter {
         return graph;
     }
     
+    /**
+     * Importer le graph.
+     *
+     * @param <T> le type générique
+     * @param <E> le type d'element 
+     * @param gm le graphmap
+     * @return le graph
+     */
     public static <T, E> Graph importGraph(GraphMap<T, E> gm) {
         Graph graph = new MultiGraph("importedGraph");
 
