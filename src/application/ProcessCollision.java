@@ -75,7 +75,7 @@ public class ProcessCollision {
     /**
      * Process line collision.
      *
-     * @param ch the ch
+     * @param ch les aeroports dans ChargerAeroport
      */
     public void processLineCollision(ChargerAeroport ch) {
         for (int i=0;i<lines.size();i++) {

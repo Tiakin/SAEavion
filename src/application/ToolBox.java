@@ -107,17 +107,17 @@ public class ToolBox {
     }
 
     /**
-     * Process A collision.
+     * gère une collision.
      *
-     * @param ch the ch
-     * @param dep1 the dep 1
-     * @param arr1 the arr 1
-     * @param dep2 the dep 2
-     * @param arr2 the arr 2
-     * @param t1 the t 1
-     * @param t2 the t 2
-     * @param dur1 the dur 1
-     * @param dur2 the dur 2
+     * @param ch la liste d'aeroport dans ChargerAeroport
+     * @param dep1 le départ 1
+     * @param arr1 l'arrivé 1
+     * @param dep2 le départ 2
+     * @param arr2 l'arrivé 2
+     * @param t1 le temps 1
+     * @param t2 le temps 2
+     * @param dur1 la durée 1
+     * @param dur2 la durée 2
      * @return true, si c'est vrai
      */
     public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2) {
@@ -196,27 +196,20 @@ public class ToolBox {
 		//Vérifier si les deux avions décollent face à face sur la même ligne
 		if (x11 == x22 && y11 == y22 && x12 == x21 && y12 == y21) {
 		    // Vérifier si un avion décolle pendant que l'autre vole ou si un avion décolle avant 15 minutes après l'atterrissage de l'autre
-		    if ((t1.isAfter(t2) && t1.isBefore(t2Arr)) || 
-		        (t2.isAfter(t1) && t2.isBefore(t1Arr)) ||
-		        (Math.abs(Duration.between(t1, t2Arr).toMinutes()) < 15) ||
-		        (Math.abs(Duration.between(t2, t1Arr).toMinutes()) < 15)) {
+		    if ((t1.isAfter(t2) && t1.isBefore(t2Arr.plusMinutes(15))) || 
+		        (t2.isAfter(t1) && t2.isBefore(t1Arr.plusMinutes(15)))) {
 		    	colliding = true; // Collision si l'un décolle pendant que l'autre vole ou si l'un décolle avant 15 minutes après l'atterrissage de l'autre
 		    }
 		}
 
         // Vérifier si deux avions décollent du même endroit et vont au même endroit
         if (x11 == x21 && y11 == y21 && x12 == x22 && y12 == y22) {
-            if (Math.abs(Duration.between(t1Arr, t2Arr).toMinutes()) < 15) {
-            	colliding = true; // Collision si les temps d'arrivée sont proches
-            }
-            // Vérifier si l'avion part plus tard mais arrive plus tôt
-            if ((t2.isAfter(t1) && (t2Arr.isBefore(t1Arr) || t2Arr.equals(t1Arr) || (t2Arr.isAfter(t1) && t2Arr.isBefore(t1Arr)))) || 
-                (t1.isAfter(t2) && (t1Arr.isBefore(t2Arr) || t1Arr.equals(t2Arr) || (t1Arr.isAfter(t2) && t1Arr.isBefore(t2Arr))))) {
+            // Vérifier si l'un des avion part plus tard mais arrive plus tôt que l'autre
+            if ( (t2.isAfter(t1) && t2Arr.isBefore(t1Arr)) || (t1.isAfter(t2) && t1Arr.isBefore(t2Arr)) ) {
             	colliding = true; // Collision si l'avion part plus tard mais arrive plus tôt
             }
         }
-
-
+        
         return colliding;
     }
     

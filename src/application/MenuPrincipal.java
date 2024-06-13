@@ -82,6 +82,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/** Le ProcessCollision. */
 	private ProcessCollision pfc;
 
+	/** Le graph en cours */
+	private Graph currentGraph;
 	
 	/**
 	 * Instancie un nouveau menu principal.
@@ -228,11 +230,11 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 
                 pfc.processLineCollision(ch);
                 pfc.getGraphMap().greedyColoring();
-                Graph graph = GraphImporter.importGraph(pfc.getGraphMap());
+                currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
                 System.out.println(pfc.getGraphMap());
-                if (graph != null) {
-                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
-                    graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
+                if (currentGraph != null) {
+                    System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
+                    currentGraph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
                 } else {
                 	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
                     System.out.println("Failed to import graph.");
@@ -262,17 +264,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = sauver.getSelectedFile();
-                Graph graph = GraphImporter.importGraph(file);
-
-                // Vérifiez si l'importation a réussi
-                if (graph != null) {
-                    // Spécifiez le chemin du fichier à exporter
-                    File exportFile = new File("src/application/exported-graph.txt");
-
-                    // Exporter le graphe vers le fichier
-                    GraphExporter.exportGraph(exportFile, graph);
-
-                    System.out.println("Graph exported to " + exportFile.getAbsolutePath());
+                if(currentGraph != null) {
+                	GraphExporter.exportGraph(file, currentGraph);
+                	System.out.println("Graph exported to " + file.getAbsolutePath());
                 } else {
                 	ToolBox.sendErrorMessage("Erreur lors de l'exportation du graphe");
                     System.out.println("Failed to export graph.");
