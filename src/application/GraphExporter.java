@@ -18,11 +18,12 @@ public class GraphExporter {
      *
      * @param file le fichier
      * @param graph le graph
+     * @param kmaxValue le kmax
      */
-    public static void exportGraph(File file, Graph graph) {
+    public static void exportGraph(File file, Graph graph, int kmaxValue) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            // Écrire la valeur de kmax (ici toujours 0)
-            writer.write("0");
+            // Écrire la valeur de kmax
+            writer.write(kmaxValue);
             writer.newLine();
 
             // Écrire le nombre de sommets

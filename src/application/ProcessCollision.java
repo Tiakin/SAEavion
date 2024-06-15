@@ -76,8 +76,9 @@ public class ProcessCollision {
      * Process line collision.
      *
      * @param ch les aeroports dans ChargerAeroport
+     * @param marge la marge de sécurité
      */
-    public void processLineCollision(ChargerAeroport ch) {
+    public void processLineCollision(ChargerAeroport ch, int marge) {
         for (int i=0;i<lines.size();i++) {
             String sl = lines.get(i);
             String[] res1 = processLine(sl);
@@ -97,7 +98,8 @@ public class ProcessCollision {
                 boolean res = ToolBox.processACollision(ch, res1[1],
                 res1[2], res2[1], res2[2], lt1, lt2,
                 Integer.valueOf(res1[5]),
-                Integer.valueOf(res2[5]));
+                Integer.valueOf(res2[5]),
+                marge);
                 
                 if (res) {
                     this.gm.addEdge(res1[0]+"("+res1[1]+"-"+res1[2]+")", res2[0]+"("+res2[1]+"-"+res2[2]+")", 0);

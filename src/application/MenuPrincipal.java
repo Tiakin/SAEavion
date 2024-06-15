@@ -85,6 +85,18 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/** Le graph en cours */
 	private Graph currentGraph;
 	
+	/** L'horaire en cours */
+	private int horaireValue;
+	
+	/** Le niveau en cours */
+	private int niveauValue;
+	
+	/** La marge de sécurité, 15 est la valeur par défaut */
+	private int margeValue = 15;
+	
+	/** valeur du kmax */
+	private int kmaxValue;
+	
 	/**
 	 * Instancie un nouveau menu principal.
 	 */
@@ -228,7 +240,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 File file = charger.getSelectedFile();
                 pfc = new ProcessCollision(file);
                 
-                pfc.processLineCollision(ch);
+                pfc.processLineCollision(ch, margeValue);
                 pfc.getGraphMap().greedyColoring();
                 currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
                 System.out.println(pfc.getGraphMap());
@@ -265,7 +277,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = sauver.getSelectedFile();
                 if(currentGraph != null) {
-                	GraphExporter.exportGraph(file, currentGraph);
+                	GraphExporter.exportGraph(file, currentGraph, kmaxValue);
                 	System.out.println("Graph exported to " + file.getAbsolutePath());
                 } else {
                 	ToolBox.sendErrorMessage("Erreur lors de l'exportation du graphe");
@@ -279,23 +291,46 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	    }
 		if (action.getSource() == horaire){
 			Horaire horaire = new Horaire(this);
-	        horaire.showDialog();
+	        int value = horaire.showDialog();
+	        if(value == ToolBox.RESETVALUE) {
+	        	horaireValue = ToolBox.NOVALUE;
+	        } else if(value != ToolBox.KEEPVALUE) {
+				horaireValue = value;
+			}
 	    }
 		if (action.getSource() == niveau){
 			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
-			niveau.showDialog();
+			int value = niveau.showDialog();
+			if(value == ToolBox.RESETVALUE) {
+				niveauValue = ToolBox.NOVALUE;
+	        } else if(value != ToolBox.KEEPVALUE) {
+				niveauValue = value;
+			}
 	    }
 		if (action.getSource() == statistique){
 	        Statistique statistique = new Statistique(this);
+	        if(currentGraph != null) {
+	        	statistique.updateStatistics(currentGraph);
+	        }
 	        statistique.showDialog();
 	    }
 		if (action.getSource() == kmax){
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
-			kmax.showDialog();
+			int value = kmax.showDialog();
+			if(value == ToolBox.RESETVALUE) {
+				// pas de reset pour le kmax
+	        } else if(value != ToolBox.KEEPVALUE) {
+				kmaxValue = value;
+			}
 	    }
 		if (action.getSource() == marge){
 			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
-			marge.showDialog();
+			int value = marge.showDialog();
+			if(value == ToolBox.RESETVALUE) {
+				margeValue = 15; // valeur par défaut
+	        } else if(value != ToolBox.KEEPVALUE) {
+				margeValue = value;
+			}
 	    }
 		 
 		

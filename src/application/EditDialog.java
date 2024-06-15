@@ -41,9 +41,9 @@ public class EditDialog extends JDialog implements ActionListener{
 	private JButton validerButton = new JButton("Valider");
 	
 	/**
-	 * La marge.
+	 * La valeur.
 	 */
-	private int marge;
+	private int valeur;
 	
 
 	/**
@@ -82,10 +82,14 @@ public class EditDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
 	        this.setVisible(false); //on ferme la fenêtre
-	        marge = -1;
+	        valeur = ToolBox.KEEPVALUE;
 	    }
 	    if (action.getSource() == validerButton){
-	    	marge = Integer.parseInt(textField.getText());
+	    	if(textField.getText().isBlank()) {
+	    		valeur = ToolBox.RESETVALUE;
+	    	}else {
+	    		valeur = Integer.parseInt(textField.getText());
+	    	}
 	        this.setVisible(false); //on ferme la fenêtre
 	    }
 	    dispose();
@@ -98,6 +102,6 @@ public class EditDialog extends JDialog implements ActionListener{
 	 */
 	public int showDialog() {
 		setVisible(true);
-		return marge;
+		return valeur;
 	}
 }

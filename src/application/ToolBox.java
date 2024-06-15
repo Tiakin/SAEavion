@@ -14,7 +14,15 @@ import javax.swing.JOptionPane;
  */
 public class ToolBox {
 
-    
+	/** La variable ne doit pas être pris en compte */
+	public static final int NOVALUE = -1;
+
+	/** Précise que la variable doit être réinitialisée */
+	public static final int RESETVALUE = -2;
+	
+	/** Précise que la variable doit être gardée */
+	public static final int KEEPVALUE = -1;
+	
     /**
      * Comp distance between points.
      *
@@ -118,9 +126,10 @@ public class ToolBox {
      * @param t2 le temps 2
      * @param dur1 la durée 1
      * @param dur2 la durée 2
+     * @param marge 
      * @return true, si c'est vrai
      */
-    public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2) {
+    public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2, int marge) {
         boolean colliding = false;
 
         String[] coord1 = (String[]) ch.getMapAero().get(dep1);
@@ -174,18 +183,18 @@ public class ToolBox {
             LocalTime t2Inter = t2.plusMinutes(dureeVolInter2);
 
             long elapsedMinutes = Duration.between(t1Inter, t2Inter).toMinutes();
-            if (Math.abs(elapsedMinutes) < 15) {
+            if (Math.abs(elapsedMinutes) < marge) {
             	colliding = true;
             }
         }
 
-        // Vérifier si les deux avions décollent du même point avec un écart de moins de 15 minutes
-        if (x11 == x21 && y11 == y21 && Math.abs(Duration.between(t1, t2).toMinutes()) < 15) {
+        // Vérifier si les deux avions décollent du même point avec un écart de moins de la marge de sécurité en minutes
+        if (x11 == x21 && y11 == y21 && Math.abs(Duration.between(t1, t2).toMinutes()) < marge) {
         	colliding = true;
         }
 
-        // Vérifier si les deux avions atterrissent au même point avec un écart de moins de 15 minutes
-        if (x12 == x22 && y12 == y22 && Math.abs(Duration.between(t1.plusMinutes(dur1), t2.plusMinutes(dur2)).toMinutes()) < 15) {
+        // Vérifier si les deux avions atterrissent au même point avec un écart de moins de la marge de sécurité en minutes
+        if (x12 == x22 && y12 == y22 && Math.abs(Duration.between(t1.plusMinutes(dur1), t2.plusMinutes(dur2)).toMinutes()) < marge) {
         	colliding = true;
         }
 
@@ -195,10 +204,10 @@ public class ToolBox {
 		
 		//Vérifier si les deux avions décollent face à face sur la même ligne
 		if (x11 == x22 && y11 == y22 && x12 == x21 && y12 == y21) {
-		    // Vérifier si un avion décolle pendant que l'autre vole ou si un avion décolle avant 15 minutes après l'atterrissage de l'autre
-		    if ((t1.isAfter(t2) && t1.isBefore(t2Arr.plusMinutes(15))) || 
-		        (t2.isAfter(t1) && t2.isBefore(t1Arr.plusMinutes(15)))) {
-		    	colliding = true; // Collision si l'un décolle pendant que l'autre vole ou si l'un décolle avant 15 minutes après l'atterrissage de l'autre
+		    // Vérifier si un avion décolle pendant que l'autre vole ou si un avion décolle avant la marge de sécurité en minutes après l'atterrissage de l'autre
+		    if ((t1.isAfter(t2) && t1.isBefore(t2Arr.plusMinutes(marge))) || 
+		        (t2.isAfter(t1) && t2.isBefore(t1Arr.plusMinutes(marge)))) {
+		    	colliding = true; // Collision si l'un décolle pendant que l'autre vole ou si l'un décolle avant la marge de sécurité en minutes après l'atterrissage de l'autre
 		    }
 		}
 

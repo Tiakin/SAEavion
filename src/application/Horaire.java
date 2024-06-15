@@ -90,13 +90,15 @@ public class Horaire extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
 	        this.setVisible(false); //on ferme la fenêtre
-	        Horaire = -1; // ne va pas changer de valeur
+	        Horaire = ToolBox.KEEPVALUE; // ne va pas changer de valeur
 	    }
 	    if (action.getSource() == validerButton){
-	    	if(Integer.parseInt(textFieldHeure.getText()) > 0 && Integer.parseInt(textFieldHeure.getText()) < 24 && Integer.parseInt(textFieldMinute.getText()) > 0 && Integer.parseInt(textFieldMinute.getText()) < 24) {
-	    		Horaire = -1; // ne va pas changer de valeur
-	    	}else {
+	    	if(textFieldHeure.getText().isBlank() || textFieldHeure.getText().isBlank()) {
+	    		Horaire = ToolBox.RESETVALUE; // réinitialiser la valeur
+	    	}else if(Integer.parseInt(textFieldHeure.getText()) >= 0 && Integer.parseInt(textFieldHeure.getText()) < 24 && Integer.parseInt(textFieldMinute.getText()) >= 0 && Integer.parseInt(textFieldMinute.getText()) < 60) {
 	    		Horaire = Integer.parseInt(textFieldHeure.getText())*100+Integer.parseInt(textFieldMinute.getText()); // change la valeur sous la forme HHMM
+	    	}else {
+	    		Horaire = ToolBox.KEEPVALUE; // ne va pas changer de valeur
 	    	}
 	        this.setVisible(false); //on ferme la fenêtre
 	    }

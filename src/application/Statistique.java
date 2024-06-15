@@ -17,12 +17,12 @@ public class Statistique extends JDialog {
 
     // Attributs graphiques
     private JPanel panel = new JPanel();
-    private JLabel degreeMeanLabel = new JLabel("Degré moyen :");
-    private JLabel connectedComponentsLabel = new JLabel("Nombre de composantes connexes :");
-    private JLabel nodeCountLabel = new JLabel("Nombre de noeuds :");
-    private JLabel edgeCountLabel = new JLabel("Nombre d'arrètes :");
-    private JLabel diameterLabel = new JLabel("Diamètre :");
-    private JLabel conflictsLabel = new JLabel("Nombre de conflits :");
+    private JLabel degreeMeanLabel = new JLabel("Pas de graph");
+    private JLabel connectedComponentsLabel = new JLabel("");
+    private JLabel nodeCountLabel = new JLabel("");
+    private JLabel edgeCountLabel = new JLabel("");
+    private JLabel diameterLabel = new JLabel("");
+    private JLabel conflictsLabel = new JLabel("");
 
     public Statistique(MenuPrincipal owner) {
         super(owner, true); // constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
@@ -55,7 +55,7 @@ public class Statistique extends JDialog {
         int nodeCount = graph.getNodeCount();
         int edgeCount = graph.getEdgeCount();
         double diameter = Toolkit.diameter(graph);
-        int conflicts = calculateConflicts(graph); // Méthode spécifique pour calculer les conflits
+        int conflicts = graph.getEdgeCount(); // Méthode spécifique pour calculer les conflits
 
         degreeMeanLabel.setText("Degré moyen : " + degreeMean);
         connectedComponentsLabel.setText("Nombre de composantes connexes : " + connectedComponentsCount);
@@ -63,12 +63,6 @@ public class Statistique extends JDialog {
         edgeCountLabel.setText("Nombre d'arrètes : " + edgeCount);
         diameterLabel.setText("Diamètre : " + diameter);
         conflictsLabel.setText("Nombre de conflits : " + conflicts);
-    }
-
-    private int calculateConflicts(Graph graph) {
-        // Implémenter la logique pour calculer les conflits dans le graphe
-        // Cette méthode doit être adaptée à votre contexte spécifique
-        return 0; // Exemple
     }
 
     public void showDialog() {
