@@ -14,7 +14,7 @@ import org.graphstream.graph.Graph;
 public class GraphImporter {
 
     /**
-     * Importer le graph.
+     * Importer le graph à partir d'un fichier.
      *
      * @param file le fichier
      * @return le graph
@@ -82,24 +82,22 @@ public class GraphImporter {
     }
     
     /**
-     * Importer le graph.
+     * Importer le graph à partir d'un graphmap.
      *
-     * @param <T> le type générique
-     * @param <E> le type d'element 
      * @param gm le graphmap
      * @return le graph
      */
-    public static <T, E> Graph importGraph(GraphMap<T, E> gm) {
+    public static Graph importGraph(GraphMap<String, Integer> gm) {
         Graph graph = new MultiGraph("importedGraph");
 
-        for(GraphMap<T, E>.SommetPrinc p : gm.getNodes()) {
+        for(GraphMap<String, Integer>.SommetPrinc p : gm.getNodes()) {
         	String node1 = p.getId()+"";
 
             // Ajouter les sommets au graphe s'ils n'existent pas déjà
             if (graph.getNode(node1) == null) {
                 graph.addNode(node1);
             }
-            for(GraphMap<T, E>.SommetAdj a : gm.getAdj(p)) {
+            for(GraphMap<String, Integer>.SommetAdj a : gm.getAdj(p)) {
 	            String node2 = a.getId()+"";
 	            if (graph.getNode(node2) == null) {
 	                graph.addNode(node2);
@@ -112,8 +110,8 @@ public class GraphImporter {
 		                graph.addEdge(edgeId, node1, node2);
 		            }
 		            
-		            GraphMap<T, E>.SommetPrinc p2 = null;
-		            for(GraphMap<T, E>.SommetPrinc p3 : gm.getNodes()) {
+		            GraphMap<String, Integer>.SommetPrinc p2 = null;
+		            for(GraphMap<String, Integer>.SommetPrinc p3 : gm.getNodes()) {
 		            	if(p3.getId() == a.getId()) {
 		            		p2 = p3;
 		            	}
@@ -126,4 +124,59 @@ public class GraphImporter {
         return graph;
     }
 
+    /**
+     * Importer graphmap à partir d'un fichier graph.
+     *
+     * @param file le fichier
+     * @return le graph
+     */
+    public static GraphMap<String, Integer> importGraphMap(File file) {
+    	
+    	if (!file.exists()) {
+        	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier n'existe pas.");
+            System.out.println("File does not exist: " + file.getAbsolutePath());
+            return null;
+        }
+
+        GraphMap<String, Integer> gm = null;
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            // Lire la valeur de kmax
+            String line = reader.readLine();
+            if (line == null) {
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier est vide ou n'est pas bien formatter.");
+                System.out.println("File is empty or invalid format for kmax");
+                return null;
+            }
+            int kmax = Integer.parseInt(line.trim());
+            System.out.println("kmax: " + kmax);
+
+            // Lire le nombre de sommets
+            line = reader.readLine();
+            if (line == null) {
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier ne contient pas de noeud.");
+                System.out.println("Invalid format for number of nodes");
+                return null;
+            }
+            int numberOfNodes = Integer.parseInt(line.trim());
+            System.out.println("Number of nodes: " + numberOfNodes);
+            
+            gm = new GraphMap<String,Integer>(kmax);
+            // Lire les liaisons
+            while ((line = reader.readLine()) != null) {
+                String[] nodes = line.trim().split(" ");
+                if (nodes.length != 2) {
+                    System.out.println("Invalid format for edge: " + line);
+                    continue;
+                }
+                String node1 = nodes[0];
+                String node2 = nodes[1];
+
+                // Ajouter l'arête au graphe
+                gm.addEdge(node1, node2,1);
+            }
+		}catch (IOException e) {
+            e.printStackTrace();
+        }
+        return gm;
+    }
 }

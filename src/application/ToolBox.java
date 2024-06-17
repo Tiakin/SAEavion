@@ -126,7 +126,7 @@ public class ToolBox {
      * @param t2 le temps 2
      * @param dur1 la durée 1
      * @param dur2 la durée 2
-     * @param marge 
+     * @param marge la marge
      * @return true, si c'est vrai
      */
     public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2, int marge) {

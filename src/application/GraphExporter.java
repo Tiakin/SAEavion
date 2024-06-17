@@ -41,4 +41,22 @@ public class GraphExporter {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * exporter la coloration du graph.
+     *
+     * @param file le fichier
+     * @param gm le graph
+     */
+    public static void exportGraphColor(File file, GraphMap<String, Integer> gm) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (GraphMap<String, Integer>.SommetPrinc p : gm.getNodes()) {
+                writer.write(p.getVal() + " " + p.getCoul());
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

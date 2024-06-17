@@ -13,17 +13,39 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.algorithm.ConnectedComponents;
 
+/**
+ * La classe Statistique.
+ */
 public class Statistique extends JDialog {
 
     // Attributs graphiques
+	
+	/** Le panel */
     private JPanel panel = new JPanel();
+    
+    /** Le label degré moyen */
     private JLabel degreeMeanLabel = new JLabel("Pas de graph");
+    
+    /** Le label composantes connexes */
     private JLabel connectedComponentsLabel = new JLabel("");
+    
+    /** Le label nombre de noeuds */
     private JLabel nodeCountLabel = new JLabel("");
+    
+    /** Le label nombre d'arrètes */
     private JLabel edgeCountLabel = new JLabel("");
+    
+    /** Le label diamètre */
     private JLabel diameterLabel = new JLabel("");
+    
+    /** Le label conflits */
     private JLabel conflictsLabel = new JLabel("");
 
+    /**
+	 * Instancie une fenêtre statistique.
+	 *
+	 * @param owner La fenêtre principale
+	 */
     public Statistique(MenuPrincipal owner) {
         super(owner, true); // constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
         
@@ -47,6 +69,11 @@ public class Statistique extends JDialog {
         getContentPane().add(panel);
     }
 
+    /**
+     * Met à jour les statistiques affichées dans la boîte de dialogue.
+     *
+     * @param graph Le graphe dont les statistiques doivent être calculées.
+     */
     public void updateStatistics(Graph graph) {
         double degreeMean = Toolkit.averageDegree(graph);
         ConnectedComponents cc = new ConnectedComponents();
@@ -65,6 +92,9 @@ public class Statistique extends JDialog {
         conflictsLabel.setText("Nombre de conflits : " + conflicts);
     }
 
+    /**
+     * Affiche la boîte de dialogue.
+     */
     public void showDialog() {
         setVisible(true);
     }

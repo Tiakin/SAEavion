@@ -107,6 +107,11 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	private JButton validerButton;
 	
 	/**
+	 * Le boolean valider.
+	 */
+	private boolean valider;
+	
+	/**
 	 * Instancie un JDialog de calcul de listes de graphes.
 	 *
 	 * @param owner the owner
@@ -181,7 +186,7 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
-                repertoireSource.setText(file.getAbsolutePath());
+                repertoireSource.setText(file.getAbsolutePath()+"\\");
             }
 		}
 		if (action.getSource() == sortieButton){
@@ -189,7 +194,7 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = sauver.getSelectedFile();
-                repertoireSortie.setText(file.getAbsolutePath());
+                repertoireSortie.setText(file.getAbsolutePath()+"\\");
             }
 		}
 		
@@ -199,7 +204,7 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	        dispose();
 	    }
 	    if (action.getSource() == validerButton){
-	        
+	        valider = true;
 	        this.setVisible(false); //on ferme la fenêtre
 	        dispose();
 	    }
@@ -210,5 +215,46 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 */
 	public void showDialog() {
 		setVisible(true);
+	}
+	
+	/**
+	 * indique si l'utilisateur à appuyé sur le bouton valider
+	 * @return true si l'utilisateur à appuyé sur le bouton valider
+	 */
+	public boolean isValid() {
+		return valider;
+		
+	}
+	
+	/**
+	 * récupère le répertoire source
+	 * @return le répertoire source
+	 */
+	public String getSourcePath() {
+		return repertoireSource.getText();
+	}
+	
+	/**
+	 * récupère le pattern de fichier source
+	 * @return le fichier source
+	 */
+	public String getSourcePattern() {
+		return patternSource.getText();
+	}
+	
+	/**
+	 * récupère le répertoire sortie
+	 * @return le répertoire sortie
+	 */
+	public String getSortiePath() {
+		return repertoireSortie.getText();
+	}
+	
+	/**
+	 * récupère le pattern de fichier sortie
+	 * @return le fichier sortie
+	 */
+	public String getSortiePattern() {
+		return patternSortie.getText();
 	}
 }

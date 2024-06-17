@@ -2,7 +2,10 @@ package application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -231,6 +234,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
                 ch = new ChargerAeroport(file);
+                
             }  
 	    }
 		if (action.getSource() == vols){
@@ -288,6 +292,42 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		if (action.getSource() == listegraphe){
 	        CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
 	        calculListeGraphe.showDialog();
+	        if(calculListeGraphe.isValid()) {
+	        	String pathSource = calculListeGraphe.getSourcePath();
+	        	String patternSource = calculListeGraphe.getSourcePattern();
+	        	String pathSortie = calculListeGraphe.getSortiePath();
+    			String patternSortie = calculListeGraphe.getSortiePattern();
+    			try (BufferedWriter writeToCSV = new BufferedWriter(new FileWriter(pathSortie+"coloration-groupe2.E1.csv"))) {
+		        	boolean hasNext = true;
+		        	for(int i = 0; hasNext; i++) {
+		        		//importation
+		        		String nameSource = patternSource.replace("0", i+"");
+		        		File fileSource = new File(pathSource+nameSource);
+		        		if(fileSource.exists()) {
+		        			System.out.println(fileSource);
+		        			GraphMap<String, Integer> gm = GraphImporter.importGraphMap(fileSource);
+		        			
+		        			//coloration
+		        			int conflits = gm.greedyColoring();
+		        			
+		        			//exportation
+		        			String nameSortie = patternSortie.replace("0", i+"");
+		        			File fileSortie = new File(pathSortie+nameSortie);
+		        			System.out.println(fileSortie);
+		        			GraphExporter.exportGraphColor(fileSortie, gm);
+		        			
+		        			//écrire dans le csv
+		        			writeToCSV.write(nameSortie+";"+conflits);
+		        			writeToCSV.newLine();
+		        			
+		        		} else {
+		        			hasNext = false;
+		        		}
+		        	}
+	        	} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
 	    }
 		if (action.getSource() == horaire){
 			Horaire horaire = new Horaire(this);

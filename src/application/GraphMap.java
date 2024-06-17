@@ -17,22 +17,22 @@ import application.GraphMap.SommetPrinc;
  * @param <E> le type d'élément
  */
 class GraphMap<T,E> {
-    
+
     /**
      * La sous-classe SommetPrinc.
      */
     class SommetPrinc {
-        
+
         /**
          * L'id.
          */
         private int id;
-        
+
         /**
          * La valeur.
          */
         private T valeur;
-        
+
         /**
          * La couleur.
          */
@@ -57,7 +57,7 @@ class GraphMap<T,E> {
         public int getId() {
             return id;
         }
-        
+
         /**
          * change l'id.
          *
@@ -103,7 +103,7 @@ class GraphMap<T,E> {
             this.couleur=c;
         }
 
-        
+
         /**
          * en String.
          *
@@ -113,22 +113,22 @@ class GraphMap<T,E> {
             return "Id : "+id+", Valeur : "+valeur.toString()+", " + "Couleur : "+this.couleur ;
         }
     }
-    
+
     /**
      * La sous-classe SommetAdj.
      */
     class SommetAdj {
-        
+
         /**
          * L'id.
          */
         private int id;
-        
+
         /**
          * La valeur.
          */
         private E valeur;
-        
+
         /**
          * Instancie un nouveau sommet adj.
          *
@@ -139,7 +139,7 @@ class GraphMap<T,E> {
             this.id = id;
             this.valeur = valeur;
         }
-        
+
         /**
          * Récupère l'id.
          *
@@ -148,7 +148,7 @@ class GraphMap<T,E> {
         public int getId() {
             return this.id;
         }
-        
+
         /**
          * Récupère la valeur.
          *
@@ -157,7 +157,7 @@ class GraphMap<T,E> {
         public E getValeur() {
             return this.valeur;
         }
-        
+
         /**
          * en string.
          *
@@ -167,22 +167,22 @@ class GraphMap<T,E> {
             return " IdAdj : "+this.id+", ValeurArête : "+ valeur.toString();
         }
     }
-    
+
     /**
      * La map.
      */
     private Map<SommetPrinc, List<SommetAdj>> map;
-    
+
     /**
      * L'id.
      */
     private int id;
-    
+
     /**
      * Le nombre de couleurs max.
      */
     private int nbCouleurs;
-    
+
     /**
      * Instancie un nouveau graphmap.
      *
@@ -193,7 +193,7 @@ class GraphMap<T,E> {
         this.nbCouleurs=k;
         map = new HashMap<>();
     }
-    
+
     /**
      * Trouve le SommetPrinc à partir de sa valeur.
      *
@@ -206,11 +206,11 @@ class GraphMap<T,E> {
         Object[] tabS = s.toArray();
         int i=0;
         while (i<tabS.length&&!((SommetPrinc)tabS[i]).getVal().equals(val))
-            {i++;}
+        {i++;}
         if (i<tabS.length) sp=(SommetPrinc)tabS[i];
         return sp;
     }
-    
+
     /**
      * Trouve le SommetPrinc à partir de son id.
      *
@@ -229,14 +229,14 @@ class GraphMap<T,E> {
         if (i<tabS.length) sp=(SommetPrinc)tabS[i];
         return sp;
     }
-    
+
     /**
      * Ajoute une noeud.
      *
      * @param val la valeur
      * @return le SommetPrinc
      */
-    public SommetPrinc addNode(T val) { 
+    public SommetPrinc addNode(T val) {
         SommetPrinc spr = null;
         if (this.findKeyVal(val)==null) {
             spr = new SommetPrinc(this.id++,val);
@@ -244,7 +244,7 @@ class GraphMap<T,E> {
         }
         return spr;
     }
-    
+
     /**
      * Ajoute un edge.
      *
@@ -255,20 +255,20 @@ class GraphMap<T,E> {
     public void addEdge(T val1, T val2, E valArête) {
         SommetPrinc spr1=this.findKeyVal(val1);
         SommetPrinc spr2=this.findKeyVal(val2);
-        
+
         if (spr1==null) spr1=addNode(val1);
-        
+
         if (spr2==null) spr2=addNode(val2);
-        
+
         if (!hasEdge(val1,val2)) {
             map.get(spr1).add(new SommetAdj(spr2.getId(),valArête));
             map.get(spr2).add(new SommetAdj(spr1.getId(),valArête));
         }
-        else { 
-        	System.out.println("ces deux vols : "+val1.toString()+ " et "+val2.toString()+" ont déjà été liés");
+        else {
+            System.out.println("ces deux vols : "+val1.toString()+ " et "+val2.toString()+" ont déjà été liés");
         }
     }
-    
+
     /**
      * Vérifie l'existance de edge.
      *
@@ -280,25 +280,25 @@ class GraphMap<T,E> {
         boolean b = false;
         List<SommetAdj> lsa = map.get(this.findKeyId(id1));
         int i=0;
-        
+
         while (i<lsa.size() && lsa.get(i).getId()!=id2) {
             i++;
         }
-        
+
         if (i<lsa.size()) b = true;
-        
+
         return b;
     }
-    
+
     /**
      * Récupère le noeud.
      *
      * @return le noeud
      */
     public Set<SommetPrinc> getNodes() {
-		return map.keySet();
+        return map.keySet();
     }
-    
+
     /**
      * Récupère le adj.
      *
@@ -306,9 +306,9 @@ class GraphMap<T,E> {
      * @return le adj
      */
     public List<SommetAdj> getAdj(SommetPrinc sp) {
-		return map.get(sp);
+        return map.get(sp);
     }
-    
+
     /**
      * Vérifie l'existance de edge.
      *
@@ -322,16 +322,16 @@ class GraphMap<T,E> {
         SommetPrinc sp2 = this.findKeyVal(val2);
         int id2 = sp2.getId();
         int i=0;
-        
+
         while (i<lsa.size() && lsa.get(i).getId()!=id2) {
             i++;
         }
-        
+
         if (i<lsa.size()) b = true;
-        
+
         return b;
     }
-    
+
     /**
      * To string.
      *
@@ -339,60 +339,76 @@ class GraphMap<T,E> {
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        
+
         for (SommetPrinc sp : map.keySet()) {
             buffer.append(sp.toString()).append('\n').append("Voisins :").append('\n');
             for (SommetAdj sa : map.get(sp)) {
                 buffer.append(sa.toString()).append('\n');
             }
-        
+
             buffer.append("\n\n");
         }
         return (buffer.toString());
     }
-    
+
     /**
      * Greedy coloring.
      *
-     * @return true, si c'est bien résolu
+     * @return le nombre de conflits
      */
-    public boolean greedyColoring() {
-        boolean b = true;
+    public int greedyColoring() {
+        int conflits = 0;
         boolean[] coul_attrib = new boolean[this.nbCouleurs];
-        
+
         for (int i=0; i<this.nbCouleurs; i++) coul_attrib[i] = false;
         Iterator<Map.Entry<SommetPrinc, List<SommetAdj>>> iterator = map.entrySet().iterator();
-        
-        while (iterator.hasNext() && b) {
+
+        while (iterator.hasNext()) {
             Map.Entry<SommetPrinc, List<SommetAdj>> cour = iterator.next();
-            //Indiquer que les coul. des noeuds adjacents sont attribuées
-            List<SommetAdj> lsa=cour.getValue();
-            
+            // Indiquer que les coul. des noeuds adjacents sont attribuées
+            List<SommetAdj> lsa = cour.getValue();
+
             for (SommetAdj sa : lsa) {
-                if (findKeyId(sa.getId()).getCoul()!=-1)
+                if (findKeyId(sa.getId()).getCoul() != -1)
                     coul_attrib[findKeyId(sa.getId()).getCoul()] = true;
             }
             // Trouver la première couleur disponible
             int i=0;
-            while (i < this.nbCouleurs && coul_attrib[i] == true) {
-                i=i+1;
+            while (i < this.nbCouleurs && coul_attrib[i]) {
+                i++;
             }
 
-            if (i < this.nbCouleurs)
+            if (i < this.nbCouleurs) {
                 cour.getKey().setCoul(i);
-            else
-                b=false;
-            if (b) {
-                //Relâcher la contrainte relative à la coul. des noeuds adj.
-                for (SommetAdj sa : lsa) {
-                    if (findKeyId(sa.getId()).getCoul()!=-1)
-                        coul_attrib[findKeyId(sa.getId()).getCoul()] = false;
+            } else {
+            	int minConflits = Integer.MAX_VALUE;
+                int meilleureCouleur = 0;
+
+                for (int c = 0; c < this.nbCouleurs; c++) {
+                    int countConflits = 0;
+                    for (SommetAdj sa : lsa) {
+                        if (findKeyId(sa.getId()).getCoul() == c) {
+                            countConflits++;
+                        }
+                    }
+                    if (countConflits < minConflits) {
+                        minConflits = countConflits;
+                        meilleureCouleur = c;
+                    }
                 }
+
+                cour.getKey().setCoul(meilleureCouleur);
+                conflits += minConflits;
+            }
+
+            // Relâcher la contrainte relative à la coul. des noeuds adj.
+            for (SommetAdj sa : lsa) {
+                if (findKeyId(sa.getId()).getCoul() != -1)
+                    coul_attrib[findKeyId(sa.getId()).getCoul()] = false;
             }
         }
-        
-        return b;
-        
+
+        return conflits;
     }
     
 }
