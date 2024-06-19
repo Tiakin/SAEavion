@@ -89,7 +89,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/** Le ChargerAeroport. */
 	private ChargerAeroport ch;
 
-
 	/** Le ProcessCollision. */
 	private ProcessCollision pfc;
 
@@ -373,6 +372,10 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	        }
 	        statistique.showDialog();
 	        statistique.dispose();
+	        if((action.getModifiers() & 1) != 0) { //shift = 1
+			ListeVolsAeroport lva = new ListeVolsAeroport(this, "DOL",pfc.getGraphMap());
+			lva.showDialog();
+            }
 	    }
 		if (action.getSource() == kmax){
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
