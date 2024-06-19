@@ -125,6 +125,11 @@ class GraphMap<T,E> {
          * La valeur.
          */
         private E valeur;
+        
+        /**
+         * conflit avec SommetPrinc.
+         */
+        private boolean conflit;
 
         /**
          * Instancie un nouveau sommet adj.
@@ -145,7 +150,25 @@ class GraphMap<T,E> {
         public int getId() {
             return this.id;
         }
-
+        
+        /**
+         * Récupère conflit.
+         *
+         * @return true si confit avec SommetPrinc
+         */
+        public boolean isConflit() {
+            return this.conflit;
+        }
+        
+        /**
+         * Récupère l'id.
+         *
+         * @return si il rentre en confit avec SommetPrinc
+         */
+        public void causeConflit() {
+            this.conflit = true;
+        }
+        
         /**
          * Récupère la valeur.
          *
@@ -155,13 +178,14 @@ class GraphMap<T,E> {
             return this.valeur;
         }
 
+        
         /**
          * en string.
          *
          * @return le String
          */
         public String toString() {
-            return " IdAdj : "+this.id+", ValeurArête : "+ valeur.toString();
+            return " IdAdj : "+this.id+", en conflit : "+ conflit;
         }
     }
 
@@ -178,7 +202,7 @@ class GraphMap<T,E> {
     /**
      * Le nombre de couleurs max.
      */
-    private int nbCouleurs;
+    private int kmax;
 
     /**
      * Instancie un nouveau graphmap.
@@ -187,7 +211,7 @@ class GraphMap<T,E> {
      */
     public GraphMap(int k) {
         this.id=0;
-        this.nbCouleurs=k;
+        this.kmax=k;
         map = new HashMap<>();
     }
 
@@ -357,9 +381,9 @@ class GraphMap<T,E> {
      */
     public int greedyColoring() {
         int conflits = 0;
-        boolean[] coul_attrib = new boolean[this.nbCouleurs];
+        boolean[] coul_attrib = new boolean[this.kmax];
 
-        for (int i=0; i<this.nbCouleurs; i++) coul_attrib[i] = false;
+        for (int i=0; i<this.kmax; i++) coul_attrib[i] = false;
         Iterator<Map.Entry<SommetPrinc, List<SommetAdj>>> iterator = map.entrySet().iterator();
 
         while (iterator.hasNext()) {
@@ -373,17 +397,17 @@ class GraphMap<T,E> {
             }
             // Trouver la première couleur disponible
             int i=0;
-            while (i < this.nbCouleurs && coul_attrib[i]) {
+            while (i < this.kmax && coul_attrib[i]) {
                 i++;
             }
 
-            if (i < this.nbCouleurs) {
+            if (i < this.kmax) {
                 cour.getKey().setCoul(i);
             } else {
             	int minConflits = Integer.MAX_VALUE;
                 int meilleureCouleur = 0;
 
-                for (int c = 0; c < this.nbCouleurs; c++) {
+                for (int c = 0; c < this.kmax; c++) {
                     int countConflits = 0;
                     for (SommetAdj sa : lsa) {
                         if (findKeyId(sa.getId()).getCoul() == c) {
@@ -397,7 +421,14 @@ class GraphMap<T,E> {
                 }
 
                 cour.getKey().setCoul(meilleureCouleur);
-                conflits += minConflits;
+                //on dit qu'il y a conflit entre les deux noeuds
+                for (SommetAdj sa : lsa) {
+                    if (findKeyId(sa.getId()).getCoul() == meilleureCouleur) {
+                        sa.causeConflit();
+                        if(cour.getKey().getId() < sa.getId())
+                            conflits++;
+                    }
+                }
             }
 
             // Relâcher la contrainte relative à la coul. des noeuds adj.
@@ -410,4 +441,12 @@ class GraphMap<T,E> {
         return conflits;
     }
     
+    /**
+     * Récupère le kmax
+     *
+     * @return le kmax
+     */
+    public int getkmax() {
+		return kmax;
+    }
 }

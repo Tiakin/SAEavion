@@ -1,7 +1,11 @@
 package application;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +17,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import org.graphstream.graph.Graph;
+import org.graphstream.ui.geom.Point3;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
+import org.graphstream.ui.view.camera.Camera;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
@@ -101,7 +109,10 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private int margeValue = 15;
 	
 	/** valeur du kmax */
-	private int kmaxValue;
+	private int kmaxValue = 10;
+
+
+	private File fichierVols;
 
 	
 	/**
@@ -232,6 +243,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent action) {
+		System.out.println(action.getModifiers());
 		if (action.getSource() == aeroport){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
@@ -245,21 +257,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
-                File file = charger.getSelectedFile();
-                pfc = new ProcessCollision(file);
-                
-                pfc.processLineCollision(ch, margeValue);
-                conflits = pfc.getGraphMap().greedyColoring();
-                currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
-                System.out.println(pfc.getGraphMap());
-                if (currentGraph != null) {
-                    System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
-                    currentGraph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
-                } else {
-                	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
-                    System.out.println("Failed to import graph.");
-                }
-                
+            	fichierVols = charger.getSelectedFile();
+                calculerGrapheVols();
             }       
 		}
 		if (action.getSource() == grapheCharge){
@@ -267,11 +266,18 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
-                Graph graph = GraphImporter.importGraph(file);
+                
+                GraphMap<String, Integer> gm = GraphImporter.importGraphMap(file);
+    			
+    			//coloration
+    			conflits = gm.greedyColoring();
+    			
+                Graph graph = GraphImporter.importGraph(gm);
 
                 if (graph != null) {
-                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges.");
-                    graph.display().setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);;
+                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges. the graph have "+conflits+" Conflicts.");
+                    
+                    ToolBox.displaygraph(graph);
                 } else {
                 	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
                     System.out.println("Failed to import graph.");
@@ -294,6 +300,10 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             } 
 		}
 		if (action.getSource() == listegraphe){
+			boolean show = false;
+			if((action.getModifiers() & 1) != 0) { //shift = 1
+				show = true;
+            }
 	        CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
 	        calculListeGraphe.showDialog();
 	        if(calculListeGraphe.isValid()) {
@@ -314,6 +324,11 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		        			//coloration
 		        			int conflits = gm.greedyColoring();
 		        			
+		        			
+		        			//si shift appuyé
+		        			if(show) {
+		        				ToolBox.displaygraph(GraphImporter.importGraph(gm));
+		        			}
 		        			//exportation
 		        			String nameSortie = patternSortie.replace("0", i+"");
 		        			File fileSortie = new File(pathSortie+nameSortie);
@@ -363,9 +378,10 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
 			int value = kmax.showDialog();
 			if(value == ToolBox.RESETVALUE) {
-				// pas de reset pour le kmax
+				kmaxValue = 10;
 	        } else if(value != ToolBox.KEEPVALUE) {
 				kmaxValue = value;
+				calculerGrapheVols();
 			}
 	    }
 		if (action.getSource() == marge){
@@ -375,10 +391,29 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 				margeValue = 15; // valeur par défaut
 	        } else if(value != ToolBox.KEEPVALUE) {
 				margeValue = value;
+				calculerGrapheVols();
 			}
 	    }
 		 
 		
+	}
+
+	
+	
+	private void calculerGrapheVols() {
+		pfc = new ProcessCollision(fichierVols,kmaxValue);
+		
+		pfc.processLineCollision(ch, margeValue);
+		conflits = pfc.getGraphMap().greedyColoring();
+		currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
+		System.out.println(pfc.getGraphMap());
+		if (currentGraph != null) {
+		    System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
+		    ToolBox.displaygraph(currentGraph);
+		} else {
+			ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
+		    System.out.println("Failed to import graph.");
+		}
 	}
 
 }

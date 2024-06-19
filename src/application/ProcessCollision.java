@@ -32,10 +32,11 @@ public class ProcessCollision {
      * Instancie un nouveau process collision.
      *
      * @param file le fichier
+     * @param kmax le kmax
      */
-    public ProcessCollision(File file) {
+    public ProcessCollision(File file,int kmax) {
     	this.selectedFile = file;
-        this.gm = new GraphMap<String,Integer>(10);
+        this.gm = new GraphMap<String,Integer>(kmax);
         readFile();
     }
     

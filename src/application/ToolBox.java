@@ -8,6 +8,10 @@ import java.time.LocalTime;
 
 import javax.swing.JOptionPane;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.Viewer.CloseFramePolicy;
+
 
 /**
  * La classe ToolBox.
@@ -231,4 +235,8 @@ public class ToolBox {
     	JOptionPane.showMessageDialog(null, text, "Erreur", JOptionPane.ERROR_MESSAGE);
     }
     
+    public static void displaygraph(Graph graph) {
+		Viewer viewer = graph.display();
+		viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
+	}
 }

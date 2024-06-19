@@ -1,9 +1,11 @@
 package application;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.Graph;
@@ -18,7 +20,10 @@ public class GraphImporter {
      *
      * @param file le fichier
      * @return le graph
+     * 
+     * @deprecated il faut importer un graphmap avant comme ça on peut avoir la coloration
      */
+	@Deprecated
     public static Graph importGraph(File file) {
         Graph graph = new MultiGraph("importedGraph");
 
@@ -89,15 +94,22 @@ public class GraphImporter {
      */
     public static Graph importGraph(GraphMap<String, Integer> gm) {
         Graph graph = new MultiGraph("importedGraph");
-
+        String colors[] = new String[gm.getkmax()];
+        for(int i = 0; i<colors.length;i++) {
+        	Random rdm = new Random();
+        	colors[i] = "rgb("+rdm.nextInt(256)+","+rdm.nextInt(256)+","+rdm.nextInt(256)+")";
+        	System.out.println(colors[i]);
+        }
+        
         for(GraphMap<String, Integer>.SommetPrinc p : gm.getNodes()) {
         	String node1 = p.getId()+"";
-
             // Ajouter les sommets au graphe s'ils n'existent pas déjà
             if (graph.getNode(node1) == null) {
                 graph.addNode(node1);
-                graph.getNode(node1).setAttribute("color", p.getCoul());
             }
+            
+            graph.getNode(node1).setAttribute("ui.style", "fill-color: "+colors[p.getCoul()]+";");
+            
             for(GraphMap<String, Integer>.SommetAdj a : gm.getAdj(p)) {
 	            String node2 = a.getId()+"";
 	            if (graph.getNode(node2) == null) {
@@ -109,6 +121,9 @@ public class GraphImporter {
 		            String edgeId = node1 + "-" + node2;
 		            if (graph.getEdge(edgeId) == null) {
 		                graph.addEdge(edgeId, node1, node2);
+		                if(a.isConflit()) {
+		                	graph.getEdge(edgeId).setAttribute("ui.style", "fill-color: rgb(255,0,0);");
+		                }
 		            }
 		            
 		            GraphMap<String, Integer>.SommetPrinc p2 = null;
