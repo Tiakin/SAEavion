@@ -88,6 +88,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/** Le graph en cours */
 	private Graph currentGraph;
 	
+	/** Le nombre de conflit en cours */
+	private int conflits;
+	
 	/** L'horaire en cours */
 	private int horaireValue;
 	
@@ -99,6 +102,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	
 	/** valeur du kmax */
 	private int kmaxValue;
+
 	
 	/**
 	 * Instancie un nouveau menu principal.
@@ -245,7 +249,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 pfc = new ProcessCollision(file);
                 
                 pfc.processLineCollision(ch, margeValue);
-                pfc.getGraphMap().greedyColoring();
+                conflits = pfc.getGraphMap().greedyColoring();
                 currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
                 System.out.println(pfc.getGraphMap());
                 if (currentGraph != null) {
@@ -350,9 +354,10 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		if (action.getSource() == statistique){
 	        Statistique statistique = new Statistique(this);
 	        if(currentGraph != null) {
-	        	statistique.updateStatistics(currentGraph);
+	        	statistique.updateStatistics(currentGraph, conflits);
 	        }
 	        statistique.showDialog();
+	        statistique.dispose();
 	    }
 		if (action.getSource() == kmax){
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");

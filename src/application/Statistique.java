@@ -9,7 +9,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.algorithm.ConnectedComponents;
 
@@ -73,8 +72,9 @@ public class Statistique extends JDialog {
      * Met à jour les statistiques affichées dans la boîte de dialogue.
      *
      * @param graph Le graphe dont les statistiques doivent être calculées.
+     * @param conflits 
      */
-    public void updateStatistics(Graph graph) {
+    public void updateStatistics(Graph graph, int conflits) {
         double degreeMean = Toolkit.averageDegree(graph);
         ConnectedComponents cc = new ConnectedComponents();
         cc.init(graph);
@@ -82,14 +82,13 @@ public class Statistique extends JDialog {
         int nodeCount = graph.getNodeCount();
         int edgeCount = graph.getEdgeCount();
         double diameter = Toolkit.diameter(graph);
-        int conflicts = graph.getEdgeCount(); // Méthode spécifique pour calculer les conflits
 
         degreeMeanLabel.setText("Degré moyen : " + degreeMean);
         connectedComponentsLabel.setText("Nombre de composantes connexes : " + connectedComponentsCount);
         nodeCountLabel.setText("Nombre de noeuds : " + nodeCount);
         edgeCountLabel.setText("Nombre d'arrètes : " + edgeCount);
-        diameterLabel.setText("Diamètre : " + diameter);
-        conflictsLabel.setText("Nombre de conflits : " + conflicts);
+        diameterLabel.setText("Diamètre : " + ((diameter == Double.MIN_VALUE) ? "+∞" : diameter));
+        conflictsLabel.setText("Nombre de conflits : " + conflits);
     }
 
     /**

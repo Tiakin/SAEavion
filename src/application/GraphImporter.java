@@ -96,6 +96,7 @@ public class GraphImporter {
             // Ajouter les sommets au graphe s'ils n'existent pas déjà
             if (graph.getNode(node1) == null) {
                 graph.addNode(node1);
+                graph.getNode(node1).setAttribute("color", p.getCoul());
             }
             for(GraphMap<String, Integer>.SommetAdj a : gm.getAdj(p)) {
 	            String node2 = a.getId()+"";

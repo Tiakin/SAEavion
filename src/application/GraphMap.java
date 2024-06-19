@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import application.GraphMap.SommetAdj;
-import application.GraphMap.SommetPrinc;
-
 /**
  * La classe GraphMap.
  *
@@ -200,12 +197,13 @@ class GraphMap<T,E> {
      * @param val la valeur
      * @return le SommetPrinc
      */
-    public SommetPrinc findKeyVal(T val) {
+    @SuppressWarnings("unchecked")
+	public SommetPrinc findKeyVal(T val) {
         SommetPrinc sp = null;
         Set<SommetPrinc> s = map.keySet();
         Object[] tabS = s.toArray();
         int i=0;
-        while (i<tabS.length&&!((SommetPrinc)tabS[i]).getVal().equals(val))
+        while (i<tabS.length && !((SommetPrinc)tabS[i]).getVal().equals(val))
         {i++;}
         if (i<tabS.length) sp=(SommetPrinc)tabS[i];
         return sp;
@@ -217,7 +215,8 @@ class GraphMap<T,E> {
      * @param id l'id
      * @return le SommetPrinc
      */
-    private SommetPrinc findKeyId(int id) {
+    @SuppressWarnings("unchecked")
+	private SommetPrinc findKeyId(int id) {
         SommetPrinc sp = null;
         Set<SommetPrinc> s = map.keySet();
         Object[] tabS = s.toArray();
