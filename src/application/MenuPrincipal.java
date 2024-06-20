@@ -1,11 +1,7 @@
 package application;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,11 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import org.graphstream.graph.Graph;
-import org.graphstream.ui.geom.Point3;
-import org.graphstream.ui.view.View;
-import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.Viewer.CloseFramePolicy;
-import org.graphstream.ui.view.camera.Camera;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
@@ -242,14 +233,12 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent action) {
-		System.out.println(action.getModifiers());
 		if (action.getSource() == aeroport){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
                 ch = new ChargerAeroport(file);
-                
             }  
 	    }
 		if (action.getSource() == vols){
@@ -404,18 +393,27 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	
 	
 	private void calculerGrapheVols() {
-		pfc = new ProcessCollision(fichierVols,kmaxValue);
-		
-		pfc.processLineCollision(ch, margeValue);
-		conflits = pfc.getGraphMap().greedyColoring();
-		currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
-		System.out.println(pfc.getGraphMap());
-		if (currentGraph != null) {
-		    System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
-		    ToolBox.displaygraph(currentGraph);
+		if(ch != null && ch.isValid()) {
+			if(fichierVols != null) {
+				pfc = new ProcessCollision(fichierVols,kmaxValue);
+				pfc.processLineCollision(ch, margeValue);
+				conflits = pfc.getGraphMap().greedyColoring();
+				currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
+				System.out.println(pfc.getGraphMap());
+				if (currentGraph != null) {
+					if(currentGraph.getNodeCount() > 0) {
+						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
+				    	ToolBox.displaygraph(currentGraph);
+					}
+				} else {
+					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
+				    System.out.println("Failed to import graph.");
+				}
+			} else {
+				ToolBox.sendErrorMessage("Erreur : Il faut d'abord importer les vols");
+			}
 		} else {
-			ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
-		    System.out.println("Failed to import graph.");
+			ToolBox.sendErrorMessage("Erreur : Il faut d'abord importer les aéroports");
 		}
 	}
 

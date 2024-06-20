@@ -72,6 +72,8 @@ public class EditDialog extends JDialog implements ActionListener{
         
         retourButton.addActionListener(this);
         validerButton.addActionListener(this);
+        
+		valeur = ToolBox.KEEPVALUE;
 	}
 
 	/**
@@ -82,7 +84,6 @@ public class EditDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
 	        this.setVisible(false); //on ferme la fenêtre
-	        valeur = ToolBox.KEEPVALUE;
 	    }
 	    if (action.getSource() == validerButton){
 	    	if(textField.getText().isBlank()) {

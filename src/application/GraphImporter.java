@@ -21,14 +21,15 @@ public class GraphImporter {
      * @param file le fichier
      * @return le graph
      * 
-     * @deprecated il faut importer un graphmap avant comme ça on peut avoir la coloration
+     * @deprecated il faut importer un graphmap avant comme ça on peut avoir la coloration.
+     * 
      */
 	@Deprecated
     public static Graph importGraph(File file) {
         Graph graph = new MultiGraph("importedGraph");
 
         if (!file.exists()) {
-        	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier n'existe pas.");
+        	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n Le fichier n'existe pas.");
             System.out.println("File does not exist: " + file.getAbsolutePath());
             return null;
         }
@@ -37,7 +38,7 @@ public class GraphImporter {
             // Lire la valeur de kmax
             String line = reader.readLine();
             if (line == null) {
-            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier est vide ou n'est pas bien formatter.");
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n Le fichier est vide ou n'est pas bien formatter.");
                 System.out.println("File is empty or invalid format for kmax");
                 return null;
             }
@@ -47,18 +48,25 @@ public class GraphImporter {
             // Lire le nombre de sommets
             line = reader.readLine();
             if (line == null) {
-            	ToolBox.sendErrorMessage("Erreur lors de la lecture du graph :\r\n Le fichier ne contient pas de noeud.");
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n Le fichier ne contient pas de noeud.");
                 System.out.println("Invalid format for number of nodes");
                 return null;
             }
             int numberOfNodes = Integer.parseInt(line.trim());
             System.out.println("Number of nodes: " + numberOfNodes);
 
+            boolean firsterror = true;
             // Lire les liaisons
             while ((line = reader.readLine()) != null) {
                 String[] nodes = line.trim().split(" ");
                 if (nodes.length != 2) {
                     System.out.println("Invalid format for edge: " + line);
+					if(firsterror) {
+                    	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n une ligne indique mal la liaison entre deux noeuds, passage à la ligne suivante.");
+                    } else {
+                    	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n une autre ligne indique mal la liaison entre deux noeuds, arrêt de l'importation.");
+                    	return null;
+                    }
                     continue;
                 }
                 String node1 = nodes[0];
@@ -177,11 +185,18 @@ public class GraphImporter {
             System.out.println("Number of nodes: " + numberOfNodes);
             
             gm = new GraphMap<String,Integer>(kmax);
+            boolean firsterror = true;
             // Lire les liaisons
             while ((line = reader.readLine()) != null) {
                 String[] nodes = line.trim().split(" ");
                 if (nodes.length != 2) {
                     System.out.println("Invalid format for edge: " + line);
+                    if(firsterror) {
+                    	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n une ligne indique mal la liaison entre deux noeuds, passage à la ligne suivante.");
+                    } else {
+                    	ToolBox.sendErrorMessage("Erreur lors de la lecture du fichier :\r\n une autre ligne indique mal la liaison entre deux noeuds, arrêt de l'importation.");
+                    	return null;
+                    }
                     continue;
                 }
                 String node1 = nodes[0];

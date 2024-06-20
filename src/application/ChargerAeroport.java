@@ -22,6 +22,11 @@ public class ChargerAeroport {
 	 * Le fichier selectionné.
 	 */
 	private File selectedFile;
+
+	/**
+	 * Si ChargerAeroport est valide
+	 */
+	private boolean valid;
     
     /**
      * Instancie ChargerAeroport.
@@ -31,6 +36,7 @@ public class ChargerAeroport {
     public ChargerAeroport(File file) {
     	this.selectedFile = file;
         m = new HashMap<>();
+        valid = true;
         readFile();
     }
     
@@ -40,25 +46,26 @@ public class ChargerAeroport {
     private void readFile() {
         //String st = null;
         BufferedReader reader ;
-        //= new BufferedReader(new InputStreamReader(System.in));
         Scanner ent ;
-        //= new Scanner(System.in);
         try {
         	FileReader fr = new FileReader(selectedFile);
             reader = new BufferedReader(fr) ;
             ent = new Scanner(fr);
             
             while (ent.hasNextLine()) {
-                //((line=reader.readLine())!=null) {
             	String[] res = ent.nextLine().split(";");
             	if(res.length != 10) {
-            		ToolBox.sendErrorMessage("Erreur lors de la lecture des aeroports :\r\n Il n'y a pas le bons nombre d'information par ligne.");
+            		ToolBox.sendErrorMessage("Erreur lors de la lecture des aeroports :\r\n Il n'y a pas le bon nombre d'informations par ligne.");
+            		valid = false;
             		return;
             	}
                 m.put(res[0], res);
             }
                 reader.close(); fr.close(); ent.close();
-            } catch(IOException ex) { System.err.println(ex); }
+            } catch(IOException ex) { 
+            	ToolBox.sendErrorMessage("Erreur lors de la lecture des aeroports :\r\n Le fichier n'existe pas.");
+            	valid = false; 
+            }
     }
     
     /**
@@ -69,4 +76,13 @@ public class ChargerAeroport {
     public Map<String, String[]> getMapAero() {
         return m;
     }
+
+    /**
+     * Si ChargerAeroport est valide
+     *
+     * @return true si valide
+     */
+	public boolean isValid() {
+		return valid;
+	}
 }

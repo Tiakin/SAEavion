@@ -15,19 +15,51 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 
+// TODO: Auto-generated Javadoc
 /**
  * La classe ListAeroport.
  */
 public class ListeVolsAeroport extends JDialog implements ActionListener {
 
-    // Attributs graphiques
+	// Attributs graphiques
+    /**
+     * Le label arrivants.
+     */
     private JLabel labelArrivants;
+    
+    /**
+     * Le label partants.
+     */
     private JLabel labelPartants;
+    
+    /**
+     * La liste arrivants.
+     */
     private JList<String> listArrivants;
+    
+    /**
+     * La liste partants.
+     */
     private JList<String> listPartants;
+    
+    /**
+     * Le model arrivants.
+     */
     private DefaultListModel<String> modelArrivants;
+    
+    /**
+     * Le model partants.
+     */
     private DefaultListModel<String> modelPartants;
+    
+    /**
+     * Le panel.
+     */
     private JPanel panel;
+    
+    /**
+     * Le retour button.
+     */
     private JButton retourButton;
 
     /**
