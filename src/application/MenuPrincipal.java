@@ -240,55 +240,56 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
 	
 	private void afficherAeroports(JXMapViewer mapViewer) {
-        if (ch != null && ch.isValid()) {
-            // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
-            Aeroport[] aeroports = ch.creationAeroports();
+	    if (ch != null && ch.isValid()) {
+	        // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
+	        Aeroport[] aeroports = ch.creationAeroports();
 
-            /* Afficher les aéroports pour débogage
+	        /* Afficher les aéroports pour débogage
             for (Aeroport aeroport : aeroports) {
                 System.out.println(aeroport); // Utilisation de System.out.println pour afficher les aéroports
             }
 			*/
-			
-			
-            // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
-            List<Waypoint> waypoints = new ArrayList<>();
+	        
+	        // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
+	        List<Waypoint> waypoints = new ArrayList<>();
 
-            // Parcourir chaque aéroport dans le tableau
-            for (Aeroport aeroport : aeroports) {
-                double latitude = aeroport.getLatitude();
-                double longitude = aeroport.getLongitude();
+	        // Parcourir chaque aéroport dans le tableau
+	        for (Aeroport aeroport : aeroports) {
+	            double latitude = aeroport.getLatitude();
+	            double longitude = aeroport.getLongitude();
 
-                // Vérification des coordonnées avant de créer un GeoPosition
-                if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
-                    GeoPosition position = new GeoPosition(latitude, longitude);
+	            // Vérification des coordonnées avant de créer un GeoPosition
+	            if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+	                GeoPosition position = new GeoPosition(latitude, longitude);
 
-                    // Utilisation de DefaultWaypoint pour créer un Waypoint concret
-                    DefaultWaypoint waypoint = new DefaultWaypoint(position);
+	                // Utilisation de CustomWaypoint avec code d'aéroport
+	                CustomWaypoint waypoint = new CustomWaypoint(position, aeroport.getCode());
 
-                    // Ajouter le Waypoint à la liste des marqueurs
-                    waypoints.add(waypoint);
-                } else {
-                    System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
-                }
-            }
+	                // Ajouter le Waypoint à la liste des marqueurs
+	                waypoints.add(waypoint);
+	            } else {
+	                System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
+	            }
+	        }
 
-            // Création d'un Set de Waypoints à partir de la liste
-            Set<Waypoint> waypointSet = new HashSet<>(waypoints);
+	        // Création d'un Set de Waypoints à partir de la liste
+	        Set<Waypoint> waypointSet = new HashSet<>(waypoints);
 
-            // Création d'un WaypointPainter pour dessiner les marqueurs sur la carte
-            WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-            waypointPainter.setWaypoints(waypointSet);
+	        // Création d'un WaypointPainter avec CustomWaypointRenderer pour dessiner les marqueurs sur la carte
+	        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+	        waypointPainter.setRenderer(new CustomWaypointRenderer());
+	        waypointPainter.setWaypoints(waypointSet);
 
-            // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
-            mapViewer.setOverlayPainter(waypointPainter);
+	        // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
+	        mapViewer.setOverlayPainter(waypointPainter);
 
-            // Forcer la carte à se rafraîchir
-            mapViewer.repaint();
-        } else {
-            System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
-        }
-    }
+	        // Forcer la carte à se rafraîchir
+	        mapViewer.repaint();
+	    } else {
+	        System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
+	    }
+	}
+
 	/**
 	 * Action performé.
 	 *
