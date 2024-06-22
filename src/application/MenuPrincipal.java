@@ -6,6 +6,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,8 +24,11 @@ import org.jxmapviewer.cache.FileBasedLocalCache;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
+import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.viewer.Waypoint;
+import org.jxmapviewer.viewer.WaypointPainter;
 
 
 /**
@@ -219,6 +227,11 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         //event zoom de la souris
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
         
+        // Ajouter JXMapViewer à JFrame
+        getContentPane().add(mapViewer);
+        
+        // Ajout de la logique pour afficher les aéroports
+        afficherAeroports(mapViewer);
         
         this.add(mapViewer);
         
@@ -226,6 +239,43 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         this.setJMenuBar(menuBar);
 	}
 
+	
+	private void afficherAeroports(JXMapViewer mapViewer) {
+        if (ch != null && ch.isValid()) {
+            Map<String, String[]> mapAeroports = ch.getMapAero();
+
+            // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
+            List<Waypoint> waypoints = new ArrayList<>();
+
+            // Parcourir chaque aéroport dans la map
+            for (Map.Entry<String, String[]> entry : mapAeroports.entrySet()) {
+                String[] aeroportInfo = entry.getValue();
+
+                // Récupérer les coordonnées de l'aéroport
+                double latitude = Double.parseDouble(aeroportInfo[2]); // Assurez-vous que l'index est correct
+                double longitude = Double.parseDouble(aeroportInfo[6]); // Assurez-vous que l'index est correct
+
+                // Créer une GeoPosition pour l'aéroport
+                GeoPosition position = new GeoPosition(latitude, longitude);
+
+                // Utilisation de DefaultWaypoint pour créer un Waypoint concret
+                DefaultWaypoint waypoint = new DefaultWaypoint(position);
+
+                // Ajouter le Waypoint à la liste des marqueurs
+                waypoints.add(waypoint);
+            }
+
+            // Création d'un Set de Waypoints à partir de la liste
+            Set<Waypoint> waypointSet = new HashSet<>(waypoints);
+
+            // Création d'un WaypointPainter pour dessiner les marqueurs sur la carte
+            WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+            waypointPainter.setWaypoints(waypointSet);
+
+            // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
+            mapViewer.setOverlayPainter(waypointPainter);
+        }
+    }
 	/**
 	 * Action performé.
 	 *
