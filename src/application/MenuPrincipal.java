@@ -255,6 +255,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 double latitude = Double.parseDouble(aeroportInfo[2]); // Assurez-vous que l'index est correct
                 double longitude = Double.parseDouble(aeroportInfo[6]); // Assurez-vous que l'index est correct
 
+                // Log des coordonnées
+                System.out.println("Aéroport: " + entry.getKey() + " Latitude: " + latitude + " Longitude: " + longitude);
+
                 // Créer une GeoPosition pour l'aéroport
                 GeoPosition position = new GeoPosition(latitude, longitude);
 
@@ -268,12 +271,20 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             // Création d'un Set de Waypoints à partir de la liste
             Set<Waypoint> waypointSet = new HashSet<>(waypoints);
 
+            // Log du nombre de waypoints
+            System.out.println("Nombre de waypoints: " + waypointSet.size());
+
             // Création d'un WaypointPainter pour dessiner les marqueurs sur la carte
             WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
             waypointPainter.setWaypoints(waypointSet);
 
             // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
             mapViewer.setOverlayPainter(waypointPainter);
+
+            // Forcer la carte à se rafraîchir
+            mapViewer.repaint();
+        } else {
+            System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
         }
     }
 	/**
