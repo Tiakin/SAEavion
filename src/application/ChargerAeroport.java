@@ -18,6 +18,8 @@ public class ChargerAeroport {
 	 */
 	private Map<String,String[]> m;
 	
+	private Aeroport[] aeroports;
+	
 	/**
 	 * Le fichier sélectionné.
 	 */
@@ -93,7 +95,7 @@ public class ChargerAeroport {
      * @return un tableau d'objets Aeroport
      */
 	public Aeroport[] creationAeroports() {
-	    Aeroport[] aeroports = new Aeroport[m.size()];
+	    aeroports = new Aeroport[m.size()];
 	    int index = 0;
 	    for (Map.Entry<String, String[]> entry : m.entrySet()) {
 	        String[] data = entry.getValue();
@@ -121,6 +123,7 @@ public class ChargerAeroport {
 	        Aeroport aeroport = new Aeroport(code, latitude, longitude);
 	        aeroports[index++] = aeroport;
 	    }
+	    
 	    return aeroports;
 	}
 
@@ -131,5 +134,9 @@ public class ChargerAeroport {
 	        decimal = -decimal;
 	    }
 	    return decimal;
+	}
+	
+	public Aeroport[] getAeroports() {
+		return aeroports;
 	}
 }

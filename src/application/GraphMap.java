@@ -1,11 +1,18 @@
 package application;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.jxmapviewer.JXMapViewer;
+import org.jxmapviewer.viewer.DefaultWaypoint;
+import org.jxmapviewer.viewer.GeoPosition;
+import org.jxmapviewer.viewer.Waypoint;
+import org.jxmapviewer.viewer.WaypointPainter;
 
 /**
  * La classe GraphMap.
@@ -193,7 +200,7 @@ class GraphMap<T,E> {
      * La map.
      */
     private Map<SommetPrinc, List<SommetAdj>> map;
-
+    
     /**
      * L'id.
      */
@@ -440,7 +447,6 @@ class GraphMap<T,E> {
 
         return conflits;
     }
-    
     /**
      * Récupère le kmax
      *
