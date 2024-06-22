@@ -9,7 +9,7 @@ public class Vol {
     private LocalTime heureDepart;
     private int duree;
 
-    public Vol(String nom, Aeroport aeroportDepart, Aeroport aeroportArrivee, LocalTime heureDepart, int duree) {
+    public Vol (String nom, Aeroport aeroportDepart, Aeroport aeroportArrivee, LocalTime heureDepart, int duree) {
         this.nom = nom;
         this.aeroportDepart = aeroportDepart;
         this.aeroportArrivee = aeroportArrivee;
@@ -35,5 +35,15 @@ public class Vol {
 
     public int getDuree() {
         return duree;
+    }
+    @Override
+    public String toString() {
+        return "Vol{" +
+                "nom='" + nom + '\'' +
+                ", aeroportDepart=" + aeroportDepart +
+                ", aeroportArrivee=" + aeroportArrivee +
+                ", heureDepart=" + heureDepart +
+                ", duree=" + duree +
+                '}';
     }
 }

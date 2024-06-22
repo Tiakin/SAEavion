@@ -202,11 +202,6 @@ class GraphMap<T,E> {
     private Map<SommetPrinc, List<SommetAdj>> map;
 
     /**
-     * La liste des aeroports
-     */
-    private List<Aeroport> listeAeroports;
-    
-    /**
      * L'id.
      */
     private int id;
@@ -451,47 +446,6 @@ class GraphMap<T,E> {
         }
 
         return conflits;
-    }
-    
-    public void dessinerVols(JXMapViewer mapViewer) {
-        Set<Waypoint> waypoints = new HashSet<>();
-
-        for (SommetPrinc sp : getNodes()) {
-            T valeur = sp.getVal();
-            GeoPosition position = null;
-            
-            
-            if (valeur instanceof String) {
-                String[] parts = ((String) valeur).split(",");
-                if (parts.length == 2) {
-
-                	try {
-                        double latitude = Double.parseDouble(parts[0].trim());
-                        double longitude = Double.parseDouble(parts[1].trim());
-                        position = new GeoPosition(latitude, longitude);
-                        waypoints.add(new DefaultWaypoint(position));
-                        System.out.println("Added waypoint at: " + position);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Invalid coordinates: " + valeur);
-                    }
-                } else {
-                    System.err.println("Invalid coordinate format: " + valeur);
-                }
-            } else if (valeur instanceof GeoPosition) {
-                position = (GeoPosition) valeur;
-                waypoints.add(new DefaultWaypoint(position));
-                System.out.println("Added waypoint at: " + position);
-            } else {
-                System.err.println("Invalid value type: " + valeur);
-            }
-        }
-
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-        waypointPainter.setWaypoints(waypoints);
-
-        mapViewer.setOverlayPainter(waypointPainter);
-        mapViewer.repaint();
-        System.out.println("Map updated with waypoints.");
     }
     /**
      * Récupère le kmax

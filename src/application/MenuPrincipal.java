@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.cache.FileBasedLocalCache;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
+import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -239,56 +241,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	}
 
 	
-	private void afficherAeroports(JXMapViewer mapViewer) {
-	    if (ch != null && ch.isValid()) {
-	        // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
-	        Aeroport[] aeroports = ch.creationAeroports();
-
-	        /* Afficher les aéroports pour débogage
-            for (Aeroport aeroport : aeroports) {
-                System.out.println(aeroport); // Utilisation de System.out.println pour afficher les aéroports
-            }
-			*/
-	        
-	        // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
-	        List<Waypoint> waypoints = new ArrayList<>();
-
-	        // Parcourir chaque aéroport dans le tableau
-	        for (Aeroport aeroport : aeroports) {
-	            double latitude = aeroport.getLatitude();
-	            double longitude = aeroport.getLongitude();
-
-	            // Vérification des coordonnées avant de créer un GeoPosition
-	            if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
-	                GeoPosition position = new GeoPosition(latitude, longitude);
-
-	                // Utilisation de CustomWaypoint avec code d'aéroport
-	                CustomWaypoint waypoint = new CustomWaypoint(position, aeroport.getCode());
-
-	                // Ajouter le Waypoint à la liste des marqueurs
-	                waypoints.add(waypoint);
-	            } else {
-	                System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
-	            }
-	        }
-
-	        // Création d'un Set de Waypoints à partir de la liste
-	        Set<Waypoint> waypointSet = new HashSet<>(waypoints);
-
-	        // Création d'un WaypointPainter avec CustomWaypointRenderer pour dessiner les marqueurs sur la carte
-	        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-	        waypointPainter.setRenderer(new CustomWaypointRenderer());
-	        waypointPainter.setWaypoints(waypointSet);
-
-	        // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
-	        mapViewer.setOverlayPainter(waypointPainter);
-
-	        // Forcer la carte à se rafraîchir
-	        mapViewer.repaint();
-	    } else {
-	        System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
-	    }
-	}
+	
 
 	/**
 	 * Action performé.
@@ -454,13 +407,113 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		 
 		
 	}
-
+	private List<Waypoint> waypoints;
 	
+	private void afficherAeroports(JXMapViewer mapViewer) {
+	    if (ch != null && ch.isValid()) {
+	        // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
+	        Aeroport[] aeroports = ch.creationAeroports();
+
+	        /* Afficher les aéroports pour débogage
+            for (Aeroport aeroport : aeroports) {
+                System.out.println(aeroport); // Utilisation de System.out.println pour afficher les aéroports
+            }
+			*/
+	        
+	        // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
+	        waypoints = new ArrayList<>();
+
+	        // Parcourir chaque aéroport dans le tableau
+	        for (Aeroport aeroport : aeroports) {
+	            afficherUnAeroport(aeroport);
+	        }
+
+	        // Création d'un Set de Waypoints à partir de la liste
+	        Set<Waypoint> waypointSet = new HashSet<>(waypoints);
+
+	        // Création d'un WaypointPainter avec CustomWaypointRenderer pour dessiner les marqueurs sur la carte
+	        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+	        waypointPainter.setRenderer(new CustomWaypointRenderer());
+	        waypointPainter.setWaypoints(waypointSet);
+
+	        // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
+	        mapViewer.setOverlayPainter(waypointPainter);
+
+	        // Forcer la carte à se rafraîchir
+	        mapViewer.repaint();
+	    } else {
+	        System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
+	    }
+	}
+	
+	public void afficherUnAeroport(Aeroport aeroport) {
+		double latitude = aeroport.getLatitude();
+        double longitude = aeroport.getLongitude();
+
+        // Vérification des coordonnées avant de créer un GeoPosition
+        if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+            GeoPosition position = new GeoPosition(latitude, longitude);
+
+            // Utilisation de CustomWaypoint avec code d'aéroport
+            CustomWaypoint waypoint = new CustomWaypoint(position, aeroport.getCode());
+            // Ajouter le Waypoint à la liste des marqueurs
+            waypoints.add(waypoint);
+            
+            aeroport.setIsValide(true);
+            aeroport.setWaypoint(waypoint);
+        } else {
+            System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
+        }
+	}
+	
+	public void dessinerVols(List<Vol> vols) {
+        Set<Waypoint> waypoints = new HashSet<>();
+        List<GeoPosition> allTracks = new ArrayList<>();
+
+        for (Vol vol : vols) {
+            Aeroport aeroportA = vol.getAeroportArrivee();
+            Aeroport aeroportD = vol.getAeroportDepart();
+
+            if (!aeroportA.isValide()) {
+                afficherUnAeroport(aeroportA);
+            } else if (!aeroportD.isValide()) {
+                afficherUnAeroport(aeroportD);
+            }
+
+            // Utiliser CustomWaypoint au lieu de DefaultWaypoint
+            CustomWaypoint wpA = new CustomWaypoint(new GeoPosition(aeroportA.getLatitude(), aeroportA.getLongitude()), aeroportA.getCode());
+            CustomWaypoint wpD = new CustomWaypoint(new GeoPosition(aeroportD.getLatitude(), aeroportD.getLongitude()), aeroportD.getCode());
+
+            // Ajouter les custom waypoints à l'ensemble
+            waypoints.add(wpA);
+            waypoints.add(wpD);
+
+            // Ajouter les GeoPositions à la liste des tracks
+            allTracks.add(wpA.getPosition());
+            allTracks.add(wpD.getPosition());
+        }
+
+        // Créer un WaypointPainter avec tous les custom waypoints
+        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+        waypointPainter.setWaypoints(waypoints);
+        waypointPainter.setRenderer(new CustomWaypointRenderer()); // Utiliser CustomWaypointRenderer
+
+        // Créer un RoutePainter avec toutes les routes
+        RoutePainter routePainter = new RoutePainter(allTracks);
+
+        // Créer un CompoundPainter avec les deux peintres
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<>();
+        painter.setPainters(List.of(routePainter, waypointPainter));
+
+        mapViewer.setOverlayPainter(painter);
+    }
 	
 	private void calculerGrapheVols() {
 		if(ch != null && ch.isValid()) {
 			if(fichierVols != null) {
 				pfc = new ProcessCollision(fichierVols,kmaxValue);
+				// initialisation de la liste des aeroports
+				pfc.setAeroportsPC(ch.getAeroports());
 				pfc.processLineCollision(ch, margeValue);
 				conflits = pfc.getGraphMap().greedyColoring();
 				currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
@@ -469,9 +522,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 					if(currentGraph.getNodeCount() > 0) {
 						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
 				    	ToolBox.displaygraph(currentGraph);
-				    	pfc.setAeroportsPC(ch.getAeroports());
-				    	// Appel de la méthode pour dessiner les vols
-                        pfc.getGraphMap().dessinerVols(mapViewer);
+				    	
+				    	dessinerVols(pfc.getListVols());
 					}
 				} else {
 					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");

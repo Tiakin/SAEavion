@@ -2,7 +2,6 @@ package application;
 
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Waypoint;
 
 public class CustomWaypoint extends DefaultWaypoint {
     private String code;
