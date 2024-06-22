@@ -67,7 +67,7 @@ public class Aeroport {
     }
 
     /**
-     * Définit la longitude de l'aéroport.
+     * Définit la longitude de l'aéroport
      *
      * @param longitude la nouvelle longitude de l'aéroport
      */
