@@ -469,6 +469,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 					if(currentGraph.getNodeCount() > 0) {
 						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
 				    	ToolBox.displaygraph(currentGraph);
+				    	pfc.setAeroportsPC(ch.getAeroports());
 				    	// Appel de la méthode pour dessiner les vols
                         pfc.getGraphMap().dessinerVols(mapViewer);
 					}

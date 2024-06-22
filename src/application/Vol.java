@@ -4,12 +4,12 @@ import java.time.LocalTime;
 
 public class Vol {
     private String nom;
-    private String aeroportDepart;
-    private String aeroportArrivee;
+    private Aeroport aeroportDepart;
+    private Aeroport aeroportArrivee;
     private LocalTime heureDepart;
     private int duree;
 
-    public Vol(String nom, String aeroportDepart, String aeroportArrivee, LocalTime heureDepart, int duree) {
+    public Vol(String nom, Aeroport aeroportDepart, Aeroport aeroportArrivee, LocalTime heureDepart, int duree) {
         this.nom = nom;
         this.aeroportDepart = aeroportDepart;
         this.aeroportArrivee = aeroportArrivee;
@@ -21,11 +21,11 @@ public class Vol {
         return nom;
     }
 
-    public String getAeroportDepart() {
+    public Aeroport getAeroportDepart() {
         return aeroportDepart;
     }
 
-    public String getAeroportArrivee() {
+    public Aeroport getAeroportArrivee() {
         return aeroportArrivee;
     }
 

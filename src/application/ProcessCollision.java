@@ -48,7 +48,7 @@ public class ProcessCollision {
     }
     
     /**
-     * Read file.
+     * Lit le contenu du fichier sélectionné dans lines.
      */
     public void readFile() {
         BufferedReader reader;
@@ -62,22 +62,14 @@ public class ProcessCollision {
             while (ent.hasNextLine()) {
                 lines.add(ent.nextLine());
             }
+            System.out.println("Fichier lu avec succès. Nombre de lignes lues : " + lines.size());
+            
             reader.close(); 
             fr.close(); 
             ent.close();
         } catch (IOException ex) { 
-            System.err.println(ex); 
+            System.err.println("Erreur lors de la lecture du fichier : " + ex); 
         }
-    }
-    
-    /**
-     * Process line.
-     *
-     * @param sl la ligne
-     * @return le String[]
-     */
-    private String[] processLine(String sl) {
-        return sl.split(";");
     }
     
     /**
@@ -87,11 +79,14 @@ public class ProcessCollision {
      * @param marge la marge de sécurité
      */
     public void processLineCollision(ChargerAeroport ch, int marge) {
+        System.out.println("Début du traitement des collisions...");
+        
         for (int i = 0; i < lines.size(); i++) {
             String sl = lines.get(i);
             String[] res1 = processLine(sl);
             if (res1.length != 6) {
                 ToolBox.sendErrorMessage("Erreur lors de la lecture des vols :\r\n Il n'y a pas le bon nombre d'informations par ligne (à la ligne : " + i + ").");
+                System.out.println("Erreur : nombre incorrect d'informations à la ligne " + i);
                 return;
             }
             try {
@@ -100,7 +95,7 @@ public class ProcessCollision {
                 LocalTime lt1 = LocalTime.of(Integer.valueOf(res1[3]), Integer.valueOf(res1[4]));
                 
                 // Créer un vol à partir des informations de la ligne
-                createVol(res1[0], res1[1], res1[2], lt1, Integer.valueOf(res1[5]));
+                createVol(res1[0], codeToAeroport(res1[1]), codeToAeroport(res1[2]), lt1, Integer.valueOf(res1[5]));
 
                 for (int j = i + 1; j < lines.size(); j++) {
                     String[] res2 = processLine(lines.get(j));
@@ -120,14 +115,28 @@ public class ProcessCollision {
 
                     if (res) {
                         this.gm.addEdge(res1[0] + "(" + res1[1] + "-" + res1[2] + ")", res2[0] + "(" + res2[1] + "-" + res2[2] + ")", 0);
+                        System.out.println("Collision détectée entre " + res1[0] + " et " + res2[0]);
                     }
                 }
             } catch (Exception e) {
                 ToolBox.sendErrorMessage("Erreur lors de la lecture des vols :\r\n Une erreur est survenue dans la lecture d'une ligne");
+                System.out.println("Erreur : une exception est survenue à la ligne " + i);
             }
         }
+
+        System.out.println("Fin du traitement des collisions.");
     }
 
+    /**
+     * Transforme une ligne en tableau de chaînes en utilisant le délimiteur ";".
+     *
+     * @param sl la ligne à traiter
+     * @return le tableau de chaînes résultant
+     */
+    private String[] processLine(String sl) {
+        return sl.split(";");
+    }
+    
     /**
      * Crée un vol et l'ajoute à la liste des vols.
      *
@@ -137,11 +146,32 @@ public class ProcessCollision {
      * @param heureDepart l'heure de départ
      * @param duree la durée du vol en minutes
      */
-    private void createVol(String nomVol, String aeroportDepart, String aeroportArrivee, LocalTime heureDepart, int duree) {
+    private void createVol(String nomVol, Aeroport aeroportDepart, Aeroport aeroportArrivee, LocalTime heureDepart, int duree) {
         Vol vol = new Vol(nomVol, aeroportDepart, aeroportArrivee, heureDepart, duree);
         vols.add(vol);
     }
-
+    
+    /**
+     * Retrouve l'aéroport correspondant au code donné.
+     *
+     * @param codeAeroport le code de l'aéroport à rechercher
+     * @return l'aéroport correspondant, ou null si non trouvé
+     */
+    public Aeroport codeToAeroport(String codeAeroport) {
+        if (aeroports == null) {
+            System.err.println("Erreur : la liste des aéroports n'a pas été initialisée.");
+            return null;
+        }
+        
+        for (Aeroport aeroport : aeroports) {
+            if (aeroport.getCode().equals(codeAeroport)) {
+                return aeroport;
+            }
+        }
+        System.err.println("Aéroport non trouvé pour le code : " + codeAeroport);
+        return null; // Retourne null si l'aéroport n'est pas trouvé
+    }
+    
     /**
      * Récupère le graph map.
      *
@@ -158,5 +188,16 @@ public class ProcessCollision {
      */
     public List<Vol> getListVols() {
         return vols;
+    }
+
+    private Aeroport[] aeroports;
+
+    /**
+     * Définit la liste des aéroports utilisée par le processus de collision.
+     *
+     * @param aero la liste des aéroports à définir
+     */
+    public void setAeroportsPC(Aeroport[] aero) {
+        aeroports = aero;
     }
 }
