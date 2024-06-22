@@ -41,6 +41,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private JMenuBar menuBar;
 	
 	
+	private JXMapViewer mapViewer;
+	
 	/** Le menu fichier. */
 	private JMenu fichierMenu;
 	
@@ -212,7 +214,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
         
         // Setup JXMapViewer
-        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer = new JXMapViewer();
         mapViewer.setTileFactory(tileFactory);
         mapViewer.setZoom(14); // mettre à 13 en plein écran ça serait top je pense
         GeoPosition france = new GeoPosition(46,  13, 55, 2, 12, 34);
@@ -230,9 +232,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         // Ajouter JXMapViewer à JFrame
         getContentPane().add(mapViewer);
         
-        // Ajout de la logique pour afficher les aéroports
-        afficherAeroports(mapViewer);
-        
         this.add(mapViewer);
         
         
@@ -242,37 +241,40 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	
 	private void afficherAeroports(JXMapViewer mapViewer) {
         if (ch != null && ch.isValid()) {
-            Map<String, String[]> mapAeroports = ch.getMapAero();
+            // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
+            Aeroport[] aeroports = ch.creationAeroports();
 
+            /* Afficher les aéroports pour débogage
+            for (Aeroport aeroport : aeroports) {
+                System.out.println(aeroport); // Utilisation de System.out.println pour afficher les aéroports
+            }
+			*/
+			
+			
             // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
             List<Waypoint> waypoints = new ArrayList<>();
 
-            // Parcourir chaque aéroport dans la map
-            for (Map.Entry<String, String[]> entry : mapAeroports.entrySet()) {
-                String[] aeroportInfo = entry.getValue();
+            // Parcourir chaque aéroport dans le tableau
+            for (Aeroport aeroport : aeroports) {
+                double latitude = aeroport.getLatitude();
+                double longitude = aeroport.getLongitude();
 
-                // Récupérer les coordonnées de l'aéroport
-                double latitude = Double.parseDouble(aeroportInfo[2]); // Assurez-vous que l'index est correct
-                double longitude = Double.parseDouble(aeroportInfo[6]); // Assurez-vous que l'index est correct
+                // Vérification des coordonnées avant de créer un GeoPosition
+                if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+                    GeoPosition position = new GeoPosition(latitude, longitude);
 
-                // Log des coordonnées
-                System.out.println("Aéroport: " + entry.getKey() + " Latitude: " + latitude + " Longitude: " + longitude);
+                    // Utilisation de DefaultWaypoint pour créer un Waypoint concret
+                    DefaultWaypoint waypoint = new DefaultWaypoint(position);
 
-                // Créer une GeoPosition pour l'aéroport
-                GeoPosition position = new GeoPosition(latitude, longitude);
-
-                // Utilisation de DefaultWaypoint pour créer un Waypoint concret
-                DefaultWaypoint waypoint = new DefaultWaypoint(position);
-
-                // Ajouter le Waypoint à la liste des marqueurs
-                waypoints.add(waypoint);
+                    // Ajouter le Waypoint à la liste des marqueurs
+                    waypoints.add(waypoint);
+                } else {
+                    System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
+                }
             }
 
             // Création d'un Set de Waypoints à partir de la liste
             Set<Waypoint> waypointSet = new HashSet<>(waypoints);
-
-            // Log du nombre de waypoints
-            System.out.println("Nombre de waypoints: " + waypointSet.size());
 
             // Création d'un WaypointPainter pour dessiner les marqueurs sur la carte
             WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
@@ -300,6 +302,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = charger.getSelectedFile();
                 ch = new ChargerAeroport(file);
+                afficherAeroports(mapViewer);
             }  
 	    }
 		if (action.getSource() == vols){

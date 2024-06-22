@@ -67,11 +67,20 @@ public class Aeroport {
     }
 
     /**
-     * Définit la longitude de l'aéroport
+     * Définit la longitude de l'aéroport.
      *
      * @param longitude la nouvelle longitude de l'aéroport
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+    
+    @Override
+    public String toString() {
+        return "Aeroport{" +
+                "code='" + code + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
