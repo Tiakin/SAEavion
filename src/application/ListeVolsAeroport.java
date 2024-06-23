@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package application;
 
 import java.awt.BorderLayout;
@@ -15,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * La classe ListAeroport.
  */
@@ -109,15 +105,13 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
 
         // Récupérer et afficher les vols
         for (GraphMap<String, Integer>.SommetPrinc sp : graph.getNodes()) {
-            String val = sp.getVal();
+            String val = sp.getVal()+" de "+sp.getTime()+" à "+sp.getTime().plusMinutes(sp.getDuree());
             if (val.contains(aeroport + "-")) {
                 // Vol partant de l'aéroport
                 modelPartants.addElement(val);
-                System.out.println("ajout partant");
             } else if (val.contains("-" + aeroport)) {
                 // Vol arrivant à l'aéroport
                 modelArrivants.addElement(val);
-                System.out.println("ajout arrivant");
             }
         }
     }

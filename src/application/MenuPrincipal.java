@@ -1,16 +1,20 @@
 package application;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -18,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import org.graphstream.graph.Graph;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -26,7 +31,6 @@ import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.Waypoint;
@@ -43,49 +47,52 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private JMenuBar menuBar;
 	
 	
+	/**
+	 * Le map viewer.
+	 */
 	private JXMapViewer mapViewer;
 	
 	/** Le menu fichier. */
 	private JMenu fichierMenu;
 	
 	/** L'item aeroport. */
-	private JMenuItem aeroport;
+	private JMenuItem aeroportItem;
 	
 	/** L'item vols. */
-	private JMenuItem vols;
+	private JMenuItem volsItem;
 	
 	/** L'item graphe charge. */
-	private JMenuItem grapheCharge;
+	private JMenuItem grapheChargeItem;
 	
 	/** L'item graphe export. */
-	private JMenuItem grapheExport;
+	private JMenuItem grapheExportItem;
 	
 	/** L'item listegraphe. */
-	private JMenuItem listegraphe;
+	private JMenuItem listegrapheItem;
 	
 	
 	/** Le menu afficher. */
 	private JMenu afficherMenu;
 	
 	/** L'item horaire. */
-	private JMenuItem horaire;
+	private JMenuItem horaireItem;
 	
 	/** L'item niveau. */
-	private JMenuItem niveau;
+	private JMenuItem niveauItem;
 	
 	
 	/** L'item (unique) statistique. */
-	private JMenuItem statistique;
+	private JMenuItem statistiqueItem;
 	
 	
 	/** Le menu edition. */
 	private JMenu editionMenu;
 	
 	/** L'item kmax. */
-	private JMenuItem kmax;
+	private JMenuItem kmaxItem;
 	
 	/** L'item marge. */
-	private JMenuItem marge;
+	private JMenuItem margeItem;
 
 	// variable de classe
 	
@@ -95,26 +102,56 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/** Le ProcessCollision. */
 	private ProcessCollision pfc;
 
-	/** Le graph en cours */
+	/**
+	 *  Le graph en cours.
+	 */
 	private Graph currentGraph;
 	
-	/** Le nombre de conflit en cours */
+	/**
+	 *  Le nombre de conflit en cours.
+	 */
 	private int conflits;
 	
-	/** L'horaire en cours */
-	private int horaireValue;
+	/**
+	 *  L'horaire en cours.
+	 */
+	private int horaireValue = ToolBox.NOVALUE;
 	
-	/** Le niveau en cours */
-	private int niveauValue;
+	/**
+	 *  Le niveau en cours.
+	 */
+	private int niveauValue = ToolBox.NOVALUE;
 	
-	/** La marge de sécurité, 15 est la valeur par défaut */
+	/**
+	 *  La marge de sécurité, 15 est la valeur par défaut.
+	 */
 	private int margeValue = 15;
 	
-	/** valeur du kmax */
+	/**
+	 *  valeur du kmax.
+	 */
 	private int kmaxValue = 10;
 
-
+	/**
+	 *  le fichier des vols.
+	 */
 	private File fichierVols;
+	
+	/**
+	 *  les aeroports.
+	 */
+	private Aeroport[] aeroports;
+	
+	/**
+	 *  les waypoints.
+	 */
+	private List<Waypoint> waypoints;
+
+
+	/**
+	 *  le mouse adapter waypoint.
+	 */
+	private MouseAdapter waypointMouseAdapter;
 
 	
 	/**
@@ -127,21 +164,21 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         
         initialisation();
         
-        aeroport.addActionListener(this);
-        vols.addActionListener(this);
-        grapheCharge.addActionListener(this);
+        aeroportItem.addActionListener(this);
+        volsItem.addActionListener(this);
+        grapheChargeItem.addActionListener(this);
         
-        grapheExport.addActionListener(this);
+        grapheExportItem.addActionListener(this);
         
-        listegraphe.addActionListener(this);
+        listegrapheItem.addActionListener(this);
         
-        horaire.addActionListener(this);
-        niveau.addActionListener(this);
+        horaireItem.addActionListener(this);
+        niveauItem.addActionListener(this);
         
-        statistique.addActionListener(this);
+        statistiqueItem.addActionListener(this);
         
-        kmax.addActionListener(this);
-        marge.addActionListener(this);
+        kmaxItem.addActionListener(this);
+        margeItem.addActionListener(this);
 	}
 	
 	/**
@@ -153,54 +190,54 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         // Menu Fichier
         fichierMenu = new JMenu("Fichier");
         
-        aeroport = new JMenuItem("Charger les aéroports");
-        fichierMenu.add(aeroport);
+        aeroportItem = new JMenuItem("Charger les aéroports");
+        fichierMenu.add(aeroportItem);
         
-        vols = new JMenuItem("Charger les vols");
-        fichierMenu.add(vols);
+        volsItem = new JMenuItem("Charger les vols");
+        fichierMenu.add(volsItem);
         
-        grapheCharge = new JMenuItem("Charger un graphe");
-        fichierMenu.add(grapheCharge);
-        
-        
-        fichierMenu.addSeparator();
-        
-        grapheExport = new JMenuItem("Exporter le graphe");
-        fichierMenu.add(grapheExport);
+        grapheChargeItem = new JMenuItem("Charger un graphe");
+        fichierMenu.add(grapheChargeItem);
         
         
         fichierMenu.addSeparator();
         
+        grapheExportItem = new JMenuItem("Exporter le graphe");
+        fichierMenu.add(grapheExportItem);
         
-        listegraphe = new JMenuItem("Calcul d'une liste de graphe");
-        fichierMenu.add(listegraphe);
+        
+        fichierMenu.addSeparator();
+        
+        
+        listegrapheItem = new JMenuItem("Calcul d'une liste de graphe");
+        fichierMenu.add(listegrapheItem);
         
         menuBar.add(fichierMenu);
 
         // Menu Affichage
         afficherMenu = new JMenu("Affichage");
         
-        horaire = new JMenuItem("Horaire");
-        afficherMenu.add(horaire);
+        horaireItem = new JMenuItem("Horaire");
+        afficherMenu.add(horaireItem);
         
-        niveau = new JMenuItem("Niveau");
-        afficherMenu.add(niveau);
+        niveauItem = new JMenuItem("Niveau");
+        afficherMenu.add(niveauItem);
         
         afficherMenu.addSeparator();
         
-        statistique = new JMenuItem("Statistique");
-        afficherMenu.add(statistique);
+        statistiqueItem = new JMenuItem("Statistique");
+        afficherMenu.add(statistiqueItem);
         
         menuBar.add(afficherMenu);
 
         // Menu Édition
         editionMenu = new JMenu("Édition");
         
-        kmax = new JMenuItem("Kmax");
-        editionMenu.add(kmax);
+        kmaxItem = new JMenuItem("Kmax");
+        editionMenu.add(kmaxItem);
         
-        marge = new JMenuItem("Marge de sécurité");
-        editionMenu.add(marge);
+        margeItem = new JMenuItem("Marge de sécurité");
+        editionMenu.add(margeItem);
         
         menuBar.add(editionMenu);
         
@@ -250,7 +287,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent action) {
-		if (action.getSource() == aeroport){
+		if (action.getSource() == aeroportItem){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -259,7 +296,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 afficherAeroports(mapViewer);
             }  
 	    }
-		if (action.getSource() == vols){
+		if (action.getSource() == volsItem){
 			Choix charger = new Choix(this, false);
 			int option =charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -267,7 +304,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 calculerGrapheVols();
             }       
 		}
-		if (action.getSource() == grapheCharge){
+		if (action.getSource() == grapheChargeItem){
 			Choix charger = new Choix(this, false);
 			int option = charger.showOpenDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -291,7 +328,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 
             }  
 		}
-		if (action.getSource() == grapheExport){
+		if (action.getSource() == grapheExportItem){
 			Choix sauver = new Choix(this, false);
 			int option = sauver.showSaveDialog(this);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -305,7 +342,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
                 }
             } 
 		}
-		if (action.getSource() == listegraphe){
+		if (action.getSource() == listegrapheItem){
 			boolean show = false;
 			if((action.getModifiers() & 1) != 0) { //shift = 1
 				show = true;
@@ -354,37 +391,37 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 				}
 	        }
 	    }
-		if (action.getSource() == horaire){
+		if (action.getSource() == horaireItem){
 			Horaire horaire = new Horaire(this);
 	        int value = horaire.showDialog();
 	        if(value == ToolBox.RESETVALUE) {
 	        	horaireValue = ToolBox.NOVALUE;
+	        	dessinerVols();
 	        } else if(value != ToolBox.KEEPVALUE) {
 				horaireValue = value;
+				dessinerVols();
 			}
 	    }
-		if (action.getSource() == niveau){
+		if (action.getSource() == niveauItem){
 			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			int value = niveau.showDialog();
 			if(value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
+				dessinerVols();
 	        } else if(value != ToolBox.KEEPVALUE) {
 				niveauValue = value;
+				dessinerVols();
 			}
 	    }
-		if (action.getSource() == statistique){
+		if (action.getSource() == statistiqueItem){
 	        Statistique statistique = new Statistique(this);
 	        if(currentGraph != null) {
 	        	statistique.updateStatistics(currentGraph, conflits);
 	        }
 	        statistique.showDialog();
 	        statistique.dispose();
-	        if((action.getModifiers() & 1) != 0) { //shift = 1
-			ListeVolsAeroport lva = new ListeVolsAeroport(this, "DOL",pfc.getGraphMap());
-			lva.showDialog();
-            }
 	    }
-		if (action.getSource() == kmax){
+		if (action.getSource() == kmaxItem){
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
 			int value = kmax.showDialog();
 			if(value == ToolBox.RESETVALUE) {
@@ -394,7 +431,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 				calculerGrapheVols();
 			}
 	    }
-		if (action.getSource() == marge){
+		if (action.getSource() == margeItem){
 			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			int value = marge.showDialog();
 			if(value == ToolBox.RESETVALUE) {
@@ -407,12 +444,16 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 		 
 		
 	}
-	private List<Waypoint> waypoints;
 	
+	/**
+	 * Afficher aeroports.
+	 *
+	 * @param mapViewer la map viewer
+	 */
 	private void afficherAeroports(JXMapViewer mapViewer) {
 	    if (ch != null && ch.isValid()) {
 	        // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
-	        Aeroport[] aeroports = ch.creationAeroports();
+	        aeroports = ch.creationAeroports();
 
 	        /* Afficher les aéroports pour débogage
             for (Aeroport aeroport : aeroports) {
@@ -446,6 +487,11 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	    }
 	}
 	
+	/**
+	 * Afficher un aeroport.
+	 *
+	 * @param aeroport l'aeroport
+	 */
 	public void afficherUnAeroport(Aeroport aeroport) {
 		double latitude = aeroport.getLatitude();
         double longitude = aeroport.getLongitude();
@@ -459,38 +505,56 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             // Ajouter le Waypoint à la liste des marqueurs
             waypoints.add(waypoint);
             
-            aeroport.setIsValide(true);
+            aeroport.setVisible(true);
             aeroport.setWaypoint(waypoint);
         } else {
             System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
         }
 	}
 	
-	public void dessinerVols(List<Vol> vols) {
-        Set<Waypoint> waypoints = new HashSet<>();
-        List<GeoPosition> allTracks = new ArrayList<>();
-
-        for (Vol vol : vols) {
-            Aeroport aeroportA = vol.getAeroportArrivee();
-            Aeroport aeroportD = vol.getAeroportDepart();
-
-            if (!aeroportA.isValide()) {
-                afficherUnAeroport(aeroportA);
-            } else if (!aeroportD.isValide()) {
-                afficherUnAeroport(aeroportD);
-            }
-
-            // Utiliser CustomWaypoint au lieu de DefaultWaypoint
-            CustomWaypoint wpA = new CustomWaypoint(new GeoPosition(aeroportA.getLatitude(), aeroportA.getLongitude()), aeroportA.getCode());
-            CustomWaypoint wpD = new CustomWaypoint(new GeoPosition(aeroportD.getLatitude(), aeroportD.getLongitude()), aeroportD.getCode());
-
-            // Ajouter les custom waypoints à l'ensemble
-            waypoints.add(wpA);
-            waypoints.add(wpD);
-
-            // Ajouter les GeoPositions à la liste des tracks
-            allTracks.add(wpA.getPosition());
-            allTracks.add(wpD.getPosition());
+	/**
+	 * Dessiner vols.
+	 */
+	public void dessinerVols() {
+        Set<CustomWaypoint> waypoints = new HashSet<>();
+        List<GeoPosition[]> allLines = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        for(GraphMap<String, Integer>.SommetPrinc p : pfc.getGraphMap().getNodes()) {
+        	if(niveauValue == ToolBox.NOVALUE || niveauValue == p.getCoul()) {
+        		LocalTime lt;
+        		if(horaireValue != ToolBox.NOVALUE) {
+        			lt = LocalTime.of(horaireValue/100, horaireValue%100);
+        		} else {
+        			lt = null;
+        		}
+        		if( horaireValue == ToolBox.NOVALUE || lt !=null ) {
+        			
+        			if(lt !=null) {
+        				if(!(p.getTime().isBefore(lt) && p.getTime().plusMinutes(p.getDuree()).isAfter(lt))) {
+        					break;
+        				}
+        			}
+		            Aeroport aeroportA = ToolBox.codeToAeroport(aeroports, p.getVal().split("\\(")[1].split("-")[0]);
+		            Aeroport aeroportD = ToolBox.codeToAeroport(aeroports, p.getVal().split("\\(")[1].split("-")[1].replace(")", ""));
+		            
+		            if (!aeroportA.isVisible()) {
+		                afficherUnAeroport(aeroportA);
+		            } else if (!aeroportD.isVisible()) {
+		                afficherUnAeroport(aeroportD);
+		            }
+		            
+		            // Utiliser CustomWaypoint au lieu de DefaultWaypoint
+		            CustomWaypoint wpA = new CustomWaypoint(new GeoPosition(aeroportA.getLatitude(), aeroportA.getLongitude()), aeroportA.getCode());
+		            CustomWaypoint wpD = new CustomWaypoint(new GeoPosition(aeroportD.getLatitude(), aeroportD.getLongitude()), aeroportD.getCode());
+		            // Ajouter les custom waypoints à l'ensemble
+		            waypoints.add(wpA);
+		            waypoints.add(wpD);
+		
+		            // Ajouter les GeoPositions à la liste des tracks
+		            allLines.add(new GeoPosition[]{wpA.getPosition(),wpD.getPosition()});
+		            colors.add(p.getCoul());
+        		}
+        	}
         }
 
         // Créer un WaypointPainter avec tous les custom waypoints
@@ -499,21 +563,44 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         waypointPainter.setRenderer(new CustomWaypointRenderer()); // Utiliser CustomWaypointRenderer
 
         // Créer un RoutePainter avec toutes les routes
-        RoutePainter routePainter = new RoutePainter(allTracks);
+        RoutePainter routePainter = new RoutePainter(pfc.getGraphMap(), allLines, colors);
 
         // Créer un CompoundPainter avec les deux peintres
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<>();
         painter.setPainters(List.of(routePainter, waypointPainter));
 
         mapViewer.setOverlayPainter(painter);
+        
+        if(waypointMouseAdapter != null) {
+        	mapViewer.removeMouseListener(waypointMouseAdapter);
+        }
+        
+        waypointMouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point point = e.getPoint();
+                for (CustomWaypoint wp : waypoints) {
+                    Point2D mapPoint = mapViewer.convertGeoPositionToPoint(wp.getPosition());
+                    Rectangle rect = new Rectangle((int) mapPoint.getX() - 15, (int) mapPoint.getY() - 15, 30, 30);
+                    if (rect.contains(point)) {
+                    	ListeVolsAeroport lva = new ListeVolsAeroport(MenuPrincipal.this, wp.getCode(), pfc.getGraphMap());
+            			lva.showDialog();
+                        break;
+                    }
+                }
+            }
+        };
+        mapViewer.addMouseListener(waypointMouseAdapter);
     }
 	
+	/**
+	 * Calculer graphe vols.
+	 */
 	private void calculerGrapheVols() {
 		if(ch != null && ch.isValid()) {
 			if(fichierVols != null) {
 				pfc = new ProcessCollision(fichierVols,kmaxValue);
 				// initialisation de la liste des aeroports
-				pfc.setAeroportsPC(ch.getAeroports());
 				pfc.processLineCollision(ch, margeValue);
 				conflits = pfc.getGraphMap().greedyColoring();
 				currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
@@ -523,7 +610,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
 				    	ToolBox.displaygraph(currentGraph);
 				    	
-				    	dessinerVols(pfc.getListVols());
+				    	dessinerVols();
 					}
 				} else {
 					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");

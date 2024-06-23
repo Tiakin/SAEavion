@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Horaire.
  */

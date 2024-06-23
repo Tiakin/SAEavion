@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -28,11 +27,6 @@ public class ProcessCollision {
      * Le fichier sélectionner.
      */
     private File selectedFile;
-   
-    /**
-     * La liste des vols.
-     */
-    private List<Vol> vols;
 
     /**
      * Instancie un nouveau process collision.
@@ -43,7 +37,6 @@ public class ProcessCollision {
     public ProcessCollision(File file, int kmax) {
         this.selectedFile = file;
         this.gm = new GraphMap<String, Integer>(kmax);
-        this.vols = new ArrayList<>();
         readFile();
     }
     
@@ -90,12 +83,8 @@ public class ProcessCollision {
                 return;
             }
             try {
-                this.gm.addNode(res1[0] + "(" + res1[1] + "-" + res1[2] + ")");
-                
-                LocalTime lt1 = LocalTime.of(Integer.valueOf(res1[3]), Integer.valueOf(res1[4]));
-                
-                // Créer un vol à partir des informations de la ligne
-                createVol(res1[0], codeToAeroport(res1[1]), codeToAeroport(res1[2]), lt1, Integer.valueOf(res1[5]));
+            	LocalTime lt1 = LocalTime.of(Integer.valueOf(res1[3]), Integer.valueOf(res1[4]));
+                this.gm.addNode(res1[0] + "(" + res1[1] + "-" + res1[2] + ")",lt1,Integer.valueOf(res1[5]));
 
                 for (int j = i + 1; j < lines.size(); j++) {
                     String[] res2 = processLine(lines.get(j));
@@ -114,7 +103,7 @@ public class ProcessCollision {
                     );
 
                     if (res) {
-                        this.gm.addEdge(res1[0] + "(" + res1[1] + "-" + res1[2] + ")", res2[0] + "(" + res2[1] + "-" + res2[2] + ")", 0);
+                        this.gm.addEdge(res1[0] + "(" + res1[1] + "-" + res1[2] + ")", res2[0] + "(" + res2[1] + "-" + res2[2] + ")", 0,lt1,Integer.valueOf(res1[5]),lt2,Integer.valueOf(res2[5]));
                         System.out.println("Collision détectée entre " + res1[0] + " et " + res2[0]);
                     }
                 }
@@ -138,41 +127,6 @@ public class ProcessCollision {
     }
     
     /**
-     * Crée un vol et l'ajoute à la liste des vols.
-     *
-     * @param nomVol le nom du vol
-     * @param aeroportDepart l'aéroport de départ
-     * @param aeroportArrivee l'aéroport d'arrivée
-     * @param heureDepart l'heure de départ
-     * @param duree la durée du vol en minutes
-     */
-    private void createVol(String nomVol, Aeroport aeroportDepart, Aeroport aeroportArrivee, LocalTime heureDepart, int duree) {
-        Vol vol = new Vol(nomVol, aeroportDepart, aeroportArrivee, heureDepart, duree);
-        vols.add(vol);
-    }
-    
-    /**
-     * Retrouve l'aéroport correspondant au code donné.
-     *
-     * @param codeAeroport le code de l'aéroport à rechercher
-     * @return l'aéroport correspondant, ou null si non trouvé
-     */
-    public Aeroport codeToAeroport(String codeAeroport) {
-        if (aeroports == null) {
-            System.err.println("Erreur : la liste des aéroports n'a pas été initialisée.");
-            return null;
-        }
-        
-        for (Aeroport aeroport : aeroports) {
-            if (aeroport.getCode().equals(codeAeroport)) {
-                return aeroport;
-            }
-        }
-        System.err.println("Aéroport non trouvé pour le code : " + codeAeroport);
-        return null; // Retourne null si l'aéroport n'est pas trouvé
-    }
-    
-    /**
      * Récupère le graph map.
      *
      * @return le graph map
@@ -181,23 +135,4 @@ public class ProcessCollision {
         return gm;
     }
 
-    /**
-     * Récupère la liste des vols.
-     *
-     * @return la liste des vols
-     */
-    public List<Vol> getListVols() {
-        return vols;
-    }
-
-    private Aeroport[] aeroports;
-
-    /**
-     * Définit la liste des aéroports utilisée par le processus de collision.
-     *
-     * @param aero la liste des aéroports à définir
-     */
-    public void setAeroportsPC(Aeroport[] aero) {
-        aeroports = aero;
-    }
 }

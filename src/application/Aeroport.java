@@ -2,14 +2,35 @@ package application;
 
 import org.jxmapviewer.viewer.Waypoint;
 
+// TODO: Auto-generated Javadoc
 /**
  * La classe Aeroport représente un aéroport avec son code, sa latitude et sa longitude.
  */
 public class Aeroport {
+    
+    /**
+     * Le code.
+     */
     private String code;
+    
+    /**
+     * La latitude.
+     */
     private double latitude;
+    
+    /**
+     * La longitude.
+     */
     private double longitude;
-    private boolean isValide;
+    
+    /**
+     * est visible.
+     */
+    private boolean visible;
+    
+    /**
+     * Le waypoint.
+     */
     private Waypoint waypoint;
 
     /**
@@ -23,7 +44,7 @@ public class Aeroport {
         this.code = code;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.isValide = false;
+        this.visible = false;
         this.waypoint = null;
     }
 
@@ -36,18 +57,38 @@ public class Aeroport {
         return code;
     }
 
-    public boolean isValide() {
-    	return isValide;
+    /**
+     * Regarde si c'est visible.
+     *
+     * @return true, si c'est visible
+     */
+    public boolean isVisible() {
+    	return visible;
     }
     
-    public void setIsValide(boolean bool) {
-    	isValide = bool;
+    /**
+     * change le visible.
+     *
+     * @param bool le nouveau visible
+     */
+    public void setVisible(boolean bool) {
+    	visible = bool;
     }
     
+    /**
+     * Récupère le waypoint.
+     *
+     * @return le waypoint
+     */
     public Waypoint getWaypoint() {
     	return waypoint;
     }
     
+    /**
+     * change le waypoint.
+     *
+     * @param way le nouveau waypoint
+     */
     public void setWaypoint(Waypoint way) {
     	waypoint = way;
     }
@@ -96,6 +137,11 @@ public class Aeroport {
         this.longitude = longitude;
     }
     
+    /**
+     * To string.
+     *
+     * @return le String
+     */
     @Override
     public String toString() {
         return "Aeroport{" +

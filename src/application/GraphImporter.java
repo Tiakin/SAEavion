@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
 
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.Graph;
@@ -102,12 +101,8 @@ public class GraphImporter {
      */
     public static Graph importGraph(GraphMap<String, Integer> gm) {
         Graph graph = new MultiGraph("importedGraph");
-        String colors[] = new String[gm.getkmax()];
-        for(int i = 0; i<colors.length;i++) {
-        	Random rdm = new Random();
-        	colors[i] = "rgb("+rdm.nextInt(256)+","+rdm.nextInt(256)+","+rdm.nextInt(256)+")";
-        	System.out.println(colors[i]);
-        }
+        gm.initColors();
+        String colors[] = gm.getColors();
         
         for(GraphMap<String, Integer>.SommetPrinc p : gm.getNodes()) {
         	String node1 = p.getId()+"";

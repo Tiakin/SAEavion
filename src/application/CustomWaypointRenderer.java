@@ -14,12 +14,22 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 
 
+/**
+ * La classe CustomWaypointRenderer.
+ */
 public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
+    
+    /**
+     * Le waypoint image.
+     */
     private Image waypointImage;
 
+    /**
+     * Instancie un nouveau custom waypoint renderer.
+     */
     public CustomWaypointRenderer() {
         // Charger l'image personnalisée
-        try (InputStream stream = getClass().getResourceAsStream("/images/aeroport.png")) {
+        try (InputStream stream = getClass().getResourceAsStream("/ressources/images/aeroport.png")) {
             if (stream != null) {
                 waypointImage = ImageIO.read(stream);
             } else {
@@ -33,6 +43,13 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
     }
 
 
+    /**
+     * Paint waypoint.
+     *
+     * @param g le graphics
+     * @param map la map
+     * @param waypoint le waypoint
+     */
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint waypoint) {
         if (waypointImage != null && waypoint instanceof CustomWaypoint) {
@@ -48,6 +65,7 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
             int y = (int) point.getY() - height / 2;
 
             g.drawImage(waypointImage, x, y, width, height, null);
+            
         }
     }
 

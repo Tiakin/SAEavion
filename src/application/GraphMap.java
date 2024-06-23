@@ -1,18 +1,16 @@
+/*
+ * 
+ */
 package application;
 
+import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
-
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.DefaultWaypoint;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Waypoint;
-import org.jxmapviewer.viewer.WaypointPainter;
 
 /**
  * La classe GraphMap.
@@ -43,14 +41,28 @@ class GraphMap<T,E> {
         private int couleur=-1;
 
         /**
+         * La temps.
+         */
+		private LocalTime time;
+
+		/**
+         * La durée.
+         */
+		private Integer duree;
+
+        /**
          * Instancie un nouveau sommet principal.
          *
          * @param id l'id
          * @param valeur la valeur
+         * @param lt1 le temps
+         * @param integer la durée
          */
-        public SommetPrinc(int id, T valeur) {
+        public SommetPrinc(int id, T valeur, LocalTime lt, Integer duree) {
             this.id = id;
             this.valeur = valeur;
+            this.time = lt;
+            this.duree = duree;
         }
 
         /**
@@ -106,7 +118,25 @@ class GraphMap<T,E> {
         public void setCoul(int c) {
             this.couleur=c;
         }
-
+        
+        /**
+         * Récupère la durée.
+         *
+         * @return la duree
+         */
+		public Integer getDuree() {
+			return duree;
+		}
+		
+		/**
+		 * 
+         * Récupère le temps.
+         *
+         * @return le temps
+         */
+		public LocalTime getTime() {
+			return time;
+		}
 
         /**
          * en String.
@@ -210,6 +240,11 @@ class GraphMap<T,E> {
      * Le nombre de couleurs max.
      */
     private int kmax;
+    
+    /**
+     * Les couleurs
+     */
+    private String[] colors;
 
     /**
      * Instancie un nouveau graphmap.
@@ -264,13 +299,16 @@ class GraphMap<T,E> {
      * Ajoute une noeud.
      *
      * @param val la valeur
+     * @param lt le temps
+     * @param integer la durée
      * @return le SommetPrinc
      */
-    public SommetPrinc addNode(T val) {
+    public SommetPrinc addNode(T val, LocalTime lt, Integer integer) {
         SommetPrinc spr = null;
         if (this.findKeyVal(val)==null) {
-            spr = new SommetPrinc(this.id++,val);
+            spr = new SommetPrinc(this.id++,val, lt, integer);
             map.put(spr, new LinkedList<>());
+            System.out.println(val);
         }
         return spr;
     }
@@ -286,9 +324,38 @@ class GraphMap<T,E> {
         SommetPrinc spr1=this.findKeyVal(val1);
         SommetPrinc spr2=this.findKeyVal(val2);
 
-        if (spr1==null) spr1=addNode(val1);
+        if (spr1==null) spr1=addNode(val1, null, null);
 
-        if (spr2==null) spr2=addNode(val2);
+        if (spr2==null) spr2=addNode(val2, null, null);
+
+        if (!hasEdge(val1,val2)) {
+            map.get(spr1).add(new SommetAdj(spr2.getId(),valArête));
+            map.get(spr2).add(new SommetAdj(spr1.getId(),valArête));
+        }
+        else {
+            System.out.println("ces deux vols : "+val1.toString()+ " et "+val2.toString()+" ont déjà été liés");
+        }
+    }
+    
+    
+    /**
+     * Ajoute un edge.
+     *
+     * @param val1 la valeur 1
+     * @param val2 la valeur 2
+     * @param valArête la valeur d'arête
+     * @param lt1 le temps 1
+     * @param integer1 la durée 1
+     * @param lt2 le temps 2
+     * @param integer2 la durée 2
+     */
+    public void addEdge(T val1, T val2, E valArête, LocalTime lt1, Integer integer1, LocalTime lt2, Integer integer2) {
+        SommetPrinc spr1=this.findKeyVal(val1);
+        SommetPrinc spr2=this.findKeyVal(val2);
+
+        if (spr1==null) spr1=addNode(val1, lt1, integer1);
+
+        if (spr2==null) spr2=addNode(val2, lt2, integer2);
 
         if (!hasEdge(val1,val2)) {
             map.get(spr1).add(new SommetAdj(spr2.getId(),valArête));
@@ -455,4 +522,34 @@ class GraphMap<T,E> {
     public int getkmax() {
 		return kmax;
     }
+    
+    /**
+     * Initialises les couleurs
+     */
+	public void initColors() {
+		colors = new String[getkmax()];
+        for(int i = 0; i<colors.length;i++) {
+        	Random rdm = new Random();
+        	colors[i] = "rgb("+rdm.nextInt(256)+","+rdm.nextInt(256)+","+rdm.nextInt(256)+")";
+        }
+	}
+	
+	/**
+     * Récupère les couleurs
+     *
+     * @return les couleurs
+     */
+	public String[] getColors() {
+		return colors;
+	}
+	
+	/**
+     * Récupère une couleur
+     *
+     * @return la couleur
+     */
+	public String getColor(int i) {
+		return colors[i];
+	}
+	
 }

@@ -235,8 +235,35 @@ public class ToolBox {
     	JOptionPane.showMessageDialog(null, text, "Erreur", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Affiche le graph.
+     *
+     * @param graph le graph.
+     */
     public static void displaygraph(Graph graph) {
 		Viewer viewer = graph.display();
 		viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 	}
+    
+    /**
+     * Retrouve l'aéroport correspondant au code donné.
+     *
+     * @param aeroports la liste d'aeroport
+     * @param codeAeroport le code de l'aéroport à rechercher
+     * @return l'aéroport correspondant, ou null si non trouvé
+     */
+    public static Aeroport codeToAeroport(Aeroport[] aeroports, String codeAeroport) {
+        if (aeroports == null) {
+            System.err.println("Erreur : la liste des aéroports n'a pas été initialisée.");
+            return null;
+        }
+        
+        for (Aeroport aeroport : aeroports) {
+            if (aeroport.getCode().equals(codeAeroport)) {
+                return aeroport;
+            }
+        }
+        System.err.println("Aéroport non trouvé pour le code : " + codeAeroport);
+        return null; // Retourne null si l'aéroport n'est pas trouvé
+    }
 }

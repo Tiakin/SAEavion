@@ -18,8 +18,6 @@ public class ChargerAeroport {
 	 */
 	private Map<String,String[]> m;
 	
-	private Aeroport[] aeroports;
-	
 	/**
 	 * Le fichier sélectionné.
 	 */
@@ -95,25 +93,15 @@ public class ChargerAeroport {
      * @return un tableau d'objets Aeroport
      */
 	public Aeroport[] creationAeroports() {
-	    aeroports = new Aeroport[m.size()];
+	    Aeroport[] aeroports = new Aeroport[m.size()];
 	    int index = 0;
 	    for (Map.Entry<String, String[]> entry : m.entrySet()) {
 	        String[] data = entry.getValue();
 	        String code = data[0];
 
-	        // Conversion des coordonnées géographiques en degrés décimaux
-	        double latitude = convertToDecimal(
-	                Integer.parseInt(data[2]),  // Latitude degrés
-	                Integer.parseInt(data[3]),  // Latitude minutes
-	                Integer.parseInt(data[4]),  // Latitude secondes
-	                data[5].charAt(0));         // Latitude direction (N ou S)
-
-	        double longitude = convertToDecimal(
-	                Integer.parseInt(data[6]),  // Longitude degrés
-	                Integer.parseInt(data[7]),  // Longitude minutes
-	                Integer.parseInt(data[8]),  // Longitude secondes
-	                data[9].charAt(0));         // Longitude direction (E ou W)
-
+	        double latitude = convertCoordinates(data[2], data[3], data[4], data[5]);
+            double longitude = convertCoordinates(data[6], data[7], data[8], data[9]);
+            
 	        // Vérification de la validité des coordonnées
 	        if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
 	            System.out.println("Coordonnées invalides pour l'aéroport: " + code);
@@ -126,17 +114,25 @@ public class ChargerAeroport {
 	    
 	    return aeroports;
 	}
-
-	// Méthode pour convertir les coordonnées géographiques en degrés décimaux
-	private double convertToDecimal(int deg, int min, int sec, char dir) {
-	    double decimal = deg + (min / 60.0) + (sec / 3600.0);
-	    if (dir == 'S' || dir == 'W') {
-	        decimal = -decimal;
-	    }
-	    return decimal;
-	}
 	
-	public Aeroport[] getAeroports() {
-		return aeroports;
-	}
+	/**
+     * Convertit les coordonnées de degrés/minutes/secondes en degrés décimaux.
+     *
+     * @param deg   degrés
+     * @param min   minutes
+     * @param sec   secondes
+     * @param orientation N, S, E, W
+     * @return les coordonnées en degrés décimaux
+     */
+    private double convertCoordinates(String deg, String min, String sec, String orientation) {
+        double degrees = Double.parseDouble(deg);
+        double minutes = Double.parseDouble(min);
+        double seconds = Double.parseDouble(sec);
+        double decimal = degrees + (minutes / 60.0) + (seconds / 3600.0);
+        if (orientation.equals("S") || orientation.equals("W")) {
+            decimal = -decimal;
+        }
+        return decimal;
+    }
+    
 }
