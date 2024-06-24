@@ -1,7 +1,7 @@
 /*
  * La boite à outils
  */
-package application;
+package application.utils;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -12,19 +12,26 @@ import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
+import application.aeroport.Aeroport;
+import application.aeroport.ChargerAeroport;
+
 
 /**
  * La classe ToolBox.
+ * 
+ * @author Killian
+ * @author Farouk
+ * @author Mohammed Belkhatir
  */
 public class ToolBox {
 
-	/** La variable ne doit pas être pris en compte */
+	/**  La variable ne doit pas être pris en compte. */
 	public static final int NOVALUE = -1;
 
-	/** Précise que la variable doit être réinitialisée */
+	/**  Précise que la variable doit être réinitialisée. */
 	public static final int RESETVALUE = -2;
 	
-	/** Précise que la variable doit être gardée */
+	/**  Précise que la variable doit être gardée. */
 	public static final int KEEPVALUE = -1;
 	
     /**
@@ -35,6 +42,8 @@ public class ToolBox {
      * @param x2 le x du point 2
      * @param y2 le y du point 2
      * @return la distance
+     * 
+     * @author Mohammed Belkhatir
      */
     public static double compDistanceBetweenPoints(double x1, double y1, double x2, double y2) {
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
@@ -52,6 +61,8 @@ public class ToolBox {
      * @param longS la seconde de la longitude
      * @param longDir la direction pour la longitude
      * @return le double[] x et y
+     * 
+     * @author Mohammed Belkhatir
      */
     public static double[] CompXY(int latD, int latM, int latS, char latDir, int longD, int longM,int longS, char longDir) {
         double[] res = new double[2];
@@ -83,6 +94,9 @@ public class ToolBox {
      * @param x22 le x du point 2 de la ligne 2
      * @param y22 le y du point 2 de la ligne 2
      * @return le double[] point d'intersection, null sinon
+     * 
+     * @author Killian
+     * @author Mohammed Belkhatir
      */
     public static double[] SegInter(double x11, double y11, double x12, double y12, double x21, double y21, double x22, double y22) {
         double dx1 = x12 - x11;
@@ -132,6 +146,9 @@ public class ToolBox {
      * @param dur2 la durée 2
      * @param marge la marge
      * @return true, si c'est vrai
+     * 
+     * @author Killian
+     * @author Mohammed Belkhatir
      */
     public static boolean processACollision(ChargerAeroport ch, String dep1, String arr1, String dep2, String arr2, LocalTime t1, LocalTime t2, int dur1, int dur2, int marge) {
         boolean colliding = false;
@@ -230,6 +247,8 @@ public class ToolBox {
      * envoie un message d'erreur.
      *
      * @param text le texte
+     * 
+     * @author Killian
      */
     public static void sendErrorMessage(String text) {
     	JOptionPane.showMessageDialog(null, text, "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -239,6 +258,8 @@ public class ToolBox {
      * Affiche le graph.
      *
      * @param graph le graph.
+     * 
+     * @author Killian
      */
     public static void displaygraph(Graph graph) {
 		Viewer viewer = graph.display();
@@ -251,6 +272,8 @@ public class ToolBox {
      * @param aeroports la liste d'aeroport
      * @param codeAeroport le code de l'aéroport à rechercher
      * @return l'aéroport correspondant, ou null si non trouvé
+     * 
+     * @author Farouk
      */
     public static Aeroport codeToAeroport(Aeroport[] aeroports, String codeAeroport) {
         if (aeroports == null) {

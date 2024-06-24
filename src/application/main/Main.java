@@ -1,7 +1,9 @@
-package application;
+package application.main;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import application.ui.MenuPrincipal;
 
 /**
  * La classe Main.
@@ -12,6 +14,8 @@ public class Main {
      * la méthode main.
      *
      * @param args les arguments
+     * 
+     * @author Killian
      */
     public static void main(String[] args) {
     	

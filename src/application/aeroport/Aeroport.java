@@ -1,10 +1,12 @@
-package application;
+package application.aeroport;
 
 import org.jxmapviewer.viewer.Waypoint;
 
-// TODO: Auto-generated Javadoc
 /**
  * La classe Aeroport représente un aéroport avec son code, sa latitude et sa longitude.
+ * 
+ * @author Farouk
+ * @author Killian
  */
 public class Aeroport {
     
@@ -36,9 +38,12 @@ public class Aeroport {
     /**
      * Constructeur de la classe Aeroport.
      *
+     *
      * @param code      le code de l'aéroport
      * @param latitude  la latitude de l'aéroport
      * @param longitude la longitude de l'aéroport
+     * 
+     * @author Farouk
      */
     public Aeroport(String code, double latitude, double longitude) {
         this.code = code;
@@ -52,6 +57,8 @@ public class Aeroport {
      * Obtient le code de l'aéroport.
      *
      * @return le code de l'aéroport
+     * 
+     * @author Farouk
      */
     public String getCode() {
         return code;
@@ -61,6 +68,8 @@ public class Aeroport {
      * Regarde si c'est visible.
      *
      * @return true, si c'est visible
+     * 
+     * @author Farouk
      */
     public boolean isVisible() {
     	return visible;
@@ -70,6 +79,8 @@ public class Aeroport {
      * change le visible.
      *
      * @param bool le nouveau visible
+     * 
+     * @author Farouk
      */
     public void setVisible(boolean bool) {
     	visible = bool;
@@ -79,6 +90,8 @@ public class Aeroport {
      * Récupère le waypoint.
      *
      * @return le waypoint
+     * 
+     * @author Farouk
      */
     public Waypoint getWaypoint() {
     	return waypoint;
@@ -88,6 +101,8 @@ public class Aeroport {
      * change le waypoint.
      *
      * @param way le nouveau waypoint
+     * 
+     * @author Farouk
      */
     public void setWaypoint(Waypoint way) {
     	waypoint = way;
@@ -96,6 +111,8 @@ public class Aeroport {
      * Définit le code de l'aéroport.
      *
      * @param code le nouveau code de l'aéroport
+     * 
+     * @author Farouk
      */
     public void setCode(String code) {
         this.code = code;
@@ -105,6 +122,8 @@ public class Aeroport {
      * Obtient la latitude de l'aéroport.
      *
      * @return la latitude de l'aéroport
+     * 
+     * @author Farouk
      */
     public double getLatitude() {
         return latitude;
@@ -114,6 +133,8 @@ public class Aeroport {
      * Définit la latitude de l'aéroport.
      *
      * @param latitude la nouvelle latitude de l'aéroport
+     * 
+     * @author Farouk
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -123,6 +144,8 @@ public class Aeroport {
      * Obtient la longitude de l'aéroport.
      *
      * @return la longitude de l'aéroport
+     * 
+     * @author Farouk
      */
     public double getLongitude() {
         return longitude;
@@ -132,6 +155,8 @@ public class Aeroport {
      * Définit la longitude de l'aéroport.
      *
      * @param longitude la nouvelle longitude de l'aéroport
+     * 
+     * @author Farouk
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
@@ -141,6 +166,8 @@ public class Aeroport {
      * To string.
      *
      * @return le String
+     * 
+     * @author Farouk
      */
     @Override
     public String toString() {

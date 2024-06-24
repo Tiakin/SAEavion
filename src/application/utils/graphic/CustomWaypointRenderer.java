@@ -1,4 +1,4 @@
-package application;
+package application.utils.graphic;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -9,6 +9,9 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.WaypointRenderer;
+
+import application.utils.CustomWaypoint;
+
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -16,6 +19,9 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 /**
  * La classe CustomWaypointRenderer.
+ * 
+ * @author Farouk
+ * @author Killian
  */
 public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
     
@@ -26,6 +32,9 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
 
     /**
      * Instancie un nouveau custom waypoint renderer.
+     * 
+     * @author Farouk
+     * @author Killian
      */
     public CustomWaypointRenderer() {
         // Charger l'image personnalisée
@@ -33,6 +42,7 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
             if (stream != null) {
                 waypointImage = ImageIO.read(stream);
             } else {
+            	
                 System.err.println("L'image d'aéroport n'a pas été trouvée ou le chemin est incorrect.");
                 waypointImage = null;
             }
@@ -49,6 +59,8 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
      * @param g le graphics
      * @param map la map
      * @param waypoint le waypoint
+     * 
+     * @author Farouk
      */
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint waypoint) {

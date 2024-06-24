@@ -1,4 +1,4 @@
-package application;
+package application.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import application.utils.ToolBox;
+
 /**
  * La classe EditDialog.
+ * 
+ *  @author Killian
  */
 public class EditDialog extends JDialog implements ActionListener{
 
@@ -52,6 +56,8 @@ public class EditDialog extends JDialog implements ActionListener{
 	 * @param owner La fenêtre principale
 	 * @param title le titre
 	 * @param label le message pour la modification
+	 * 
+	 * @author Killian
 	 */
 	public EditDialog(MenuPrincipal owner, String title, String label) {
 
@@ -80,6 +86,8 @@ public class EditDialog extends JDialog implements ActionListener{
 	 * Action perfomé.
 	 *
 	 * @param action L'action de clique
+	 * 
+	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
@@ -100,6 +108,8 @@ public class EditDialog extends JDialog implements ActionListener{
 	 * Affiche le dialogue.
 	 *
 	 * @return la marge
+	 * 
+	 * @author Killian
 	 */
 	public int showDialog() {
 		setVisible(true);

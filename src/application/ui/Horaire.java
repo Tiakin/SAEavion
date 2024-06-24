@@ -1,4 +1,4 @@
-package application;
+package application.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import application.utils.ToolBox;
+
 /**
  * The Class Horaire.
+ * 
+ * @author Killian
  */
 public class Horaire extends JDialog implements ActionListener{
 
@@ -60,6 +64,8 @@ public class Horaire extends JDialog implements ActionListener{
 	 * Instancie un nouvel horaire.
 	 *
 	 * @param owner la fenêtre principale
+	 * 
+	 * @author Killian
 	 */
 	public Horaire(MenuPrincipal owner) {
 
@@ -87,6 +93,8 @@ public class Horaire extends JDialog implements ActionListener{
 	 * Action perfomé.
 	 *
 	 * @param action L'action de clique
+	 * 
+	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
@@ -107,6 +115,8 @@ public class Horaire extends JDialog implements ActionListener{
 	 * Montre le dialogue.
 	 *
 	 * @return l'horaire
+	 * 
+	 * @author Killian
 	 */
 	public int showDialog() {
 		setVisible(true);

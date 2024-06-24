@@ -1,4 +1,4 @@
-package application;
+package application.ui;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 
 /**
  * la Classe CalculListeGraphe.
+ * 
+ * @author Killian
  */
 public class CalculListeGraphe extends JDialog implements ActionListener{
 
@@ -115,6 +117,8 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 * Instancie un JDialog de calcul de listes de graphes.
 	 *
 	 * @param owner the owner
+	 * 
+	 * @author Killian
 	 */
 	public CalculListeGraphe(MenuPrincipal owner) {
 
@@ -179,6 +183,8 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 * Action perfomé.
 	 *
 	 * @param action L'action de clique
+	 * 
+	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 		if (action.getSource() == sourceButton){
@@ -212,14 +218,19 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	
 	/**
 	 * montre le JDialog.
+	 * 
+	 * @author Killian
 	 */
 	public void showDialog() {
 		setVisible(true);
 	}
 	
 	/**
-	 * indique si l'utilisateur à appuyé sur le bouton valider
+	 * indique si l'utilisateur à appuyé sur le bouton valider.
+	 *
 	 * @return true si l'utilisateur à appuyé sur le bouton valider
+	 * 
+	 * @author Killian
 	 */
 	public boolean isValid() {
 		return valider;
@@ -227,32 +238,44 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	}
 	
 	/**
-	 * récupère le répertoire source
+	 * récupère le répertoire source.
+	 *
 	 * @return le répertoire source
+	 * 
+	 * @author Killian
 	 */
 	public String getSourcePath() {
 		return repertoireSource.getText();
 	}
 	
 	/**
-	 * récupère le pattern de fichier source
+	 * récupère le pattern de fichier source.
+	 *
 	 * @return le fichier source
+	 * 
+	 * @author Killian
 	 */
 	public String getSourcePattern() {
 		return patternSource.getText();
 	}
 	
 	/**
-	 * récupère le répertoire sortie
+	 * récupère le répertoire sortie.
+	 *
 	 * @return le répertoire sortie
+	 * 
+	 * @author Killian
 	 */
 	public String getSortiePath() {
 		return repertoireSortie.getText();
 	}
 	
 	/**
-	 * récupère le pattern de fichier sortie
+	 * récupère le pattern de fichier sortie.
+	 *
 	 * @return le fichier sortie
+	 * 
+	 * @author Killian
 	 */
 	public String getSortiePattern() {
 		return patternSortie.getText();

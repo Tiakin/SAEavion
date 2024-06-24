@@ -1,4 +1,4 @@
-package application;
+package application.aeroport;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,8 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import application.utils.ToolBox;
+
 /**
  * La classe ChargerAeroport.
+ * 
+ * @author Killian
+ * @author Farouk
+ * @author Mohammed Belkhatir
  */
 public class ChargerAeroport {
 	
@@ -23,15 +29,17 @@ public class ChargerAeroport {
 	 */
 	private File selectedFile;
 
-	/**
-	 * Si ChargerAeroport est valide
-	 */
+	/** Si ChargerAeroport est valide. */
 	private boolean valid;
     
     /**
      * Instancie ChargerAeroport.
      *
      * @param file le fichier
+     * 
+     * @author Killian
+     * @author Farouk
+     * @author Mohammed Belkhatir
      */
     public ChargerAeroport(File file) {
     	this.selectedFile = file;
@@ -42,6 +50,10 @@ public class ChargerAeroport {
     
     /**
      * Read file.
+     * 
+     * @author Killian
+     * @author Farouk
+     * @author Mohammed Belkhatir
      */
     private void readFile() {
         BufferedReader reader;
@@ -73,6 +85,10 @@ public class ChargerAeroport {
      * Récupère la map aéroport.
      *
      * @return la map aéroport
+     * 
+     * @author Killian
+     * @author Farouk
+     * @author Mohammed Belkhatir
      */
     public Map<String, String[]> getMapAero() {
         return m;
@@ -82,6 +98,8 @@ public class ChargerAeroport {
      * Si ChargerAeroport est valide.
      *
      * @return true si valide
+     * 
+     * @author Killian
      */
 	public boolean isValid() {
 		return valid;
@@ -91,6 +109,8 @@ public class ChargerAeroport {
      * Crée les objets Aeroport à partir des données chargées.
      *
      * @return un tableau d'objets Aeroport
+     * 
+     * @author Farouk
      */
 	public Aeroport[] creationAeroports() {
 	    Aeroport[] aeroports = new Aeroport[m.size()];
@@ -121,15 +141,18 @@ public class ChargerAeroport {
      * @param deg   degrés
      * @param min   minutes
      * @param sec   secondes
-     * @param orientation N, S, E, W
+     * @param orientation N, S, E, O(ou W)
      * @return les coordonnées en degrés décimaux
+     * 
+     * @author Farouk
+     * @author Killian
      */
     private double convertCoordinates(String deg, String min, String sec, String orientation) {
         double degrees = Double.parseDouble(deg);
         double minutes = Double.parseDouble(min);
         double seconds = Double.parseDouble(sec);
         double decimal = degrees + (minutes / 60.0) + (seconds / 3600.0);
-        if (orientation.equals("S") || orientation.equals("W")) {
+        if (orientation.matches("[SWOswo]")) {
             decimal = -decimal;
         }
         return decimal;

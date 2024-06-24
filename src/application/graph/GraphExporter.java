@@ -1,4 +1,4 @@
-package application;
+package application.graph;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,9 +7,14 @@ import java.io.IOException;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 
+import application.graph.GraphMap.SommetPrinc;
+
 
 /**
  * La classe GraphExporter.
+ * 
+ * @author Axel
+ * @author Killian
  */
 public class GraphExporter {
 
@@ -19,6 +24,8 @@ public class GraphExporter {
      * @param file le fichier
      * @param graph le graph
      * @param kmaxValue le kmax
+     * 
+     * @author Axel
      */
     public static void exportGraph(File file, Graph graph, int kmaxValue) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -47,6 +54,8 @@ public class GraphExporter {
      *
      * @param file le fichier
      * @param gm le graph
+     * 
+     * @author Killian
      */
     public static void exportGraphColor(File file, GraphMap<String, Integer> gm) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {

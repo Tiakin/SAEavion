@@ -1,4 +1,4 @@
-package application;
+package application.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -9,11 +9,17 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import application.graph.GraphMap;
+
 import javax.swing.DefaultListModel;
 
 
 /**
  * La classe ListAeroport.
+ * 
+ * @author Axel
+ * @author Killian
  */
 public class ListeVolsAeroport extends JDialog implements ActionListener {
 
@@ -64,6 +70,9 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
      * @param owner La fenêtre principale
      * @param aeroport l'aéroport pour lequel afficher les vols
      * @param graph le graphe des vols
+     * 
+     * @author Axel
+     * @author Killian
      */
     public ListeVolsAeroport(MenuPrincipal owner, String aeroport, GraphMap<String, Integer> graph) {
 
@@ -120,6 +129,8 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
      * Action perfomé.
      *
      * @param action L'action de clique
+     * 
+     * @author Axel
      */
     public void actionPerformed(ActionEvent action) {
         if (action.getSource() == retourButton) {
@@ -130,6 +141,8 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
     
     /**
      * Affiche la fenêtre de liste des vols pour un aéroport donné.
+     * 
+     * @author Axel
      */
     public void showDialog() {
         setVisible(true);

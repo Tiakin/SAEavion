@@ -1,4 +1,4 @@
-package application;
+package application.utils.graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -11,10 +11,16 @@ import java.util.List;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
+
+import application.graph.GraphMap;
+
 import org.jxmapviewer.painter.Painter;
 
 /**
  * Paints a route.
+ * 
+ * @author Killian
+ * @author Martin Steiger, pour la classe de base dans le github de JXMapViewer
  */
 public class RoutePainter implements Painter<JXMapViewer>
 {
@@ -25,12 +31,12 @@ public class RoutePainter implements Painter<JXMapViewer>
     private boolean antiAlias = true;
 
     /**
-     * Les lines.
+     * Les lignes.
      */
     private List<GeoPosition[]> lines;
     
     /**
-     * Les colors.
+     * Les couleurs.
      */
     private List<Integer> colors;
 	
@@ -43,8 +49,10 @@ public class RoutePainter implements Painter<JXMapViewer>
      * Instancie un nouveau route painter.
      *
      * @param gm le graphmap
-     * @param allLines les lines
-     * @param colors les colors
+     * @param allLines les lignes
+     * @param colors les couleurs
+     * 
+     * @author Martin Steiger
      */
     public RoutePainter(GraphMap<String, Integer> gm, List<GeoPosition[]> allLines, List<Integer> colors)
     {
@@ -59,7 +67,10 @@ public class RoutePainter implements Painter<JXMapViewer>
      * @param g le grahics
      * @param map la map
      * @param w la largeur
-     * @param h la longueur
+     * @param h la hauteur
+     * 
+     * @author Killian
+     * @author Martin Steiger
      */
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h)
@@ -85,6 +96,9 @@ public class RoutePainter implements Painter<JXMapViewer>
      * @param g le graphics
      * @param map la map
      * @param colored si dessin en couleur
+     * 
+     * @author Killian
+     * @author Martin Steiger
      */
     private void drawRoute(Graphics2D g, JXMapViewer map, boolean colored)
     {

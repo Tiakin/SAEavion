@@ -1,4 +1,4 @@
-package application;
+package application.ui;
 
 import java.io.File;
 
@@ -7,6 +7,8 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * La classe Choix.
+ * 
+ * @author Killian
  */
 public class Choix extends JFileChooser {
 
@@ -15,6 +17,8 @@ public class Choix extends JFileChooser {
 	 *
 	 * @param owner La fenêtre principale
 	 * @param repertoire choisir un répertoire
+	 * 
+	 * @author Killian
 	 */
 	public Choix(MenuPrincipal owner, boolean repertoire) {
 		
