@@ -8,8 +8,6 @@ import java.io.IOException;
 
 import org.graphstream.graph.implementations.MultiGraph;
 
-import application.graph.GraphMap.SommetAdj;
-import application.graph.GraphMap.SommetPrinc;
 import application.utils.ToolBox;
 
 import org.graphstream.graph.Graph;
@@ -21,6 +19,11 @@ import org.graphstream.graph.Graph;
  * @author Axel
  */
 public class GraphImporter {
+	
+	/**
+	 * Le constructeur GraphImporter.
+	 */
+	private GraphImporter() {}
 
     /**
      * Importer le graph à partir d'un fichier.
@@ -30,8 +33,8 @@ public class GraphImporter {
      * 
      * @deprecated il faut importer un graphmap avant comme ça on peut avoir la coloration.
      * 
-     * @author Axel
-     * @author Killian
+
+
      */
 	@Deprecated
     public static Graph importGraph(File file) {
@@ -109,8 +112,8 @@ public class GraphImporter {
      * @param gm le graphmap
      * @return le graph
      * 
-     * @author Killian
-     * @author Axel
+
+
      */
     public static Graph importGraph(GraphMap<String, Integer> gm) {
         Graph graph = new MultiGraph("importedGraph");
@@ -162,7 +165,7 @@ public class GraphImporter {
      * @param file le fichier
      * @return le graph
      * 
-     * @author Killian
+
      */
     public static GraphMap<String, Integer> importGraphMap(File file) {
     	

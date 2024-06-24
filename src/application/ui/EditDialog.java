@@ -57,7 +57,6 @@ public class EditDialog extends JDialog implements ActionListener{
 	 * @param title le titre
 	 * @param label le message pour la modification
 	 * 
-	 * @author Killian
 	 */
 	public EditDialog(MenuPrincipal owner, String title, String label) {
 
@@ -87,7 +86,6 @@ public class EditDialog extends JDialog implements ActionListener{
 	 *
 	 * @param action L'action de clique
 	 * 
-	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
@@ -109,7 +107,6 @@ public class EditDialog extends JDialog implements ActionListener{
 	 *
 	 * @return la marge
 	 * 
-	 * @author Killian
 	 */
 	public int showDialog() {
 		setVisible(true);

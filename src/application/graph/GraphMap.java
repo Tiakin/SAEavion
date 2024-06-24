@@ -12,11 +12,10 @@ import java.util.Set;
 /**
  * La classe GraphMap.
  *
- * @param <T> le type générique
- * @param <E> le type d'élément
- * 
  * @author Killian
  * @author Mohammed Belkhatir
+ * @param <T> le type générique
+ * @param <E> le type d'élément
  */
 public class GraphMap<T,E> {
 
@@ -61,8 +60,8 @@ public class GraphMap<T,E> {
          * @param lt le temps
          * @param duree la durée
          * 
-         * @author Killian
-         * @author Mohammed Belkhatir
+
+
          */
         public SommetPrinc(int id, T valeur, LocalTime lt, Integer duree) {
             this.id = id;
@@ -76,8 +75,7 @@ public class GraphMap<T,E> {
          *
          * @return l'id
          * 
-         * @author Killian
-         * @author Mohammed Belkhatir
+
          */
         public int getId() {
             return id;
@@ -88,8 +86,7 @@ public class GraphMap<T,E> {
          *
          * @param id le nouveau id
          * 
-         * @author Killian
-         * @author Mohammed Belkhatir
+
          */
         public void setId(int id) {
             this.id=id;
@@ -100,8 +97,7 @@ public class GraphMap<T,E> {
          *
          * @return la valeur
          * 
-         * @author Killian
-         * @author Mohammed Belkhatir
+
          */
         public T getVal() {
             return this.valeur;
@@ -112,7 +108,7 @@ public class GraphMap<T,E> {
          *
          * @param val la nouvelle valeur
          * 
-         * @author Mohammed Belkhatir
+
          */
         public void setVal(T val) {
             this.valeur= val;
@@ -123,7 +119,7 @@ public class GraphMap<T,E> {
          *
          * @return la couleur
          * 
-         * @author Mohammed Belkhatir
+
          */
         public int getCoul() {
             return this.couleur;
@@ -134,7 +130,7 @@ public class GraphMap<T,E> {
          *
          * @param c la nouvelle couleur
          * 
-         * @author Mohammed Belkhatir
+
          */
         public void setCoul(int c) {
             this.couleur=c;
@@ -145,7 +141,7 @@ public class GraphMap<T,E> {
          *
          * @return la duree
          * 
-         * @author Killian
+
          */
 		public Integer getDuree() {
 			return duree;
@@ -157,7 +153,7 @@ public class GraphMap<T,E> {
          *
          * @return le temps
          * 
-         * @author Killian
+
          */
 		public LocalTime getTime() {
 			return time;
@@ -168,8 +164,8 @@ public class GraphMap<T,E> {
          *
          * @return le String
          * 
-         * @author Killian
-         * @author Mohammed Belkhatir
+
+
          */
         public String toString() {
             return "Id : "+id+", Valeur : "+valeur.toString()+", " + "Couleur : "+this.couleur+", " + "Temps : "+this.time+", " + "Durée : "+this.duree ;
@@ -205,7 +201,7 @@ public class GraphMap<T,E> {
          * @param id l'id
          * @param valeur la valeur
          * 
-         * @author Mohammed Belkhatir
+
          */
         public SommetAdj(int id, E valeur) {
             this.id = id;
@@ -217,7 +213,7 @@ public class GraphMap<T,E> {
          *
          * @return l'id
          * 
-         * @author Mohammed Belkhatir
+
          */
         public int getId() {
             return this.id;
@@ -228,7 +224,7 @@ public class GraphMap<T,E> {
          *
          * @return true si confit avec SommetPrinc
          * 
-         * @author Killian
+
          */
         public boolean isConflit() {
             return this.conflit;
@@ -237,7 +233,7 @@ public class GraphMap<T,E> {
         /**
          * Change conflit en true.
          * 
-         * @author Killian
+
          */
         public void causeConflit() {
             this.conflit = true;
@@ -248,7 +244,7 @@ public class GraphMap<T,E> {
          *
          * @return la valeur
          * 
-         * @author Mohammed Belkhatir
+
          */
         public E getValeur() {
             return this.valeur;
@@ -260,7 +256,7 @@ public class GraphMap<T,E> {
          *
          * @return le String
          * 
-         * @author Mohammed Belkhatir
+
          */
         public String toString() {
             return " IdAdj : "+this.id+", en conflit : "+ conflit;
@@ -290,8 +286,8 @@ public class GraphMap<T,E> {
      *
      * @param k le kmax (le nombre de couleur)
      * 
-     * @author Killian
-     * @author Mohammed Belkhatir
+
+
      */
     public GraphMap(int k) {
         this.id=0;
@@ -305,7 +301,7 @@ public class GraphMap<T,E> {
      * @param val la valeur
      * @return le SommetPrinc
      * 
-     * @author Mohammed Belkhatir
+
      */
     @SuppressWarnings("unchecked")
 	public SommetPrinc findKeyVal(T val) {
@@ -325,7 +321,7 @@ public class GraphMap<T,E> {
      * @param id l'id
      * @return le SommetPrinc
      * 
-     * @author Mohammed Belkhatir
+
      */
     @SuppressWarnings("unchecked")
 	private SommetPrinc findKeyId(int id) {
@@ -349,8 +345,8 @@ public class GraphMap<T,E> {
      * @param integer la durée
      * @return le SommetPrinc
      * 
-     * @author Killian
-     * @author Mohammed Belkhatir
+
+
      */
     public SommetPrinc addNode(T val, LocalTime lt, Integer integer) {
         SommetPrinc spr = null;
@@ -369,8 +365,8 @@ public class GraphMap<T,E> {
      * @param val2 la valeur 2
      * @param valArête la valeur d'arête
      * 
-     * @author Killian
-     * @author Mohammed Belkhatir
+
+
      */
     public void addEdge(T val1, T val2, E valArête) {
         SommetPrinc spr1=this.findKeyVal(val1);
@@ -401,7 +397,7 @@ public class GraphMap<T,E> {
      * @param lt2 le temps 2
      * @param integer2 la durée 2
      * 
-     * @author Killian
+
      */
     public void addEdge(T val1, T val2, E valArête, LocalTime lt1, Integer integer1, LocalTime lt2, Integer integer2) {
         SommetPrinc spr1=this.findKeyVal(val1);
@@ -427,7 +423,7 @@ public class GraphMap<T,E> {
      * @param id2 l'id 2
      * @return true, si c'est vrai
      * 
-     * @author Mohammed Belkhatir
+
      */
     public boolean hasEdge (int id1, int id2) {
         boolean b = false;
@@ -448,7 +444,7 @@ public class GraphMap<T,E> {
      *
      * @return les noeud
      * 
-     * @author Killian
+
      */
     public Set<SommetPrinc> getNodes() {
         return map.keySet();
@@ -460,7 +456,7 @@ public class GraphMap<T,E> {
      * @param sp the sp
      * @return le adj
      * 
-     * @author Mohammed Belkhatir
+
      */
     public List<SommetAdj> getAdj(SommetPrinc sp) {
         return map.get(sp);
@@ -473,7 +469,7 @@ public class GraphMap<T,E> {
      * @param val2 the val 2
      * @return true, si c'est vrai
      * 
-     * @author Mohammed Belkhatir
+
      */
     public boolean hasEdge (T val1, T val2) {
         boolean b = false;
@@ -515,8 +511,8 @@ public class GraphMap<T,E> {
      *
      * @return le nombre de conflits
      * 
-     * @author Killian
-     * @author Mohammed Belkhatir
+
+
      */
     public int greedyColoring() {
         int conflits = 0;
@@ -585,7 +581,7 @@ public class GraphMap<T,E> {
      *
      * @return le kmax
      * 
-     * @author Killian
+
      */
     public int getkmax() {
 		return kmax;
@@ -594,7 +590,7 @@ public class GraphMap<T,E> {
     /**
      * Initialises les couleurs.
      * 
-     * @author Killian
+
      */
 	public void initColors() {
 		colors = new String[getkmax()];
@@ -609,7 +605,6 @@ public class GraphMap<T,E> {
 	 *
 	 * @return les couleurs
 	 * 
-	 * @author Killian
 	 */
 	public String[] getColors() {
 		return colors;
@@ -621,7 +616,6 @@ public class GraphMap<T,E> {
 	 * @param i la position
 	 * @return la couleur
 	 * 
-	 * @author Killian
 	 */
 	public String getColor(int i) {
 		return colors[i];

@@ -18,7 +18,6 @@ public class Choix extends JFileChooser {
 	 * @param owner La fenêtre principale
 	 * @param repertoire choisir un répertoire
 	 * 
-	 * @author Killian
 	 */
 	public Choix(MenuPrincipal owner, boolean repertoire) {
 		

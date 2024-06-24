@@ -172,7 +172,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/**
 	 * Instancie un nouveau menu principal.
 	 * 
-	 * @author Killian
 	 */
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
@@ -201,7 +200,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/**
 	 * Initialisation du panel.
 	 * 
-	 * @author Killian
 	 */
 	private void initialisation() {
     	menuBar = new JMenuBar();
@@ -274,7 +272,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         // Setup JXMapViewer
         mapViewer = new JXMapViewer();
         mapViewer.setTileFactory(tileFactory);
-        mapViewer.setZoom(14); // mettre à 13 en plein écran ça serait top je pense
+        mapViewer.setZoom(14);
         GeoPosition france = new GeoPosition(46,  13, 55, 2, 12, 34);
         mapViewer.setAddressLocation(france);
         
@@ -304,8 +302,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 *
 	 * @param action l'action de clique
 	 * 
-	 * @author Killian
-	 * @author Farouk
 	 */
 	@Override
 	public void actionPerformed(ActionEvent action) {
@@ -476,7 +472,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 *
 	 * @param mapViewer la map viewer
 	 * 
-	 * @author Farouk
 	 */
 	private void afficherAeroports(JXMapViewer mapViewer) {
 	    if (ch != null && ch.isValid()) {
@@ -514,7 +509,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 *
 	 * @param aeroport l'aeroport
 	 * 
-	 * @author Farouk
 	 */
 	public void afficherUnAeroport(Aeroport aeroport) {
 		double latitude = aeroport.getLatitude();
@@ -539,8 +533,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/**
 	 * Dessiner vols.
 	 * 
-	 * @author Killian
-	 * @author Farouk
 	 */
 	public void dessinerVols() {
         Set<CustomWaypoint> waypoints = new HashSet<>();
@@ -623,7 +615,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	/**
 	 * Calculer graphe vols.
 	 * 
-	 * @author Killian
 	 */
 	private void calculerGrapheVols() {
 		if(ch != null && ch.isValid()) {

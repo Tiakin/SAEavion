@@ -20,7 +20,7 @@ import org.jxmapviewer.painter.Painter;
  * Paints a route.
  * 
  * @author Killian
- * @author Martin Steiger, pour la classe de base dans le github de JXMapViewer
+ * @author Martin Steiger
  */
 public class RoutePainter implements Painter<JXMapViewer>
 {
@@ -52,7 +52,6 @@ public class RoutePainter implements Painter<JXMapViewer>
      * @param allLines les lignes
      * @param colors les couleurs
      * 
-     * @author Martin Steiger
      */
     public RoutePainter(GraphMap<String, Integer> gm, List<GeoPosition[]> allLines, List<Integer> colors)
     {
@@ -69,8 +68,6 @@ public class RoutePainter implements Painter<JXMapViewer>
      * @param w la largeur
      * @param h la hauteur
      * 
-     * @author Killian
-     * @author Martin Steiger
      */
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h)
@@ -97,8 +94,6 @@ public class RoutePainter implements Painter<JXMapViewer>
      * @param map la map
      * @param colored si dessin en couleur
      * 
-     * @author Killian
-     * @author Martin Steiger
      */
     private void drawRoute(Graphics2D g, JXMapViewer map, boolean colored)
     {

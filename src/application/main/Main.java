@@ -7,15 +7,22 @@ import application.ui.MenuPrincipal;
 
 /**
  * La classe Main.
+ *
+ * @author Killian
  */
 public class Main {
+	
+	
+	/**
+	 * Le constructeur Main.
+	 */
+	private Main() {}
 	
     /**
      * la méthode main.
      *
      * @param args les arguments
      * 
-     * @author Killian
      */
     public static void main(String[] args) {
     	

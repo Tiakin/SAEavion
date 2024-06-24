@@ -65,7 +65,6 @@ public class Horaire extends JDialog implements ActionListener{
 	 *
 	 * @param owner la fenêtre principale
 	 * 
-	 * @author Killian
 	 */
 	public Horaire(MenuPrincipal owner) {
 
@@ -94,7 +93,6 @@ public class Horaire extends JDialog implements ActionListener{
 	 *
 	 * @param action L'action de clique
 	 * 
-	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 	    if (action.getSource() == retourButton){
@@ -116,7 +114,6 @@ public class Horaire extends JDialog implements ActionListener{
 	 *
 	 * @return l'horaire
 	 * 
-	 * @author Killian
 	 */
 	public int showDialog() {
 		setVisible(true);

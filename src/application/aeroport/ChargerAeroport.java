@@ -37,9 +37,9 @@ public class ChargerAeroport {
      *
      * @param file le fichier
      * 
-     * @author Killian
-     * @author Farouk
-     * @author Mohammed Belkhatir
+
+
+
      */
     public ChargerAeroport(File file) {
     	this.selectedFile = file;
@@ -51,9 +51,9 @@ public class ChargerAeroport {
     /**
      * Read file.
      * 
-     * @author Killian
-     * @author Farouk
-     * @author Mohammed Belkhatir
+
+
+
      */
     private void readFile() {
         BufferedReader reader;
@@ -86,9 +86,9 @@ public class ChargerAeroport {
      *
      * @return la map aéroport
      * 
-     * @author Killian
-     * @author Farouk
-     * @author Mohammed Belkhatir
+
+
+
      */
     public Map<String, String[]> getMapAero() {
         return m;
@@ -99,7 +99,7 @@ public class ChargerAeroport {
      *
      * @return true si valide
      * 
-     * @author Killian
+
      */
 	public boolean isValid() {
 		return valid;
@@ -110,7 +110,7 @@ public class ChargerAeroport {
      *
      * @return un tableau d'objets Aeroport
      * 
-     * @author Farouk
+
      */
 	public Aeroport[] creationAeroports() {
 	    Aeroport[] aeroports = new Aeroport[m.size()];
@@ -144,8 +144,8 @@ public class ChargerAeroport {
      * @param orientation N, S, E, O(ou W)
      * @return les coordonnées en degrés décimaux
      * 
-     * @author Farouk
-     * @author Killian
+
+
      */
     private double convertCoordinates(String deg, String min, String sec, String orientation) {
         double degrees = Double.parseDouble(deg);

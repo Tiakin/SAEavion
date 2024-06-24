@@ -41,7 +41,6 @@ public class ProcessCollision {
      * @param file le fichier
      * @param kmax le kmax
      * 
-     * @author Mohammed Belkhatir
      */
     public ProcessCollision(File file, int kmax) {
         this.selectedFile = file;
@@ -52,7 +51,6 @@ public class ProcessCollision {
     /**
      * Lit le contenu du fichier sélectionné dans lines.
      * 
-     * @author Mohammed Belkhatir
      */
     public void readFile() {
         BufferedReader reader;
@@ -82,9 +80,6 @@ public class ProcessCollision {
      * @param ch les aeroports dans ChargerAeroport
      * @param marge la marge de sécurité
      * 
-     * @author Killian
-     * @author Mohammed Belkhatir
-     * @author Farouk
      */
     public void processLineCollision(ChargerAeroport ch, int marge) {
         System.out.println("Début du traitement des collisions...");
@@ -137,7 +132,6 @@ public class ProcessCollision {
      * @param sl la ligne à traiter
      * @return le tableau de chaînes résultant
      * 
-     * @author Mohammed Belkhatir
      */
     private String[] processLine(String sl) {
         return sl.split(";");
@@ -148,7 +142,6 @@ public class ProcessCollision {
      *
      * @return le graph map
      * 
-     * @author Mohammed Belkhatir
      */
     public GraphMap<String, Integer> getGraphMap() {
         return gm;

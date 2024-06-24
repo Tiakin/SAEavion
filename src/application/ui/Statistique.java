@@ -48,8 +48,6 @@ public class Statistique extends JDialog {
 	 *
 	 * @param owner La fenêtre principale
 	 * 
-	 * @author Axel
-	 * @author Killian
 	 */
     public Statistique(MenuPrincipal owner) {
         super(owner, true); // constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
@@ -80,8 +78,6 @@ public class Statistique extends JDialog {
      * @param graph Le graphe dont les statistiques doivent être calculées.
      * @param conflits les conflits
      * 
-     * @author Axel
-     * @author Killian
      */
     public void updateStatistics(Graph graph, int conflits) {
         double degreeMean = Toolkit.averageDegree(graph);
@@ -103,7 +99,6 @@ public class Statistique extends JDialog {
     /**
      * Affiche la boîte de dialogue.
      * 
-     * @author Axel
      */
     public void showDialog() {
         setVisible(true);

@@ -118,7 +118,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @param owner the owner
 	 * 
-	 * @author Killian
 	 */
 	public CalculListeGraphe(MenuPrincipal owner) {
 
@@ -184,7 +183,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @param action L'action de clique
 	 * 
-	 * @author Killian
 	 */
 	public void actionPerformed(ActionEvent action) {
 		if (action.getSource() == sourceButton){
@@ -219,7 +217,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	/**
 	 * montre le JDialog.
 	 * 
-	 * @author Killian
 	 */
 	public void showDialog() {
 		setVisible(true);
@@ -230,7 +227,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @return true si l'utilisateur à appuyé sur le bouton valider
 	 * 
-	 * @author Killian
 	 */
 	public boolean isValid() {
 		return valider;
@@ -242,7 +238,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @return le répertoire source
 	 * 
-	 * @author Killian
 	 */
 	public String getSourcePath() {
 		return repertoireSource.getText();
@@ -253,7 +248,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @return le fichier source
 	 * 
-	 * @author Killian
 	 */
 	public String getSourcePattern() {
 		return patternSource.getText();
@@ -264,7 +258,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @return le répertoire sortie
 	 * 
-	 * @author Killian
 	 */
 	public String getSortiePath() {
 		return repertoireSortie.getText();
@@ -275,7 +268,6 @@ public class CalculListeGraphe extends JDialog implements ActionListener{
 	 *
 	 * @return le fichier sortie
 	 * 
-	 * @author Killian
 	 */
 	public String getSortiePattern() {
 		return patternSortie.getText();

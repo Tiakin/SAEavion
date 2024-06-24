@@ -43,7 +43,6 @@ public class Aeroport {
      * @param latitude  la latitude de l'aéroport
      * @param longitude la longitude de l'aéroport
      * 
-     * @author Farouk
      */
     public Aeroport(String code, double latitude, double longitude) {
         this.code = code;
@@ -58,7 +57,6 @@ public class Aeroport {
      *
      * @return le code de l'aéroport
      * 
-     * @author Farouk
      */
     public String getCode() {
         return code;
@@ -69,7 +67,6 @@ public class Aeroport {
      *
      * @return true, si c'est visible
      * 
-     * @author Farouk
      */
     public boolean isVisible() {
     	return visible;
@@ -80,7 +77,6 @@ public class Aeroport {
      *
      * @param bool le nouveau visible
      * 
-     * @author Farouk
      */
     public void setVisible(boolean bool) {
     	visible = bool;
@@ -91,7 +87,6 @@ public class Aeroport {
      *
      * @return le waypoint
      * 
-     * @author Farouk
      */
     public Waypoint getWaypoint() {
     	return waypoint;
@@ -102,7 +97,7 @@ public class Aeroport {
      *
      * @param way le nouveau waypoint
      * 
-     * @author Farouk
+ 
      */
     public void setWaypoint(Waypoint way) {
     	waypoint = way;
@@ -112,7 +107,7 @@ public class Aeroport {
      *
      * @param code le nouveau code de l'aéroport
      * 
-     * @author Farouk
+ 
      */
     public void setCode(String code) {
         this.code = code;
@@ -123,7 +118,7 @@ public class Aeroport {
      *
      * @return la latitude de l'aéroport
      * 
-     * @author Farouk
+ 
      */
     public double getLatitude() {
         return latitude;
@@ -134,7 +129,7 @@ public class Aeroport {
      *
      * @param latitude la nouvelle latitude de l'aéroport
      * 
-     * @author Farouk
+ 
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -145,7 +140,7 @@ public class Aeroport {
      *
      * @return la longitude de l'aéroport
      * 
-     * @author Farouk
+ 
      */
     public double getLongitude() {
         return longitude;
@@ -156,7 +151,7 @@ public class Aeroport {
      *
      * @param longitude la nouvelle longitude de l'aéroport
      * 
-     * @author Farouk
+ 
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
@@ -167,7 +162,7 @@ public class Aeroport {
      *
      * @return le String
      * 
-     * @author Farouk
+ 
      */
     @Override
     public String toString() {

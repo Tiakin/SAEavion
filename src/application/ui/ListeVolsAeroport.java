@@ -71,8 +71,6 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
      * @param aeroport l'aéroport pour lequel afficher les vols
      * @param graph le graphe des vols
      * 
-     * @author Axel
-     * @author Killian
      */
     public ListeVolsAeroport(MenuPrincipal owner, String aeroport, GraphMap<String, Integer> graph) {
 
@@ -130,7 +128,6 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
      *
      * @param action L'action de clique
      * 
-     * @author Axel
      */
     public void actionPerformed(ActionEvent action) {
         if (action.getSource() == retourButton) {
@@ -142,7 +139,6 @@ public class ListeVolsAeroport extends JDialog implements ActionListener {
     /**
      * Affiche la fenêtre de liste des vols pour un aéroport donné.
      * 
-     * @author Axel
      */
     public void showDialog() {
         setVisible(true);

@@ -33,8 +33,6 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
     /**
      * Instancie un nouveau custom waypoint renderer.
      * 
-     * @author Farouk
-     * @author Killian
      */
     public CustomWaypointRenderer() {
         // Charger l'image personnalisée
@@ -60,7 +58,6 @@ public class CustomWaypointRenderer implements WaypointRenderer<Waypoint> {
      * @param map la map
      * @param waypoint le waypoint
      * 
-     * @author Farouk
      */
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint waypoint) {
