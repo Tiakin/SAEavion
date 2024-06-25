@@ -47,7 +47,6 @@ import application.utils.ToolBox;
 import application.utils.graphic.CustomWaypointRenderer;
 import application.utils.graphic.RoutePainter;
 
-
 /**
  * La Classe MenuPrincipal.
  * 
@@ -55,62 +54,58 @@ import application.utils.graphic.RoutePainter;
  * @author Farouk
  * @author Axel
  */
-public class MenuPrincipal extends JFrame implements ActionListener{
+public class MenuPrincipal extends JFrame implements ActionListener {
 
-	//Composant
+	// Composant
 	/** Le menu bar. */
 	private JMenuBar menuBar;
-	
-	
+
 	/**
 	 * Le map viewer.
 	 */
 	private JXMapViewer mapViewer;
-	
+
 	/** Le menu fichier. */
 	private JMenu fichierMenu;
-	
+
 	/** L'item aeroport. */
 	private JMenuItem aeroportItem;
-	
+
 	/** L'item vols. */
 	private JMenuItem volsItem;
-	
+
 	/** L'item graphe charge. */
 	private JMenuItem grapheChargeItem;
-	
+
 	/** L'item graphe export. */
 	private JMenuItem grapheExportItem;
-	
+
 	/** L'item listegraphe. */
 	private JMenuItem listegrapheItem;
-	
-	
+
 	/** Le menu afficher. */
 	private JMenu afficherMenu;
-	
+
 	/** L'item horaire. */
 	private JMenuItem horaireItem;
-	
+
 	/** L'item niveau. */
 	private JMenuItem niveauItem;
-	
-	
+
 	/** L'item (unique) statistique. */
 	private JMenuItem statistiqueItem;
-	
-	
+
 	/** Le menu edition. */
 	private JMenu editionMenu;
-	
+
 	/** L'item kmax. */
 	private JMenuItem kmaxItem;
-	
+
 	/** L'item marge. */
 	private JMenuItem margeItem;
 
 	// variable de classe
-	
+
 	/** Le ChargerAeroport. */
 	private ChargerAeroport ch;
 
@@ -118,184 +113,172 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private ProcessCollision pfc;
 
 	/**
-	 *  Le graph en cours.
+	 * Le graph en cours.
 	 */
 	private Graph currentGraph;
-	
+
 	/**
-	 *  Le nombre de conflit en cours.
+	 * Le nombre de conflit en cours.
 	 */
 	private int conflits;
-	
+
 	/**
-	 *  L'horaire en cours.
+	 * L'horaire en cours.
 	 */
 	private int horaireValue = ToolBox.NOVALUE;
-	
+
 	/**
-	 *  Le niveau en cours.
+	 * Le niveau en cours.
 	 */
 	private int niveauValue = ToolBox.NOVALUE;
-	
+
 	/**
-	 *  La marge de sécurité, 15 est la valeur par défaut.
+	 * La marge de sécurité, 15 est la valeur par défaut.
 	 */
 	private int margeValue = 15;
-	
+
 	/**
-	 *  valeur du kmax.
+	 * valeur du kmax.
 	 */
 	private int kmaxValue = 10;
 
 	/**
-	 *  le fichier des vols.
+	 * le fichier des vols.
 	 */
 	private File fichierVols;
-	
+
 	/**
-	 *  les aeroports.
+	 * les aeroports.
 	 */
 	private Aeroport[] aeroports;
-	
+
 	/**
-	 *  les waypoints.
+	 * les waypoints.
 	 */
 	private List<Waypoint> waypoints;
 
-
 	/**
-	 *  le mouse adapter waypoint.
+	 * le mouse adapter waypoint.
 	 */
 	private MouseAdapter waypointMouseAdapter;
 
-	
 	/**
 	 * Instancie un nouveau menu principal.
 	 * 
 	 */
 	public MenuPrincipal() {
 		this.setTitle("Gestionnaire des Vols");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(450, 500);
-        
-        initialisation();
-        
-        aeroportItem.addActionListener(this);
-        volsItem.addActionListener(this);
-        grapheChargeItem.addActionListener(this);
-        
-        grapheExportItem.addActionListener(this);
-        
-        listegrapheItem.addActionListener(this);
-        
-        horaireItem.addActionListener(this);
-        niveauItem.addActionListener(this);
-        
-        statistiqueItem.addActionListener(this);
-        
-        kmaxItem.addActionListener(this);
-        margeItem.addActionListener(this);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(450, 500);
+
+		initialisation();
+
+		aeroportItem.addActionListener(this);
+		volsItem.addActionListener(this);
+		grapheChargeItem.addActionListener(this);
+
+		grapheExportItem.addActionListener(this);
+
+		listegrapheItem.addActionListener(this);
+
+		horaireItem.addActionListener(this);
+		niveauItem.addActionListener(this);
+
+		statistiqueItem.addActionListener(this);
+
+		kmaxItem.addActionListener(this);
+		margeItem.addActionListener(this);
 	}
-	
+
 	/**
 	 * Initialisation du panel.
 	 * 
 	 */
 	private void initialisation() {
-    	menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 
-        // Menu Fichier
-        fichierMenu = new JMenu("Fichier");
-        
-        aeroportItem = new JMenuItem("Charger les aéroports");
-        fichierMenu.add(aeroportItem);
-        
-        volsItem = new JMenuItem("Charger les vols");
-        fichierMenu.add(volsItem);
-        
-        grapheChargeItem = new JMenuItem("Charger un graphe");
-        fichierMenu.add(grapheChargeItem);
-        
-        
-        fichierMenu.addSeparator();
-        
-        grapheExportItem = new JMenuItem("Exporter le graphe");
-        fichierMenu.add(grapheExportItem);
-        
-        
-        fichierMenu.addSeparator();
-        
-        
-        listegrapheItem = new JMenuItem("Calcul d'une liste de graphe");
-        fichierMenu.add(listegrapheItem);
-        
-        menuBar.add(fichierMenu);
+		// Menu Fichier
+		fichierMenu = new JMenu("Fichier");
 
-        // Menu Affichage
-        afficherMenu = new JMenu("Affichage");
-        
-        horaireItem = new JMenuItem("Horaire");
-        afficherMenu.add(horaireItem);
-        
-        niveauItem = new JMenuItem("Niveau");
-        afficherMenu.add(niveauItem);
-        
-        afficherMenu.addSeparator();
-        
-        statistiqueItem = new JMenuItem("Statistique");
-        afficherMenu.add(statistiqueItem);
-        
-        menuBar.add(afficherMenu);
+		aeroportItem = new JMenuItem("Charger les aéroports");
+		fichierMenu.add(aeroportItem);
 
-        // Menu Édition
-        editionMenu = new JMenu("Édition");
-        
-        kmaxItem = new JMenuItem("Kmax");
-        editionMenu.add(kmaxItem);
-        
-        margeItem = new JMenuItem("Marge de sécurité");
-        editionMenu.add(margeItem);
-        
-        menuBar.add(editionMenu);
-        
-        
-        // Create a TileFactoryInfo for OSM
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-        tileFactory.setThreadPoolSize(8);
+		volsItem = new JMenuItem("Charger les vols");
+		fichierMenu.add(volsItem);
 
-        // Setup local file cache
-        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
-        tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+		grapheChargeItem = new JMenuItem("Charger un graphe");
+		fichierMenu.add(grapheChargeItem);
 
-        
-        // Setup JXMapViewer
-        mapViewer = new JXMapViewer();
-        mapViewer.setTileFactory(tileFactory);
-        mapViewer.setZoom(14);
-        GeoPosition france = new GeoPosition(46,  13, 55, 2, 12, 34);
-        mapViewer.setAddressLocation(france);
-        
-        
-        //event mouvement de souris
-        PanMouseInputListener mm = new PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(mm);
-        mapViewer.addMouseMotionListener(mm);
-        
-        //event zoom de la souris
-        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
-        
-        // Ajouter JXMapViewer à JFrame
-        getContentPane().add(mapViewer);
-        
-        this.add(mapViewer);
-        
-        
-        this.setJMenuBar(menuBar);
+		fichierMenu.addSeparator();
+
+		grapheExportItem = new JMenuItem("Exporter le graphe");
+		fichierMenu.add(grapheExportItem);
+
+		fichierMenu.addSeparator();
+
+		listegrapheItem = new JMenuItem("Calcul d'une liste de graphe");
+		fichierMenu.add(listegrapheItem);
+
+		menuBar.add(fichierMenu);
+
+		// Menu Affichage
+		afficherMenu = new JMenu("Affichage");
+
+		horaireItem = new JMenuItem("Horaire");
+		afficherMenu.add(horaireItem);
+
+		niveauItem = new JMenuItem("Niveau");
+		afficherMenu.add(niveauItem);
+
+		afficherMenu.addSeparator();
+
+		statistiqueItem = new JMenuItem("Statistique");
+		afficherMenu.add(statistiqueItem);
+
+		menuBar.add(afficherMenu);
+
+		// Menu Édition
+		editionMenu = new JMenu("Édition");
+
+		kmaxItem = new JMenuItem("Kmax");
+		editionMenu.add(kmaxItem);
+
+		margeItem = new JMenuItem("Marge de sécurité");
+		editionMenu.add(margeItem);
+
+		menuBar.add(editionMenu);
+
+		// Create a TileFactoryInfo for OSM
+		TileFactoryInfo info = new OSMTileFactoryInfo();
+		DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+		tileFactory.setThreadPoolSize(8);
+
+		// Setup local file cache
+		File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
+		tileFactory.setLocalCache(new FileBasedLocalCache(cacheDir, false));
+
+		// Setup JXMapViewer
+		mapViewer = new JXMapViewer();
+		mapViewer.setTileFactory(tileFactory);
+		mapViewer.setZoom(14);
+		GeoPosition france = new GeoPosition(46, 13, 55, 2, 12, 34);
+		mapViewer.setAddressLocation(france);
+
+		// event mouvement de souris
+		PanMouseInputListener mm = new PanMouseInputListener(mapViewer);
+		mapViewer.addMouseListener(mm);
+		mapViewer.addMouseMotionListener(mm);
+
+		// event zoom de la souris
+		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+
+		// Ajouter JXMapViewer à JFrame
+		getContentPane().add(mapViewer);
+
+		this.add(mapViewer);
+
+		this.setJMenuBar(menuBar);
 	}
-
-	
-	
 
 	/**
 	 * Action performé.
@@ -305,168 +288,168 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent action) {
-		if (action.getSource() == aeroportItem){
-			Choix charger = new Choix(this, false);
-			int option =charger.showOpenDialog(this);
-            if (option == JFileChooser.APPROVE_OPTION) {
-                File file = charger.getSelectedFile();
-                ch = new ChargerAeroport(file);
-                afficherAeroports(mapViewer);
-            }  
-	    }
-		if (action.getSource() == volsItem){
-			Choix charger = new Choix(this, false);
-			int option =charger.showOpenDialog(this);
-            if (option == JFileChooser.APPROVE_OPTION) {
-            	fichierVols = charger.getSelectedFile();
-                System.out.println("vols");
-            	calculerGrapheVols();
-                
-            }       
-		}
-		if (action.getSource() == grapheChargeItem){
+		if (action.getSource() == aeroportItem) {
 			Choix charger = new Choix(this, false);
 			int option = charger.showOpenDialog(this);
-            if (option == JFileChooser.APPROVE_OPTION) {
-                File file = charger.getSelectedFile();
-                
-                GraphMap<String, Integer> gm = GraphImporter.importGraphMap(file);
-    			
-    			//coloration
-    			conflits = gm.greedyColoring();
-    			
-                Graph graph = GraphImporter.importGraph(gm);
-
-                if (graph != null) {
-                    System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and " + graph.getEdgeCount() + " edges. the graph have "+conflits+" Conflicts.");
-                    
-                    ToolBox.displaygraph(graph);
-                } else {
-                	ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
-                    System.out.println("Failed to import graph.");
-                }
-                
-            }  
+			if (option == JFileChooser.APPROVE_OPTION) {
+				File file = charger.getSelectedFile();
+				ch = new ChargerAeroport(file);
+				afficherAeroports(mapViewer);
+			}
 		}
-		if (action.getSource() == grapheExportItem){
+		if (action.getSource() == volsItem) {
+			Choix charger = new Choix(this, false);
+			int option = charger.showOpenDialog(this);
+			if (option == JFileChooser.APPROVE_OPTION) {
+				fichierVols = charger.getSelectedFile();
+				System.out.println("vols");
+				calculerGrapheVols();
+
+			}
+		}
+		if (action.getSource() == grapheChargeItem) {
+			Choix charger = new Choix(this, false);
+			int option = charger.showOpenDialog(this);
+			if (option == JFileChooser.APPROVE_OPTION) {
+				File file = charger.getSelectedFile();
+
+				GraphMap<String, Integer> gm = GraphImporter.importGraphMap(file);
+
+				// coloration
+				conflits = gm.greedyColoring();
+
+				Graph graph = GraphImporter.importGraph(gm);
+
+				if (graph != null) {
+					System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and "
+							+ graph.getEdgeCount() + " edges. the graph have " + conflits + " Conflicts.");
+
+					ToolBox.displaygraph(graph);
+				} else {
+					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
+					System.out.println("Failed to import graph.");
+				}
+
+			}
+		}
+		if (action.getSource() == grapheExportItem) {
 			Choix sauver = new Choix(this, false);
 			int option = sauver.showSaveDialog(this);
-            if (option == JFileChooser.APPROVE_OPTION) {
-                File file = sauver.getSelectedFile();
-                if(currentGraph != null) {
-                	GraphExporter.exportGraph(file, currentGraph, kmaxValue);
-                	System.out.println("Graph exported to " + file.getAbsolutePath());
-                } else {
-                	ToolBox.sendErrorMessage("Erreur lors de l'exportation du graphe");
-                    System.out.println("Failed to export graph.");
-                }
-            } 
+			if (option == JFileChooser.APPROVE_OPTION) {
+				File file = sauver.getSelectedFile();
+				if (currentGraph != null) {
+					GraphExporter.exportGraph(file, currentGraph, kmaxValue);
+					System.out.println("Graph exported to " + file.getAbsolutePath());
+				} else {
+					ToolBox.sendErrorMessage("Erreur lors de l'exportation du graphe");
+					System.out.println("Failed to export graph.");
+				}
+			}
 		}
-		if (action.getSource() == listegrapheItem){
+		if (action.getSource() == listegrapheItem) {
 			boolean show = false;
-			if((action.getModifiers() & 1) != 0) { //shift = 1
+			if ((action.getModifiers() & 1) != 0) { // shift = 1
 				show = true;
-            }
-	        CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
-	        calculListeGraphe.showDialog();
-	        if(calculListeGraphe.isValid()) {
-	        	String pathSource = calculListeGraphe.getSourcePath();
-	        	String patternSource = calculListeGraphe.getSourcePattern();
-	        	String pathSortie = calculListeGraphe.getSortiePath();
-    			String patternSortie = calculListeGraphe.getSortiePattern();
-    			try (BufferedWriter writeToCSV = new BufferedWriter(new FileWriter(pathSortie+"coloration-groupe2.E1.csv"))) {
-		        	boolean hasNext = true;
-		        	for(int i = 0; hasNext; i++) {
-		        		//importation
-		        		String nameSource = patternSource.replace("0", i+"");
-		        		File fileSource = new File(pathSource+nameSource);
-		        		if(fileSource.exists()) {
-		        			System.out.println(fileSource);
-		        			GraphMap<String, Integer> gm = GraphImporter.importGraphMap(fileSource);
-		        			
-		        			//coloration
-		        			int conflits = gm.greedyColoring();
-		        			
-		        			
-		        			//si shift appuyé
-		        			if(show) {
-		        				ToolBox.displaygraph(GraphImporter.importGraph(gm));
-		        			}
-		        			//exportation
-		        			String nameSortie = patternSortie.replace("0", i+"");
-		        			File fileSortie = new File(pathSortie+nameSortie);
-		        			System.out.println(fileSortie);
-		        			GraphExporter.exportGraphColor(fileSortie, gm);
-		        			
-		        			//écrire dans le csv
-		        			writeToCSV.write(nameSortie+";"+conflits);
-		        			writeToCSV.newLine();
-		        			
-		        		} else {
-		        			hasNext = false;
-		        		}
-		        	}
-	        	} catch (IOException e) {
+			}
+			CalculListeGraphe calculListeGraphe = new CalculListeGraphe(this);
+			calculListeGraphe.showDialog();
+			if (calculListeGraphe.isValid()) {
+				String pathSource = calculListeGraphe.getSourcePath();
+				String patternSource = calculListeGraphe.getSourcePattern();
+				String pathSortie = calculListeGraphe.getSortiePath();
+				String patternSortie = calculListeGraphe.getSortiePattern();
+				try (BufferedWriter writeToCSV = new BufferedWriter(
+						new FileWriter(pathSortie + "coloration-groupe2.E1.csv"))) {
+					boolean hasNext = true;
+					for (int i = 0; hasNext; i++) {
+						// importation
+						String nameSource = patternSource.replace("0", i + "");
+						File fileSource = new File(pathSource + nameSource);
+						if (fileSource.exists()) {
+							System.out.println(fileSource);
+							GraphMap<String, Integer> gm = GraphImporter.importGraphMap(fileSource);
+
+							// coloration
+							int conflits = gm.greedyColoring();
+
+							// si shift appuyé
+							if (show) {
+								ToolBox.displaygraph(GraphImporter.importGraph(gm));
+							}
+							// exportation
+							String nameSortie = patternSortie.replace("0", i + "");
+							File fileSortie = new File(pathSortie + nameSortie);
+							System.out.println(fileSortie);
+							GraphExporter.exportGraphColor(fileSortie, gm);
+
+							// écrire dans le csv
+							writeToCSV.write(nameSortie + ";" + conflits);
+							writeToCSV.newLine();
+
+						} else {
+							hasNext = false;
+						}
+					}
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
-	        }
-	    }
-		if (action.getSource() == horaireItem){
+			}
+		}
+		if (action.getSource() == horaireItem) {
 			Horaire horaire = new Horaire(this);
-	        int value = horaire.showDialog();
-	        if(value == ToolBox.RESETVALUE) {
-	        	horaireValue = ToolBox.NOVALUE;
-	        	dessinerVols();
-	        } else if(value != ToolBox.KEEPVALUE) {
+			int value = horaire.showDialog();
+			if (value == ToolBox.RESETVALUE) {
+				horaireValue = ToolBox.NOVALUE;
+				dessinerVols();
+			} else if (value != ToolBox.KEEPVALUE) {
 				horaireValue = value;
 				dessinerVols();
 			}
-	    }
-		if (action.getSource() == niveauItem){
+		}
+		if (action.getSource() == niveauItem) {
 			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			int value = niveau.showDialog();
-			if(value == ToolBox.RESETVALUE) {
+			if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
 				dessinerVols();
-	        } else if(value != ToolBox.KEEPVALUE) {
+			} else if (value != ToolBox.KEEPVALUE) {
 				niveauValue = value;
 				dessinerVols();
 			}
-	    }
-		if (action.getSource() == statistiqueItem){
-	        Statistique statistique = new Statistique(this);
-	        if(currentGraph != null) {
-	        	statistique.updateStatistics(currentGraph, conflits);
-	        }
-	        statistique.showDialog();
-	        statistique.dispose();
-	    }
-		if (action.getSource() == kmaxItem){
+		}
+		if (action.getSource() == statistiqueItem) {
+			Statistique statistique = new Statistique(this);
+			if (currentGraph != null) {
+				statistique.updateStatistics(currentGraph, conflits);
+			}
+			statistique.showDialog();
+			statistique.dispose();
+		}
+		if (action.getSource() == kmaxItem) {
 			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
 			int value = kmax.showDialog();
-			if(value == ToolBox.RESETVALUE) {
+			if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
-	        } else if(value != ToolBox.KEEPVALUE) {
+			} else if (value != ToolBox.KEEPVALUE) {
 				kmaxValue = value;
 				calculerGrapheVols();
 				System.out.println("kmax");
 			}
-	    }
-		if (action.getSource() == margeItem){
+		}
+		if (action.getSource() == margeItem) {
 			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			int value = marge.showDialog();
-			if(value == ToolBox.RESETVALUE) {
+			if (value == ToolBox.RESETVALUE) {
 				margeValue = 15; // valeur par défaut
-	        } else if(value != ToolBox.KEEPVALUE) {
+			} else if (value != ToolBox.KEEPVALUE) {
 				margeValue = value;
 				calculerGrapheVols();
 				System.out.println("marge");
 			}
-	    }
-		 
-		
+		}
+
 	}
-	
+
 	/**
 	 * Afficher aeroports.
 	 *
@@ -474,36 +457,38 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 * 
 	 */
 	private void afficherAeroports(JXMapViewer mapViewer) {
-	    if (ch != null && ch.isValid()) {
-	        // Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir les Aeroport[]
-	        aeroports = ch.creationAeroports();
-	        
-	        // Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
-	        waypoints = new ArrayList<>();
+		if (ch != null && ch.isValid()) {
+			// Utilisation de la méthode creationAeroports de ChargerAeroport pour obtenir
+			// les Aeroport[]
+			aeroports = ch.creationAeroports();
 
-	        // Parcourir chaque aéroport dans le tableau
-	        for (Aeroport aeroport : aeroports) {
-	            afficherUnAeroport(aeroport);
-	        }
+			// Création d'une liste de Waypoints pour stocker les marqueurs des aéroports
+			waypoints = new ArrayList<>();
 
-	        // Création d'un Set de Waypoints à partir de la liste
-	        Set<Waypoint> waypointSet = new HashSet<>(waypoints);
+			// Parcourir chaque aéroport dans le tableau
+			for (Aeroport aeroport : aeroports) {
+				afficherUnAeroport(aeroport);
+			}
 
-	        // Création d'un WaypointPainter avec CustomWaypointRenderer pour dessiner les marqueurs sur la carte
-	        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-	        waypointPainter.setRenderer(new CustomWaypointRenderer());
-	        waypointPainter.setWaypoints(waypointSet);
+			// Création d'un Set de Waypoints à partir de la liste
+			Set<Waypoint> waypointSet = new HashSet<>(waypoints);
 
-	        // Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
-	        mapViewer.setOverlayPainter(waypointPainter);
+			// Création d'un WaypointPainter avec CustomWaypointRenderer pour dessiner les
+			// marqueurs sur la carte
+			WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+			waypointPainter.setRenderer(new CustomWaypointRenderer());
+			waypointPainter.setWaypoints(waypointSet);
 
-	        // Forcer la carte à se rafraîchir
-	        mapViewer.repaint();
-	    } else {
-	        System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
-	    }
+			// Ajout du WaypointPainter à JXMapViewer pour afficher les marqueurs
+			mapViewer.setOverlayPainter(waypointPainter);
+
+			// Forcer la carte à se rafraîchir
+			mapViewer.repaint();
+		} else {
+			System.out.println("Le chargeur d'aéroports n'est pas valide ou est nul.");
+		}
 	}
-	
+
 	/**
 	 * Afficher un aeroport.
 	 *
@@ -512,129 +497,135 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	 */
 	public void afficherUnAeroport(Aeroport aeroport) {
 		double latitude = aeroport.getLatitude();
-        double longitude = aeroport.getLongitude();
+		double longitude = aeroport.getLongitude();
 
-        // Vérification des coordonnées avant de créer un GeoPosition
-        if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
-            GeoPosition position = new GeoPosition(latitude, longitude);
+		// Vérification des coordonnées avant de créer un GeoPosition
+		if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+			GeoPosition position = new GeoPosition(latitude, longitude);
 
-            // Utilisation de CustomWaypoint avec code d'aéroport
-            CustomWaypoint waypoint = new CustomWaypoint(position, aeroport.getCode());
-            // Ajouter le Waypoint à la liste des marqueurs
-            waypoints.add(waypoint);
-            
-            aeroport.setVisible(true);
-            aeroport.setWaypoint(waypoint);
-        } else {
-            System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
-        }
+			// Utilisation de CustomWaypoint avec code d'aéroport
+			CustomWaypoint waypoint = new CustomWaypoint(position, aeroport.getCode());
+			// Ajouter le Waypoint à la liste des marqueurs
+			waypoints.add(waypoint);
+
+			aeroport.setVisible(true);
+			aeroport.setWaypoint(waypoint);
+		} else {
+			System.out.println("Coordonnées invalides pour l'aéroport: " + aeroport.getCode());
+		}
 	}
-	
+
 	/**
 	 * Dessiner vols.
 	 * 
 	 */
 	public void dessinerVols() {
-        Set<CustomWaypoint> waypoints = new HashSet<>();
-        List<GeoPosition[]> allLines = new ArrayList<>();
-        List<Integer> colors = new ArrayList<>();
-        LocalTime lt;
-		if(horaireValue != ToolBox.NOVALUE) {
-			lt = LocalTime.of(horaireValue/100, horaireValue%100);
+		Set<CustomWaypoint> waypoints = new HashSet<>();
+		List<GeoPosition[]> allLines = new ArrayList<>();
+		List<Integer> colors = new ArrayList<>();
+		LocalTime lt;
+		if (horaireValue != ToolBox.NOVALUE) {
+			lt = LocalTime.of(horaireValue / 100, horaireValue % 100);
 		} else {
 			lt = null;
 		}
-		
-        for(GraphMap<String, Integer>.SommetPrinc p : pfc.getGraphMap().getNodes()) {
-        	if(niveauValue == ToolBox.NOVALUE || niveauValue == p.getCoul()) {
-        		if( horaireValue == ToolBox.NOVALUE || lt !=null ) {
-        			if(lt !=null) {
-        				if(!(p.getTime().minusMinutes(1).isBefore(lt) && p.getTime().plusMinutes(p.getDuree()+1).isAfter(lt))) {
-        					continue;
-        				}
-        			}
-		            Aeroport aeroportA = ToolBox.codeToAeroport(aeroports, p.getVal().split("\\(")[1].split("-")[0]);
-		            Aeroport aeroportD = ToolBox.codeToAeroport(aeroports, p.getVal().split("\\(")[1].split("-")[1].replace(")", ""));
-		            
-		            if (!aeroportA.isVisible()) {
-		                afficherUnAeroport(aeroportA);
-		            } else if (!aeroportD.isVisible()) {
-		                afficherUnAeroport(aeroportD);
-		            }
-		            
-		            // Utiliser CustomWaypoint au lieu de DefaultWaypoint
-		            CustomWaypoint wpA = new CustomWaypoint(new GeoPosition(aeroportA.getLatitude(), aeroportA.getLongitude()), aeroportA.getCode());
-		            CustomWaypoint wpD = new CustomWaypoint(new GeoPosition(aeroportD.getLatitude(), aeroportD.getLongitude()), aeroportD.getCode());
-		            // Ajouter les custom waypoints à l'ensemble
-		            waypoints.add(wpA);
-		            waypoints.add(wpD);
-		
-		            // Ajouter les GeoPositions à la liste des tracks
-		            allLines.add(new GeoPosition[]{wpA.getPosition(),wpD.getPosition()});
-		            colors.add(p.getCoul());
-        		}
-        	}
-        }
 
-        // Créer un WaypointPainter avec tous les custom waypoints
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-        waypointPainter.setWaypoints(waypoints);
-        waypointPainter.setRenderer(new CustomWaypointRenderer()); // Utiliser CustomWaypointRenderer
+		for (GraphMap<String, Integer>.SommetPrinc p : pfc.getGraphMap().getNodes()) {
+			if (niveauValue == ToolBox.NOVALUE || niveauValue == p.getCoul()) {
+				if (horaireValue == ToolBox.NOVALUE || lt != null) {
+					if (lt != null) {
+						if (!(p.getTime().minusMinutes(1).isBefore(lt)
+								&& p.getTime().plusMinutes(p.getDuree() + 1).isAfter(lt))) {
+							continue;
+						}
+					}
+					Aeroport aeroportA = ToolBox.codeToAeroport(aeroports, p.getVal().split("\\(")[1].split("-")[0]);
+					Aeroport aeroportD = ToolBox.codeToAeroport(aeroports,
+							p.getVal().split("\\(")[1].split("-")[1].replace(")", ""));
 
-        // Créer un RoutePainter avec toutes les routes
-        RoutePainter routePainter = new RoutePainter(pfc.getGraphMap(), allLines, colors);
+					if (!aeroportA.isVisible()) {
+						afficherUnAeroport(aeroportA);
+					} else if (!aeroportD.isVisible()) {
+						afficherUnAeroport(aeroportD);
+					}
 
-        // Créer un CompoundPainter avec les deux peintres
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<>();
-        painter.setPainters(List.of(routePainter, waypointPainter));
+					// Utiliser CustomWaypoint au lieu de DefaultWaypoint
+					CustomWaypoint wpA = new CustomWaypoint(
+							new GeoPosition(aeroportA.getLatitude(), aeroportA.getLongitude()), aeroportA.getCode());
+					CustomWaypoint wpD = new CustomWaypoint(
+							new GeoPosition(aeroportD.getLatitude(), aeroportD.getLongitude()), aeroportD.getCode());
+					// Ajouter les custom waypoints à l'ensemble
+					waypoints.add(wpA);
+					waypoints.add(wpD);
 
-        mapViewer.setOverlayPainter(painter);
-        
-        if(waypointMouseAdapter != null) {
-        	mapViewer.removeMouseListener(waypointMouseAdapter);
-        }
-        
-        waypointMouseAdapter = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Point point = e.getPoint();
-                for (CustomWaypoint wp : waypoints) {
-                    Point2D mapPoint = mapViewer.convertGeoPositionToPoint(wp.getPosition());
-                    Rectangle rect = new Rectangle((int) mapPoint.getX() - 15, (int) mapPoint.getY() - 15, 30, 30);
-                    if (rect.contains(point)) {
-                    	ListeVolsAeroport lva = new ListeVolsAeroport(MenuPrincipal.this, wp.getCode(), pfc.getGraphMap());
-            			lva.showDialog();
-                        break;
-                    }
-                }
-            }
-        };
-        mapViewer.addMouseListener(waypointMouseAdapter);
-    }
-	
+					// Ajouter les GeoPositions à la liste des tracks
+					allLines.add(new GeoPosition[] { wpA.getPosition(), wpD.getPosition() });
+					colors.add(p.getCoul());
+				}
+			}
+		}
+
+		// Créer un WaypointPainter avec tous les custom waypoints
+		WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+		waypointPainter.setWaypoints(waypoints);
+		waypointPainter.setRenderer(new CustomWaypointRenderer()); // Utiliser CustomWaypointRenderer
+
+		// Créer un RoutePainter avec toutes les routes
+		RoutePainter routePainter = new RoutePainter(pfc.getGraphMap(), allLines, colors);
+
+		// Créer un CompoundPainter avec les deux peintres
+		CompoundPainter<JXMapViewer> painter = new CompoundPainter<>();
+		painter.setPainters(List.of(routePainter, waypointPainter));
+
+		mapViewer.setOverlayPainter(painter);
+
+		if (waypointMouseAdapter != null) {
+			mapViewer.removeMouseListener(waypointMouseAdapter);
+		}
+
+		waypointMouseAdapter = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Point point = e.getPoint();
+				for (CustomWaypoint wp : waypoints) {
+					Point2D mapPoint = mapViewer.convertGeoPositionToPoint(wp.getPosition());
+					Rectangle rect = new Rectangle((int) mapPoint.getX() - 15, (int) mapPoint.getY() - 15, 30, 30);
+					if (rect.contains(point)) {
+						ListeVolsAeroport lva = new ListeVolsAeroport(MenuPrincipal.this, wp.getCode(),
+								pfc.getGraphMap());
+						lva.showDialog();
+						break;
+					}
+				}
+			}
+		};
+		mapViewer.addMouseListener(waypointMouseAdapter);
+	}
+
 	/**
 	 * Calculer graphe vols.
 	 * 
 	 */
 	private void calculerGrapheVols() {
-		if(ch != null && ch.isValid()) {
-			if(fichierVols != null) {
-				pfc = new ProcessCollision(fichierVols,kmaxValue);
+		if (ch != null && ch.isValid()) {
+			if (fichierVols != null) {
+				pfc = new ProcessCollision(fichierVols, kmaxValue);
 				// initialisation de la liste des aeroports
 				pfc.processLineCollision(ch, margeValue);
 				conflits = pfc.getGraphMap().greedyColoring();
 				currentGraph = GraphImporter.importGraph(pfc.getGraphMap());
 				System.out.println(pfc.getGraphMap());
 				if (currentGraph != null) {
-					if(currentGraph.getNodeCount() > 0) {
-						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and " + currentGraph.getEdgeCount() + " edges.");
-				    	ToolBox.displaygraph(currentGraph);
-				    	
-				    	dessinerVols();
+					if (currentGraph.getNodeCount() > 0) {
+						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and "
+								+ currentGraph.getEdgeCount() + " edges.");
+						ToolBox.displaygraph(currentGraph);
+
+						dessinerVols();
 					}
 				} else {
 					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
-				    System.out.println("Failed to import graph.");
+					System.out.println("Failed to import graph.");
 				}
 			} else {
 				ToolBox.sendErrorMessage("Erreur : Il faut d'abord importer les vols");

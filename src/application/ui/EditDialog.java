@@ -14,41 +14,40 @@ import application.utils.ToolBox;
 /**
  * La classe EditDialog.
  * 
- *  @author Killian
+ * @author Killian
  */
-public class EditDialog extends JDialog implements ActionListener{
+public class EditDialog extends JDialog implements ActionListener {
 
 	// Attibuts graphiques
 	/**
 	 * Le label nombre.
 	 */
 	private JLabel labelNombre;
-	
+
 	/**
 	 * Le panel.
 	 */
 	private JPanel panel = new JPanel();
-	
+
 	/**
 	 * Le text field.
 	 */
 	private JTextField textField = new JTextField(2);
-	
+
 	/**
 	 * Le boutton retour.
 	 */
 	private JButton retourButton = new JButton("Retour");
-	
+
 	/**
 	 * Le boutton valider.
 	 */
 	private JButton validerButton = new JButton("Valider");
-	
+
 	/**
 	 * La valeur.
 	 */
 	private int valeur;
-	
 
 	/**
 	 * Instancie un nouveau EditDialog.
@@ -60,24 +59,25 @@ public class EditDialog extends JDialog implements ActionListener{
 	 */
 	public EditDialog(MenuPrincipal owner, String title, String label) {
 
-	    super(owner,true); //constructeur de la classe Mère: owner = propriétaire de la fenêtre (son parent), le second paramètre est true pour la rendre modale
-	    
+		super(owner, true); // constructeur de la classe Mère: owner = propriétaire de la fenêtre (son
+							// parent), le second paramètre est true pour la rendre modale
+
 		setTitle(title);
 		setSize(200, 100);
-	    setResizable(false);
-	    
-	    labelNombre = new JLabel(label);
-	    
-	    panel.add(labelNombre);
-	    panel.add(textField);
-	    panel.add(retourButton);
-	    panel.add(validerButton);
-	
-	    getContentPane().add(panel);
-        
-        retourButton.addActionListener(this);
-        validerButton.addActionListener(this);
-        
+		setResizable(false);
+
+		labelNombre = new JLabel(label);
+
+		panel.add(labelNombre);
+		panel.add(textField);
+		panel.add(retourButton);
+		panel.add(validerButton);
+
+		getContentPane().add(panel);
+
+		retourButton.addActionListener(this);
+		validerButton.addActionListener(this);
+
 		valeur = ToolBox.KEEPVALUE;
 	}
 
@@ -88,20 +88,20 @@ public class EditDialog extends JDialog implements ActionListener{
 	 * 
 	 */
 	public void actionPerformed(ActionEvent action) {
-	    if (action.getSource() == retourButton){
-	        this.setVisible(false); //on ferme la fenêtre
-	    }
-	    if (action.getSource() == validerButton){
-	    	if(textField.getText().isBlank()) {
-	    		valeur = ToolBox.RESETVALUE;
-	    	}else {
-	    		valeur = Integer.parseInt(textField.getText());
-	    	}
-	        this.setVisible(false); //on ferme la fenêtre
-	    }
-	    dispose();
+		if (action.getSource() == retourButton) {
+			this.setVisible(false); // on ferme la fenêtre
+		}
+		if (action.getSource() == validerButton) {
+			if (textField.getText().isBlank()) {
+				valeur = ToolBox.RESETVALUE;
+			} else {
+				valeur = Integer.parseInt(textField.getText());
+			}
+			this.setVisible(false); // on ferme la fenêtre
+		}
+		dispose();
 	}
-	
+
 	/**
 	 * Affiche le dialogue.
 	 *
