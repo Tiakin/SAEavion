@@ -161,7 +161,17 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	 * le mouse adapter waypoint.
 	 */
 	private MouseAdapter waypointMouseAdapter;
+	
+	/**
+	 * Le dialogue d'édition pour Kmax.
+	 */
+	private EditDialog kmax;
 
+	/**
+	 * Le dialogue d'édition pour la marge.
+	 */
+	private EditDialog marge;
+	
 	/**
 	 * Instancie un nouveau menu principal.
 	 * 
@@ -274,6 +284,10 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 		// Ajouter JXMapViewer à JFrame
 		getContentPane().add(mapViewer);
+
+		// Initialisation des dialogues d'édition
+		kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+		marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 
 		this.add(mapViewer);
 
@@ -426,7 +440,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			statistique.dispose();
 		}
 		if (action.getSource() == kmaxItem) {
-			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+			
 			int value = kmax.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
@@ -437,7 +451,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == margeItem) {
-			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			int value = marge.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				margeValue = 15; // valeur par défaut
