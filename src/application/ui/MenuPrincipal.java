@@ -173,6 +173,16 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	private EditDialog marge;
 	
 	/**
+	 * Le dialogue d'édition pour l'horaire.
+	 */
+	private Horaire horaire;
+	
+	/**
+	 * Le dialogue d'édition pour le niveau.
+	 */
+	private EditDialog niveau;
+	
+	/**
 	 * Instancie un nouveau menu principal.
 	 * 
 	 */
@@ -288,7 +298,10 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		// Initialisation des dialogues d'édition
 		kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
 		marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
+		horaire = new Horaire(this);
+		niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 
+		
 		this.add(mapViewer);
 
 		this.setJMenuBar(menuBar);
@@ -410,7 +423,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == horaireItem) {
-			Horaire horaire = new Horaire(this);
 			int value = horaire.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				horaireValue = ToolBox.NOVALUE;
@@ -421,7 +433,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == niveauItem) {
-			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			int value = niveau.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
