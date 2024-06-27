@@ -99,6 +99,7 @@ public class EditDialog extends JDialog implements ActionListener {
                     valeur = Integer.parseInt(textField.getText());
                 } catch (NumberFormatException e) {
                     valeur = ToolBox.RESETVALUE; // Définit la valeur de reset en cas d'erreur de conversion
+                    ToolBox.sendErrorMessage("Erreur : Vous devez saisir un nombre valide !");
                 }
             }
             // Met à jour le titre avec la valeur si elle est définie
