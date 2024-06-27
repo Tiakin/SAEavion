@@ -434,7 +434,9 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		}
 		if (action.getSource() == niveauItem) {
 			int value = niveau.showDialog();
-			if (value == ToolBox.RESETVALUE) {
+			if (value > kmaxValue - 1) {
+				ToolBox.sendErrorMessage("Erreur : Vous avez essayé d'accéder à un niveau inexistant");
+			} else if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
 				dessinerVols();
 			} else if (value != ToolBox.KEEPVALUE) {
