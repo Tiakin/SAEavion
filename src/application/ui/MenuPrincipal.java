@@ -351,7 +351,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 					System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and "
 							+ graph.getEdgeCount() + " edges. the graph have " + conflits + " Conflicts.");
 
-					ToolBox.displaygraph(graph);
+					ToolBox.displayGraph(graph);
 				} else {
 					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
 					System.out.println("Failed to import graph.");
@@ -401,7 +401,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 							// si shift appuyé
 							if (show) {
-								ToolBox.displaygraph(GraphImporter.importGraph(gm));
+								ToolBox.displayGraph(GraphImporter.importGraph(gm));
 							}
 							// exportation
 							String nameSortie = patternSortie.replace("0", i + "");
@@ -434,12 +434,12 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		}
 		if (action.getSource() == niveauItem) {
 			int value = niveau.showDialog();
-			if (value > kmaxValue - 1 || value < 0) {
+			if (value > kmaxValue - 1) {
 				ToolBox.sendErrorMessage("Erreur : Vous avez essayé d'accéder à un niveau inexistant");
 			} else if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
 				dessinerVols();
-			} else if (value != ToolBox.KEEPVALUE) {
+			} else if (value > ToolBox.KEEPVALUE) {
 				niveauValue = value;
 				dessinerVols();
 			}
@@ -647,7 +647,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 					if (currentGraph.getNodeCount() > 0) {
 						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and "
 								+ currentGraph.getEdgeCount() + " edges.");
-						ToolBox.displaygraph(currentGraph);
+						ToolBox.displayGraph(currentGraph);
 
 						dessinerVols();
 					}
