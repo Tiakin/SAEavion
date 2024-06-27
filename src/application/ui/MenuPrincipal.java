@@ -455,7 +455,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		if (action.getSource() == kmaxItem) {
 			
 			int value = kmax.showDialog();
-			if(value <= 0) {
+			if(value < ToolBox.RESETVALUE || value == 0) {
 				ToolBox.sendErrorMessage("Erreur : Vous ne pouvez pas saisir un chiffre inférieur à 1 comme valeur de kmax.");
 			} else if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
