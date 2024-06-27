@@ -275,7 +275,7 @@ public class ToolBox {
 	 */
 	public static Aeroport codeToAeroport(Aeroport[] aeroports, String codeAeroport) {
 		if (aeroports == null) {
-			System.err.println("Erreur : la liste des aéroports n'a pas été initialisée.");
+			ToolBox.sendErrorMessage("Erreur : la liste des aéroports n'a pas été initialisée.");
 			return null;
 		}
 
@@ -284,7 +284,8 @@ public class ToolBox {
 				return aeroport;
 			}
 		}
-		System.err.println("Aéroport non trouvé pour le code : " + codeAeroport);
+		
+		ToolBox.sendErrorMessage("Aéroport non trouvé pour le code : " + codeAeroport);
 		return null; // Retourne null si l'aéroport n'est pas trouvé
 	}
 }

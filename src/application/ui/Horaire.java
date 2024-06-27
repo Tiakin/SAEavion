@@ -99,7 +99,7 @@ public class Horaire extends JDialog implements ActionListener {
 			this.setVisible(false); // on ferme la fenêtre
 		}
 		if (action.getSource() == validerButton) {
-			if (textFieldHeure.getText().isBlank() || textFieldHeure.getText().isBlank()) {
+			if (textFieldHeure.getText().isBlank() || textFieldMinute.getText().isBlank()) {
 				Horaire = ToolBox.RESETVALUE; // réinitialiser la valeur
 			} else if (Integer.parseInt(textFieldHeure.getText()) >= 0
 					&& Integer.parseInt(textFieldHeure.getText()) < 24
