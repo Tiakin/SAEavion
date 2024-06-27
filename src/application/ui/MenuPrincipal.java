@@ -161,7 +161,27 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	 * le mouse adapter waypoint.
 	 */
 	private MouseAdapter waypointMouseAdapter;
+	
+	/**
+	 * Le dialogue d'édition pour Kmax.
+	 */
+	private EditDialog kmax;
 
+	/**
+	 * Le dialogue d'édition pour la marge.
+	 */
+	private EditDialog marge;
+	
+	/**
+	 * Le dialogue d'édition pour l'horaire.
+	 */
+	private Horaire horaire;
+	
+	/**
+	 * Le dialogue d'édition pour le niveau.
+	 */
+	private EditDialog niveau;
+	
 	/**
 	 * Instancie un nouveau menu principal.
 	 * 
@@ -275,6 +295,13 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		// Ajouter JXMapViewer à JFrame
 		getContentPane().add(mapViewer);
 
+		// Initialisation des dialogues d'édition
+		kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+		marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
+		horaire = new Horaire(this);
+		niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
+
+		
 		this.add(mapViewer);
 
 		this.setJMenuBar(menuBar);
@@ -396,7 +423,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == horaireItem) {
-			Horaire horaire = new Horaire(this);
 			int value = horaire.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				horaireValue = ToolBox.NOVALUE;
@@ -407,7 +433,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == niveauItem) {
-			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			int value = niveau.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
@@ -426,7 +451,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			statistique.dispose();
 		}
 		if (action.getSource() == kmaxItem) {
-			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+			
 			int value = kmax.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
@@ -437,7 +462,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == margeItem) {
-			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			int value = marge.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				margeValue = 15; // valeur par défaut

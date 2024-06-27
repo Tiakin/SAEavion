@@ -22,7 +22,7 @@ public class Main {
 	 * la méthode main.
 	 *
 	 * @param args les arguments
-	 * 
+	 *
 	 */
 	public static void main(String[] args) {
 

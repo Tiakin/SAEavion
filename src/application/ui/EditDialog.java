@@ -92,11 +92,21 @@ public class EditDialog extends JDialog implements ActionListener {
 			this.setVisible(false); // on ferme la fenêtre
 		}
 		if (action.getSource() == validerButton) {
-			if (textField.getText().isBlank()) {
-				valeur = ToolBox.RESETVALUE;
-			} else {
-				valeur = Integer.parseInt(textField.getText());
-			}
+            if (textField.getText().isBlank()) {
+                valeur = ToolBox.RESETVALUE;
+            } else {
+                try {
+                    valeur = Integer.parseInt(textField.getText());
+                } catch (NumberFormatException e) {
+                    valeur = ToolBox.RESETVALUE; // Définit la valeur de reset en cas d'erreur de conversion
+                }
+            }
+            // Met à jour le titre avec la valeur si elle est définie
+            if (valeur != ToolBox.RESETVALUE) {
+                setTitle(getTitle().split("\\:")[0].trim() + " : " + valeur);
+            } else {
+                setTitle(getTitle().split("\\:")[0].trim()); // Réinitialise le titre à l'original
+            }
 			this.setVisible(false); // on ferme la fenêtre
 		}
 		dispose();
