@@ -453,7 +453,9 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		if (action.getSource() == kmaxItem) {
 			
 			int value = kmax.showDialog();
-			if (value == ToolBox.RESETVALUE) {
+			if(value == 0) {
+				ToolBox.sendErrorMessage("Erreur : Vous ne pouvez pas saisir 0 comme valeur de kmax.");
+			} else if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
 			} else if (value != ToolBox.KEEPVALUE) {
 				kmaxValue = value;
