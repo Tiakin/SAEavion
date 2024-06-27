@@ -434,7 +434,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		}
 		if (action.getSource() == niveauItem) {
 			int value = niveau.showDialog();
-			if (value > kmaxValue - 1) {
+			if (value > kmaxValue - 1 || value < 0) {
 				ToolBox.sendErrorMessage("Erreur : Vous avez essayé d'accéder à un niveau inexistant");
 			} else if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
@@ -455,8 +455,8 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		if (action.getSource() == kmaxItem) {
 			
 			int value = kmax.showDialog();
-			if(value == 0) {
-				ToolBox.sendErrorMessage("Erreur : Vous ne pouvez pas saisir 0 comme valeur de kmax.");
+			if(value <= 0) {
+				ToolBox.sendErrorMessage("Erreur : Vous ne pouvez pas saisir un chiffre inférieur à 1 comme valeur de kmax.");
 			} else if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
 			} else if (value != ToolBox.KEEPVALUE) {
