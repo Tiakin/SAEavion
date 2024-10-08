@@ -99,14 +99,24 @@ public class Horaire extends JDialog implements ActionListener {
 			this.setVisible(false); // on ferme la fenêtre
 		}
 		if (action.getSource() == validerButton) {
-			if (textFieldHeure.getText().isBlank() || textFieldMinute.getText().isBlank()) {
-				Horaire = ToolBox.RESETVALUE; // réinitialiser la valeur
-			} else if (Integer.parseInt(textFieldHeure.getText()) >= 0
-					&& Integer.parseInt(textFieldHeure.getText()) < 24
-					&& Integer.parseInt(textFieldMinute.getText()) >= 0
-					&& Integer.parseInt(textFieldMinute.getText()) < 60) {
-				Horaire = Integer.parseInt(textFieldHeure.getText()) * 100
-						+ Integer.parseInt(textFieldMinute.getText()); // change la valeur sous la forme HHMM
+			try {
+				if (textFieldHeure.getText().isBlank() || textFieldMinute.getText().isBlank()) {
+					Horaire = ToolBox.RESETVALUE; // réinitialiser la valeur
+				} else if (Integer.parseInt(textFieldHeure.getText()) >= 0
+						&& Integer.parseInt(textFieldHeure.getText()) < 24
+						&& Integer.parseInt(textFieldMinute.getText()) >= 0
+						&& Integer.parseInt(textFieldMinute.getText()) < 60) {
+					Horaire = Integer.parseInt(textFieldHeure.getText()) * 100
+							+ Integer.parseInt(textFieldMinute.getText()); // change la valeur sous la forme HHMM
+				}
+			} catch (NumberFormatException e) {
+				ToolBox.sendErrorMessage("Erreur : Vous devez saisir un nombre valide !");
+			}
+			// Met à jour le titre avec l'horaire actuel si défini
+			if (Horaire != ToolBox.RESETVALUE) {
+				setTitle("Horaire : " + String.format("%02d:%02d", Horaire / 100, Horaire % 100));
+			} else {
+				setTitle("Horaire"); // réinitialise le titre si valeur réinitialisée
 			}
 			this.setVisible(false); // on ferme la fenêtre
 		}

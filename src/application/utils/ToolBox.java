@@ -260,7 +260,7 @@ public class ToolBox {
 	 * @param graph le graph.
 	 * 
 	 */
-	public static void displaygraph(Graph graph) {
+	public static void displayGraph(Graph graph) {
 		Viewer viewer = graph.display();
 		viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 	}

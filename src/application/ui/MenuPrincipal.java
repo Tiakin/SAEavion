@@ -161,7 +161,27 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	 * le mouse adapter waypoint.
 	 */
 	private MouseAdapter waypointMouseAdapter;
+	
+	/**
+	 * Le dialogue d'édition pour Kmax.
+	 */
+	private EditDialog kmax;
 
+	/**
+	 * Le dialogue d'édition pour la marge.
+	 */
+	private EditDialog marge;
+	
+	/**
+	 * Le dialogue d'édition pour l'horaire.
+	 */
+	private Horaire horaire;
+	
+	/**
+	 * Le dialogue d'édition pour le niveau.
+	 */
+	private EditDialog niveau;
+	
 	/**
 	 * Instancie un nouveau menu principal.
 	 * 
@@ -275,6 +295,13 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		// Ajouter JXMapViewer à JFrame
 		getContentPane().add(mapViewer);
 
+		// Initialisation des dialogues d'édition
+		kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+		marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
+		horaire = new Horaire(this);
+		niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
+
+		
 		this.add(mapViewer);
 
 		this.setJMenuBar(menuBar);
@@ -324,7 +351,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 					System.out.println("Graph imported with " + graph.getNodeCount() + " nodes and "
 							+ graph.getEdgeCount() + " edges. the graph have " + conflits + " Conflicts.");
 
-					ToolBox.displaygraph(graph);
+					ToolBox.displayGraph(graph);
 				} else {
 					ToolBox.sendErrorMessage("Erreur lors de l'importation du graphe");
 					System.out.println("Failed to import graph.");
@@ -374,7 +401,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 							// si shift appuyé
 							if (show) {
-								ToolBox.displaygraph(GraphImporter.importGraph(gm));
+								ToolBox.displayGraph(GraphImporter.importGraph(gm));
 							}
 							// exportation
 							String nameSortie = patternSortie.replace("0", i + "");
@@ -396,7 +423,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == horaireItem) {
-			Horaire horaire = new Horaire(this);
 			int value = horaire.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				horaireValue = ToolBox.NOVALUE;
@@ -407,12 +433,13 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == niveauItem) {
-			EditDialog niveau = new EditDialog(this, "Niveau", "Entrez un niveau :");
 			int value = niveau.showDialog();
-			if (value == ToolBox.RESETVALUE) {
+			if (value > kmaxValue - 1) {
+				ToolBox.sendErrorMessage("Erreur : Vous avez essayé d'accéder à un niveau inexistant");
+			} else if (value == ToolBox.RESETVALUE) {
 				niveauValue = ToolBox.NOVALUE;
 				dessinerVols();
-			} else if (value != ToolBox.KEEPVALUE) {
+			} else if (value > ToolBox.KEEPVALUE) {
 				niveauValue = value;
 				dessinerVols();
 			}
@@ -426,9 +453,11 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			statistique.dispose();
 		}
 		if (action.getSource() == kmaxItem) {
-			EditDialog kmax = new EditDialog(this, "Kmax", "Entrez un nombre :");
+			
 			int value = kmax.showDialog();
-			if (value == ToolBox.RESETVALUE) {
+			if(value < ToolBox.RESETVALUE || value == 0) {
+				ToolBox.sendErrorMessage("Erreur : Vous ne pouvez pas saisir un chiffre inférieur à 1 comme valeur de kmax.");
+			} else if (value == ToolBox.RESETVALUE) {
 				kmaxValue = 10;
 			} else if (value != ToolBox.KEEPVALUE) {
 				kmaxValue = value;
@@ -437,7 +466,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 			}
 		}
 		if (action.getSource() == margeItem) {
-			EditDialog marge = new EditDialog(this, "Marge de sécurité", "Entrez un temps (en minutes) :");
 			int value = marge.showDialog();
 			if (value == ToolBox.RESETVALUE) {
 				margeValue = 15; // valeur par défaut
@@ -619,7 +647,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 					if (currentGraph.getNodeCount() > 0) {
 						System.out.println("Graph imported with " + currentGraph.getNodeCount() + " nodes and "
 								+ currentGraph.getEdgeCount() + " edges.");
-						ToolBox.displaygraph(currentGraph);
+						ToolBox.displayGraph(currentGraph);
 
 						dessinerVols();
 					}
